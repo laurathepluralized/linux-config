@@ -47,6 +47,7 @@ fi
 
 #git aliases
 alias gs='git status'
+alias ggs='git status'
 alias gf='git fetch'
 alias gm='git merge'
 alias gms='git merge -S'
@@ -132,7 +133,7 @@ git config --global core.whitespace trailing-space, space-before-tab
 alias cb='xclip -selection clipboard'
 alias grep='grep --color=auto'
 alias find1='find -maxdepth 1 -mindepth 1'
-alias l='ls -lh'
+alias l='ls -lhA'
 alias CLR='for i in {1..99}; do echo; done; clear'
 alias g="gnome-terminal -x nvim -p"
 
@@ -140,3 +141,9 @@ alias g="gnome-terminal -x nvim -p"
 if [ -f ~/.bash_specific ]; then
     source ~/.bash_specific
 fi
+
+#ssh into tmux session automatically
+if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
+    tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
+fi
+

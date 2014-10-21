@@ -4,12 +4,11 @@ let maplocalleader = "\\"
 let &titlestring=expand("%:t")
 set title
 
+let g:python3_host_prog = '/usr/bin/python3.6'
 set cmdheight=2
 let g:echodoc_enable_at_startup = 1
 let g:echodoc#enable_force_overwrite = 1
 let spellfile=expand('%:p:h') . '.spellfile.utf-16.add'
-
-nnoremap <localleader>q :q<cr>
 
 " see https://github.com/neovim/neovim/issues/7663
 function! InsertOnTerm()
@@ -34,10 +33,14 @@ endif
 set autoread
 au FocusGained * :checktime
 
+" terminal
+if has("nvim")
+endif 
+
 "enable very magic
-nnoremap / /\v
-nnoremap ? ?\v
-nnoremap <leader>a :qa<cr>
+" nnoremap / /\v
+" nnoremap ? ?\v
+" nnoremap <leader>a :qa<cr>
 set smartcase
 
 " lvdb
@@ -100,16 +103,20 @@ let g:lvdb_close_tabs = 1
 " backspace/colors
 set bs=2
 
+" Make mark.vim stop trying to overwrite my mappings
+let g:mw_no_mappings = 1
+
 "colorscheme stuff
 "change background
-set t_Co=256
-colorscheme wombat256A
-if has("gui_running")
-    set spell
-else
-    "spell check comes out as poor highlighting
+" set t_Co=256
+colorscheme Iosvkem
+" colorscheme wombat256A
+" if has("gui_running")
+"     set spell
+" else
+    " "spell check comes out as poor highlighting
     set nospell
-endif
+" endif
 
 " neomake
 " errorformat for cppcheck copied from syntastic:
@@ -192,6 +199,85 @@ let g:neomake_cpp_flawfinder_maker={
 " vimtex
 let g:vimtex_fold_enabled = 1
 
+" neomake
+" errorformat for cppcheck copied from syntastic:
+"   https://github.com/vim-syntastic/syntastic/blob/master/syntax_checkers/c/cppcheck.vim
+augroup my_neomake_signs
+    au!
+    autocmd ColorScheme *
+        \ hi NeomakeErrorSign ctermfg=red ctermbg=black |
+        \ hi NeomakeWarningSign ctermfg=yellow ctermbg=black |
+        \ hi NeomakeWarning ctermbg=darkblue
+augroup END
+
+nnoremap <leader>c :cnext<CR>
+nnoremap <leader>L :lnext<CR>
+let g:neomake_tex_enabled_makers=[]
+let g:neomake_cpp_enabled_makers=['cpplint', 'cppcheck', 'cppclean', 'flawfinder']
+let g:neomake_open_list=0
+let g:neomake_highlight_lines=1
+let g:neomake_highlight_columns=1
+let g:neomake_place_signs=1
+let g:neomake_python_enabled_makers=['pylint', 'pydocstyle', 'flake8']
+
+let g:neomake_cpp_cppclean_maker={
+        \ 'exe': "cpp_static_wrapper.py",
+        \ 'args': ['cppclean', '--no-print-cmd'],
+        \ 'errorformat': '%f:%l: %m, %f:%l %m'
+        \ }
+
+let g:neomake_python_pylint_maker={
+    \ 'exe': 'pylint3',
+    \ 'args': [
+        \ '--rcfile=~/repos/linux-config/.pylintrc',
+        \ '--output-format=text',
+        \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg} [{msg_id}]"',
+        \ '--reports=no'
+    \ ],
+    \ 'errorformat':
+        \ '%A%f:%l:%c:%t: %m,' .
+        \ '%A%f:%l: %m,' .
+        \ '%A%f:(%l): %m,' .
+        \ '%-Z%p^%.%#,' .
+        \ '%-G%.%#',
+    \ 'output_stream': 'both',
+    \ 'postprocess': [
+    \   function('neomake#postprocess#generic_length'),
+    \   function('neomake#makers#ft#python#PylintEntryProcess'),
+    \ ]}
+
+let g:neomake_cpp_cppcheck_maker={
+        \ 'exe': 'cpp_static_wrapper.py',
+        \ 'args': 'cppcheck',
+        \ 'errorformat' :
+        \   '[%f:%l:%c]: (%trror) %m,' .
+        \   '[%f:%l:%c]: (%tarning) %m,' .
+        \   '[%f:%l:%c]: (%ttyle) %m,' .
+        \   '[%f:%l:%c]: (%terformance) %m,' .
+        \   '[%f:%l:%c]: (%tortability) %m,' .
+        \   '[%f:%l:%c]: (%tnformation) %m,' .
+        \   '[%f:%l:%c]: (%tnconclusive) %m,' .
+        \   '%-G%.%#'}
+
+let g:neomake_cpp_cpplint_maker={
+        \ 'exe': executable('cpplint') ? 'cpplint' : 'cpplint.py',
+        \ 'args': ['--verbose=3'],
+        \ 'errorformat':
+        \     '%A%f:%l:  %m [%t],' .
+        \     '%-G%.%#',
+        \ 'postprocess': function('neomake#makers#ft#cpp#CpplintEntryProcess')
+        \ }
+
+let g:neomake_cpp_flawfinder_maker={
+        \ 'exe': 'flawfinder',
+        \ 'args': ['--quiet', '--dataonly', '--singleline'],
+        \ 'errorformat': '%f:%l:  %m,',
+        \ 'postprocess': function('neomake#makers#ft#cpp#CpplintEntryProcess')
+        \ }
+
+" vimtex
+let g:vimtex_fold_enabled = 1
+
 " ctrlp
 let g:ctrlp_custom_ignore = {
 \ 'dir':  '\v[\/](git|hg|svn|build|build_dependencies|build_resources|devel)$',
@@ -201,9 +287,21 @@ let g:ctrlp_custom_ignore = {
 nnoremap <localleader>f :CtrlP getcwd()<cr>
 nnoremap <localleader>b :CtrlPBuffer<cr>
 
+" nerdcommenter
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
 "in case there are system specific settings
 try
     source ~/.vimrc_specific
+catch
+endtry
+
+try
+    " source .vimrc_extra
+    source ~/repos/linux-config/.vimrc_extra
 catch
 endtry
 
@@ -239,7 +337,6 @@ function! MyOnNeomakeFinished()
     call airline#highlighter#reset_hlcache()
     call airline#load_theme()
     call airline#update_statusline()
-
 endfunction
 
 augroup my_neomake_hooks
@@ -277,7 +374,9 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " For conceal markers.
 if has('conceal')
-  set conceallevel=2 concealcursor=niv
+  set conceallevel=0 concealcursor=niv
+" why I set conceallevel to 0:
+" https://vi.stackexchange.com/a/7263
 endif
 
 function! GetGitPath(fname)
@@ -353,6 +452,7 @@ let g:vimtex_quickfix_autoclose_after_keystrokes=1
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
 endif
+
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 let g:tex_flavor = 'latex'
 let g:vimtex_quickfix_open_on_warning=1
@@ -382,3 +482,4 @@ nnoremap <localleader>s :call LanguageClient_contextMenu()<CR>
 call deoplete#custom#source('LanguageClient',
             \ 'min_pattern_length',
             \ 2)
+colorscheme Iosvkem

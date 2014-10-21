@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+BIBFILE=$1
+
+if [ ${BIBFILE: -4} != ".bib" ]
+then
+    BIBFILE=${BIBFILE}".bib"
+fi
+
+# Not using biber until I can figure out why it refuses to sort things alphabetically by citekey
+# might be a version bug? why is Ubuntu 16.04 stuck with (frozen) TeXLive 2015?!?!
+biber --tool --output-fieldcase=lower --output-indent=4 --output-align --output-file=sorted-${BIBFILE} --configfile=bib-cleanup.conf --validate-config ${BIBFILE}
+
+# bibtool -s ${BIBFILE} -o sorted-${BIBFILE}
+

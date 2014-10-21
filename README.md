@@ -1,4 +1,4 @@
-Linux Config
+Linux Config-Laura's Version
 ===
 
 Installation
@@ -71,5 +71,4 @@ Manual steps:
   CodeChecker analyze compilation.json -o ./reports
   CodeChecker parse ./reports -i skipfile
   ```
-  
-* `ln ~/repos/linux-config/init.el ~/.emacs.d/init.el`
+

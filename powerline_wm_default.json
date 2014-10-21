@@ -1,0 +1,29 @@
+{
+	"segments": {
+		"right": [
+			{
+				"function": "powerline.segments.common.net.internal_ip",
+				"priority": 10,
+				"args": {
+                    "ipv": 4,
+					"interface": "auto"
+				}
+			},
+			{
+				"function": "powerline.segments.common.net.hostname",
+				"priority": 70,
+				"args": {
+					"only_if_ssh": false,
+					"exclude_domain": false
+				}
+			},
+			{
+				"function": "powerline.segments.common.bat.battery",
+				"priority": null,
+				"args": {
+					"gamify": false
+				}
+			}
+		]
+	}
+}
