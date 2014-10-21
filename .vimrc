@@ -9,8 +9,6 @@ let g:echodoc_enable_at_startup = 1
 let g:echodoc#enable_force_overwrite = 1
 let spellfile=expand('%:p:h') . '.spellfile.utf-16.add'
 
-nnoremap <localleader>q :q<cr>
-
 " see https://github.com/neovim/neovim/issues/7663
 function! InsertOnTerm()
     if expand('%f')[:3] == 'term'
@@ -34,10 +32,14 @@ endif
 set autoread
 au FocusGained * :checktime
 
+" terminal
+if has("nvim")
+endif 
+
 "enable very magic
-nnoremap / /\v
-nnoremap ? ?\v
-nnoremap <leader>a :qa<cr>
+" nnoremap / /\v
+" nnoremap ? ?\v
+" nnoremap <leader>a :qa<cr>
 set smartcase
 
 " lvdb
@@ -102,8 +104,8 @@ set bs=2
 
 "colorscheme stuff
 "change background
-set t_Co=256
-colorscheme wombat256A
+" set t_Co=256
+" colorscheme wombat256A
 if has("gui_running")
     set spell
 else
@@ -201,9 +203,19 @@ let g:ctrlp_custom_ignore = {
 nnoremap <localleader>f :CtrlP getcwd()<cr>
 nnoremap <localleader>b :CtrlPBuffer<cr>
 
+" nerdcommenter
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+
 "in case there are system specific settings
 try
     source ~/.vimrc_specific
+    source ~/repos/linux-config/.vimrc_specific
+    source ~/repos/misc-scripts/.vimrc_specific
+    source ~/repos/misc-scripts/.vimrc_extra
 catch
 endtry
 
@@ -364,3 +376,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#tabline#show_splits = 0
+
+colorscheme Iosvkem
+
