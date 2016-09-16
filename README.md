@@ -1,4 +1,4 @@
-Linux Config
+Linux Config-Laura's Version
 ===
 
 Installation
