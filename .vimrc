@@ -25,7 +25,7 @@ set bs=2
 "colorscheme stuff
 "change background
 set t_Co=256
-colorscheme wombat256A
+"colorscheme wombat256A
 if has("gui_running")
     set spell
 else

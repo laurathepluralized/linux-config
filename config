@@ -1,0 +1,23 @@
+[global_config]
+  suppress_multiple_term_dialog = True
+  inactive_color_offset = 1.0
+[keybindings]
+  go_left = <Alt>h
+  go_down = <Alt>j
+  go_right = <Alt>l
+  go_up = <Alt>k
+[profiles]
+  [[default]]
+    use_system_font = False
+    font = Monospace 9
+    background_image = None
+    scrollback_infinite = True
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
