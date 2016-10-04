@@ -1,4 +1,4 @@
-ZSH_THEME="robbyrussell"
+ZSH_THEME="miloshadzic"
 plugins=(git bundler osx rake ruby)
 CASE_SENSITIVE="true"
 source $ZSH/oh-my-zsh.sh
