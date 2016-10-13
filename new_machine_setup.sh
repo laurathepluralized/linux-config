@@ -7,7 +7,7 @@ sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade
 sudo apt-get install vim vim-gnome terminator git meld synaptic zsh zsh-common mercurial
 
 mkdir -p ~/.config/terminator
-cp $LCONFIG/config ~/.config/terminator
+cp $LCONFIG/terminator/config ~/.config/terminator
 
 
 if [ -f $HOME/.zshrc ]; 
@@ -20,16 +20,18 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 if [ ! -f $HOME/.bash_aliases ]; 
     then cp $LCONFIG/.bash_aliases $HOME/.bash_aliases
-    else "source $HOME/linux-config/.bash_aliases" >> $HOME/.bash_aliases
+    else echo "source $HOME/linux-config/.bash_aliases" >> $HOME/.bash_aliases
 fi
 if [ ! -f $HOME/.zsh_aliases ]; 
     then cp $LCONFIG/.zsh_aliases $HOME/.zsh_aliases
-    else "source $HOME/linux-config/.zsh_aliases" >> $HOME/.zsh_aliases
+    else echo "source $HOME/linux-config/.zsh_aliases" >> $HOME/.zsh_aliases
 fi
+
+echo "source $HOME/.zsh_aliases" >> $HOME/.zshrc
 
 if [ ! -f $HOME/.inputrc ];
     then cp $LCONFIG/.inputrc $HOME/.inputrc
-    else "source $HOME/linux-config/.inputrc" >> $HOME/.inputrc
+    else echo "source $HOME/linux-config/.inputrc" >> $HOME/.inputrc
 fi
 
 echo "source ~/linux-config/.zshrc" >> ~/.zshrc
