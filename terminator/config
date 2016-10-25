@@ -6,6 +6,7 @@
   go_left = <Alt>h
   go_right = <Alt>l
   go_up = <Alt>k
+  layout_launcher = <Primary><Shift>l
 [layouts]
   [[default]]
     [[[child1]]]

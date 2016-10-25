@@ -60,6 +60,11 @@ mkdir -p $HOME/.vim/bundle
     git clone https://github.com/milkypostman/vim-togglelist $DIR/vim-togglelist
     ln -sf $DIR/vim-togglelist ~/.vim/bundle/
 
+#fswitch
+    
+    git clone https://github.com/derekwyatt/vim-fswitch.git $DIR/vim-fswitch
+    ls -sf $DIR/vim-fswitch ~/.vim/bundle/
+
 #lvdb:
 
     git clone https://github.com/esquires/lvdb $DIR/lvdb
