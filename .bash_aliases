@@ -2,7 +2,6 @@
 
 
 ## Frequently-used directories:
-#alias sdir="cd ~/scrimmage"
 
 ## vim aliases:
 alias svim="sudo vim"
