@@ -1,0 +1,12 @@
+" Laura's .vimrc additions
+"
+" Search settings
+set smartcase " search should become case-sensitive if there are upper-case characters
+
+" File types
+set fileformat=unix
+set fileformats=unix,dos " only detect unix file format, and display  in dos files
+
+set showmatch " briefly show matching bracket
+set matchtime=2 " show matching bracket for 0.2 seconds
+

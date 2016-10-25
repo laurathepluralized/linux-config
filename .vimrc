@@ -64,6 +64,9 @@ let g:syntastic_cpp_checkers = ['cpplint']
 let g:syntastic_cpp_cpplint_exec = 'cpplint'
 let g:syntastic_aggregate_errors = 1
 
+source ~/linux-config/.vimrc_extra
+
+
 "in case there are system specific settings
 try
     source ~/.vimrc_specific
