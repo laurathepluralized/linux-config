@@ -86,7 +86,7 @@ git submodule update --init --recursive
 mkdir $HOME/ycm_build && cd $HOME/ycm_build # this is where our cmake-related files will go
 # This should generate CMake files for clang-4.0 installed in default directory
 # and for Vim compiled to use Python3 (since YCM has to use the same Python version)
-cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . ~/vim_plugins/YouCompleteMe/third_party/ycmd/cpp 
+cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . $DIR/YouCompleteMe/third_party/ycmd/cpp 
 # Now build YCM
 cmake --build . --target ycm_core --config Release
 
