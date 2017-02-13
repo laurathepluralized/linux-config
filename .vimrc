@@ -1,3 +1,7 @@
+" Stop vim from folding everything it can find to fold upon file open
+" This does seem to allow manual code folding, though, which is nice
+set nofoldenable
+
 " mapping leaders
 let mapleader = "\<space>"
 let maplocalleader = "\\"
@@ -33,7 +37,6 @@ set bs=2
 "colorscheme stuff
 "change background
 set t_Co=256
-colorscheme wombat256A
 if has("gui_running")
     set spell
 else
@@ -63,6 +66,9 @@ let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_cpp_checkers = ['cpplint']
 let g:syntastic_cpp_cpplint_exec = 'cpplint'
 let g:syntastic_aggregate_errors = 1
+
+source ~/linux-config/.vimrc_extra
+
 
 "in case there are system specific settings
 try

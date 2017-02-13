@@ -10,9 +10,9 @@ fi
 ##########################################3
 
 #stuff whose error I don't want to see
-alias gvim="gvim -p 2>/dev/null"
-alias gvimdiff="gvimdiff 2> /dev/null"
-alias g='gnome-open 2>/dev/null'
+#alias gvim="gvim -p 2>/dev/null"
+#alias gvimdiff="gvimdiff 2> /dev/null"
+#alias g='gnome-open 2>/dev/null'
 
 #set editor to vi
 set -o vi
@@ -34,16 +34,16 @@ HISTCONTROL=ignoredups
 #note, to quit a searchm, use ctrl_G,
 #      to save a history command without running it, use "#" before the command
 #see http://ruslanspivak.com/2010/11/20/bash-history-reverse-intelligent-search
-stty -ixon
+#stty -ixon
 
 #setup the bash prompt
 WHITE='\[\e[0;37m\]'
 GREEN='\[\e[0;32m\]'
 if [ -f ~/.git-prompt.sh ]; then
-    source ~/.git-prompt.sh
-    PS1="${WHITE}\$(__git_ps1)${GREEN}\W: ${WHITE}"
+   source ~/.git-prompt.sh
+   PS1="${WHITE}\$(__git_ps1)${GREEN}\W: ${WHITE}"
 else
-    PS1="${GREEN}\W\$ ${WHITE}"
+   PS1="${GREEN}\W\$ ${WHITE}"
 fi
 
 #git aliases
@@ -129,11 +129,11 @@ git config --global merge.tool gvimdiff
 git config --global color.ui true
 git config --global core.whitespace trailing-space, space-before-tab
 
-#other aliases
+other aliases
 alias cb='xclip -selection clipboard'
 alias grep='grep --color=auto'
 alias find1='find -maxdepth 1 -mindepth 1'
-alias l='ls -lh'
+#alias l='ls -lh'
 alias CLR='for i in {1..99}; do echo; done; clear'
 
 #machine specific operations

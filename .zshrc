@@ -1,7 +1,7 @@
-ZSH_THEME="robbyrussell"
-plugins=(git bundler osx rake ruby)
+ZSH_THEME="miloshadzic" # my favorite
+source $ZSH/oh-my-zsh.sh # this has to go after the theme
+plugins=(git bundler osx rake ruby history-substring-search)
 CASE_SENSITIVE="true"
-source $ZSH/oh-my-zsh.sh
 
 export HISTFILE=~/.zsh_history
 export HISTSIZE=10000
@@ -40,6 +40,12 @@ zle -N zle-keymap-select
 zle -N zle-history-line-set
 export KEYTIMEOUT=1
 
+# Put the time previous command executed on first line of prompt, 
+# then show status info, path, and allow new command input on next line
+# (adapted from af-magic theme)
+PROMPT='$FG[237][%*]------------------------------------------------------------%{$reset_color%}
+$FG[032]'$PROMPT
+
 #git aliases
 alias gs='git status'
 alias gf='git fetch'
@@ -62,9 +68,9 @@ git config --global grep.extendRegexp true
 git config --global grep.lineNumber true
 git config --global alias.g "grep --break --heading --line-number"
 git config --global core.editor vim
-git config --global merge.tool gvimdiff
+git config --global merge.tool vimdiff
 git config --global color.ui true
-git config --global core.whitespace trailing-space, space-before-tab
+#git config --global core.whitespace trailing-space, space-before-tab
 
 #other aliases
 alias grep='grep --color=auto'

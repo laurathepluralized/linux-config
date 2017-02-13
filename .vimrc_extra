@@ -1,0 +1,46 @@
+" Laura's .vimrc additions
+"
+" Search settings
+set smartcase " search should become case-sensitive if there are upper-case characters
+
+" File types
+set fileformat=unix
+set fileformats=unix,dos " only detect unix file format, and display in dos files
+
+set showmatch " briefly show matching bracket
+set matchtime=2 " show matching bracket for 0.2 seconds
+
+" FSwitch mappings
+" From FSwitch documentation
+" 
+ " Switch to the file and load it into the current window >
+	nmap <silent> <Leader>of :FSHere<cr>
+ " Switch to the file and load it into the window on the right >
+	nmap <silent> <Leader>ol :FSRight<cr>
+ " Switch to the file and load it into a new window split on the right >
+	nmap <silent> <Leader>oL :FSSplitRight<cr>
+ " Switch to the file and load it into the window on the left >
+	nmap <silent> <Leader>oh :FSLeft<cr>
+ " Switch to the file and load it into a new window split on the left >
+	nmap <silent> <Leader>oH :FSSplitLeft<cr>
+ " Switch to the file and load it into the window above >
+	nmap <silent> <Leader>ok :FSAbove<cr>
+ " Switch to the file and load it into a new window split above >
+	nmap <silent> <Leader>oK :FSSplitAbove<cr>
+ " Switch to the file and load it into the window below >
+	nmap <silent> <Leader>oj :FSBelow<cr>
+ " Switch to the file and load it into a new window split below >
+	nmap <silent> <Leader>oJ :FSSplitBelow<cr>
+
+
+" Make resizing horizontal splits less aggravating
+nmap <silent> <Leader>hh :res -10<cr>
+nmap <silent> <Leader>hc :res +10<cr>
+
+
+
+" REMINDER
+" Space is leader
+" \ is localleader
+"
+
