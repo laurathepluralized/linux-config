@@ -11,8 +11,8 @@ sudo apt install -y \
     cmake \
     python-dev \
     python3-dev \
-    clang-4.0 \     
-    clang-4.0-doc   
+    clang-4.0 #clang-4.0-doc   
+
 	#vim-youcompleteme   # If this is installed with apt-get, it will install the version that requires clang-3.9+ but 
                          # that has clang-3.8 listed as a required dependency. Not sure what happened there. 
 
