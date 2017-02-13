@@ -48,6 +48,7 @@ fi
 
 #git aliases
 alias gs='git status'
+alias ggs='git status'
 alias gf='git fetch'
 alias gm='git merge'
 alias gms='git merge -S'
