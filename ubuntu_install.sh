@@ -1,3 +1,6 @@
+# Borrowing technique from here for checking for rootness
+# http://stackoverflow.com/questions/18215973/how-to-check-if-running-as-root-in-a-bash-script/21622456#21622456
+# The sudo method they suggest may also be useful
 if (( $EUID == 0 ))
     then echo "Please do not run this script as root"
     exit
