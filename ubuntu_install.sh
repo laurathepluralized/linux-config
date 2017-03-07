@@ -1,3 +1,8 @@
+if (( $EUID == 0 ))
+    then echo "Please do not run this script as root"
+    exit
+fi
+
 sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main'
 
 sudo apt update
@@ -11,10 +16,9 @@ sudo apt install -y \
     cmake \
     python-dev \
     python3-dev \
-    clang-4.0 \
-    libclang-4.0
-
-	#vim-youcompleteme   # If this is installed with apt-get, it will install the version that requires clang-3.9+ but 
+    #clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 lldb-4.0-dev lld-4.0 libfuzzer-4.0-dev libclang-4.0
+yes | sudo apt-get install libclang-4.0 libclang-4.0-dev liblldb-4.0 liblldb-4.0-dbg liblldb-4.0-dev
+	#vim-youcompleteme   # If this is installed with apt or apt-get, it will install the version that requires clang-3.9+ but 
                          # that has clang-3.8 listed as a required dependency. Not sure what happened there. 
 
 # NOTE: clang-4.0 is included here due to the most up-to-date version of YouCompleteMe available 
@@ -39,8 +43,10 @@ ln -s $CONFIG_DIR/glmb.sh ~/bin/glmb
 echo "export ZSH=~/.oh-my-zsh" >> ~/.zshrc
 echo "source $CONFIG_DIR/.zshrc" >> ~/.zshrc
 
-mkdir ~/.vim
+mkdir ~/.vim 
+sudo chown $SUDO_UID:$SUDO_GID ~/.vim
 mkdir ~/.vim/{bundle,autoload,swaps,backups}
+sudo chown -R $SUDO_UID:$SUDO_GID ~/.vim
 echo "source $CONFIG_DIR/.vimrc" >> ~/.vimrc
 echo "set backup" >> ~/.vimrc
 echo "set backupdir=~/.vim/backups" >> ~/.vimrc
@@ -52,6 +58,7 @@ echo "set bind-tty-special-chars off" >> ~/.inputrc
 
 DIR=~/repos/vim
 mkdir $DIR
+sudo chown -R $SUDO_UID:$SUDO_GID $DIR
 cd $DIR
 
 git clone https://github.com/tpope/vim-pathogen.git
@@ -85,11 +92,15 @@ ln -s $DIR/vim-fswitch ~/.vim/bundle
 # that the version of vim installed was compiled to use python3, not python2.
 git clone https://github.com/Valloric/YouCompleteMe.git
 ln -s $DIR/vim-YouCompleteMe ~/.vim/bundle
+# Make sure we own all the stuff in $DIR
+sudo chown -R $SUDO_UID:$SUDO_GID $DIR
+cd $DIR
 cd YouCompleteMe
 git submodule update --init --recursive
 mkdir $HOME/ycm_build && cd $HOME/ycm_build # this is where our cmake-related files will go
 # This should generate CMake files for clang-4.0 installed in default directory
 # and for Vim compiled to use Python3 (since YCM has to use the same Python version)
+sudo chown -R $SUDO_UID:$SUDO_GID $HOME/ycm_build
 cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . $DIR/YouCompleteMe/third_party/ycmd/cpp 
 # Now build YCM
 cmake --build . --target ycm_core --config Release
@@ -97,6 +108,10 @@ cmake --build . --target ycm_core --config Release
 # This may not be necessary, but let's cd back to the directory we ran this script from
 cd $DIR
 
+echo "Now changing the following user's default shell to zsh:"
+echo $USER
+
 sudo chsh -s /usr/bin/zsh $USER
+
 
 
