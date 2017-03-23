@@ -41,7 +41,7 @@ end
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -54,15 +54,15 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.fair,
     awful.layout.suit.tile.left,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
     awful.layout.suit.magnifier,
     awful.layout.suit.max,
     --awful.layout.suit.floating
     --awful.layout.suit.fair.horizontal,
-    --awful.layout.suit.tile,
-    --awful.layout.suit.tile.bottom,
-    --awful.layout.suit.tile.top,
     --awful.layout.suit.spiral,
     --awful.layout.suit.spiral.dwindle,
     --awful.layout.suit.max.fullscreen,
@@ -203,6 +203,11 @@ root.buttons(awful.util.table.join(
 ))
 -- }}}
 
+-- {{{ Disable tap-to-click
+--awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
+awful.util.spawn_with_shell("xinput set-prop 'DLL07D0:01 044E:120B' 'Synaptics Tap Time' 0")
+--DLL07D0:01 044E:120B is dell latitude touchpad, I think
+-- }}}
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
@@ -237,7 +242,8 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
+    --awful.key({ modkey, "Control" }, "r", awesome.restart),
+    awful.key({ modkey, "Shift" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact(-0.05)    end),
@@ -265,7 +271,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end),
 
     --lock the computer (added by eric)
-    awful.key({ modkey, "Control" }, "s",     function () awful.util.spawn("cinnamon-screensaver-command -l") end)
+    --awful.key({ modkey, "Control" }, "s",     function () awful.util.spawn("cinnamon-screensaver-command -l") end)
+    awful.key({ modkey, "Control" }, "s",     function () awful.util.spawn("slock") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -368,13 +375,13 @@ awful.rules.rules = {
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
-    -- Enable sloppy focus
+    -- Enable sloppy focus --NOOOOOO!
     c:connect_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
+        --if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+            --and awful.client.focus.filter(c) then
+            --client.focus = c
+        --end
+   end)
 
     if not startup then
         -- Set the windows at the slave,
@@ -437,3 +444,46 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+--
+-- Battery warning
+-- From bpdp.blogspot.be/2013/06/battery-warning-notification-for.html
+-- created by bpdp
+
+local function trim(s)
+  return s:find'^%s*$' and '' or s:match'^%s*(.*%S)'
+end
+
+local function bat_notification()
+  
+  local f_capacity = assert(io.open("/sys/class/power_supply/BAT0/capacity", "r"))
+  local f_status = assert(io.open("/sys/class/power_supply/BAT0/status", "r"))
+
+  local bat_capacity = tonumber(f_capacity:read("*all"))
+  local bat_status = trim(f_status:read("*all"))
+
+  if (bat_capacity <= 10 and bat_status == "Discharging") then
+    naughty.notify({ title      = "Battery low! " .. bat_capacity .."%"
+      --, text       = "Battery low! " .. bat_capacity .."%" .. " left!"
+      , fg="#ff0000"
+      , bg="#deb887"
+      , timeout    = 180
+      --, position   = "bottom_left"
+      , position   = "top_right"
+    })
+  end
+  if (bat_capacity <= 100 and bat_status == "Discharging") then
+    naughty.notify({ title      = "Battery " .. bat_capacity .."%"
+      , height=20
+      , fg="#ff0000"
+      , bg="#deb887"
+      , timeout    = 180
+      , position   = "top_right"
+    })
+  end
+end
+
+battimer = timer({timeout = 179.9})
+battimer:connect_signal("timeout", bat_notification)
+battimer:start()
+
+-- end here for battery warning
