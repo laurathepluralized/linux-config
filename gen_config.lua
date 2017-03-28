@@ -184,7 +184,6 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
-    right_layout:add(batterywidget)
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -206,7 +205,7 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Disable tap-to-click
 --awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
-awful.util.spawn_with_shell("xinput set-prop 'DLL07D0:01 044E:120B' 'Synaptics Tap Time' 0")
+--awful.util.spawn_with_shell("xinput set-prop 'DLL07D0:01 044E:120B' 'Synaptics Tap Time' 0")
 --DLL07D0:01 044E:120B is dell latitude touchpad
 --SynPS/2 is Thinkpad touchpad
 awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
