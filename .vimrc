@@ -2,6 +2,7 @@
 " This does seem to allow manual code folding, though, which is nice
 set nofoldenable
 
+
 " mapping leaders
 let mapleader = "\<space>"
 let maplocalleader = "\\"
