@@ -38,6 +38,11 @@ nmap <silent> <Leader>hh :res -10<cr>
 nmap <silent> <Leader>hc :res +10<cr>
 
 
+" Enter a line below current line and stay in command mode
+" (just push Enter in command mode)
+nmap <CR> o<Esc>k
+
+
 
 " REMINDER
 " Space is leader
