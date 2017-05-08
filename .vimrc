@@ -2,7 +2,6 @@
 " This does seem to allow manual code folding, though, which is nice
 set nofoldenable
 
-
 " mapping leaders
 let mapleader = "\<space>"
 let maplocalleader = "\\"
@@ -36,6 +35,7 @@ let g:lvdb_toggle_lines = 3
 set bs=2
 
 "colorscheme stuff
+colorscheme laura
 "change background
 set t_Co=256
 if has("gui_running")

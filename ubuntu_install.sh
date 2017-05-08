@@ -91,6 +91,9 @@ ln -s $DIR/vim-fuzzyfinder ~/.vim/bundle
 git clone https://github.com/derekwyatt/vim-fswitch.git
 ln -s $DIR/vim-fswitch ~/.vim/bundle
 
+# Install my colorscheme
+sudo ln -s ${CONFIG_DIR}/laura.vim /usr/share/vim/vim74/colors/laura.vim
+
 # The next few lines, which install YouCompleteMe from source, assume
 # that the version of vim installed was compiled to use python3, not python2.
 git clone https://github.com/Valloric/YouCompleteMe.git
