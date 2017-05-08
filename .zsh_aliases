@@ -1,22 +1,17 @@
 
-# Put the time previous command executed on first line of prompt, 
-# then show status info, path, and allow new command input on next line
-# (adapted from af-magic theme)
-#PROMPT='$FG[237][%*]------------------------------------------------------------%{$reset_color%}
-#$FG[032]'$PROMPT
-
-#bindkey "^
-
 ## Source .zshrc
-alias szrc="source ~/.zshrc"
-alias zshrc="sudo vim ~/.zshrc && source ~/.zshrc"
+alias szrc="source ${HOME}/.zshrc"
+alias zshrc="sudo vim ${HOME}/.zshrc && source ${HOME}/.zshrc"
 
-# Delete ~/.zsh_history (TODO: make this less destructive; want to correct, not delete)
-alias rzhist="rm "${HOME}"/.zsh_history"
+## Fix my vertical screen
+alias sr="screen_rotate.sh"
 
 ## aliases aliases
-alias aliasedit="sudo vim ~/.zsh_aliases && source ~/.zshrc"
-alias aliases="sudo vim ~/.zsh_aliases && source ~/.zshrc"
+alias aliasedit="sudo vim ${HOME}/.zsh_aliases && source ${HOME}/.zshrc"
+alias aliases="sudo vim ${HOME}/.zsh_aliases && source ${HOME}/.zshrc"
+
+## Open a new instance of Google Chrome
+alias chr="google-chrome"
 
 ## ls aliases and colorization
 # Dont show . or .., but show hidden files.
@@ -51,7 +46,16 @@ alias ........="cd ../../../../../../../"
 ## git aliases
 alias gitkhere="gitk --all &"
 
-# Take everything in the current directory (not children) that matches the gitignore and remove it from the repo's cache. From http://stackoverflow.com/a/3262033
+# From https://itsfoss.com/solve-open-shared-object-file-quick-tip
+alias ldrtlink="sudo /sbin/ldconfig -v"
+
+# tar reference
+# tar xzf = unzip tgz or tar.gz
+# tar xjf = unzip tar.bz2
+
+# Take everything in the current directory (not children) that matches the gitignore and remove it from the repo's cache.
+# NOTE THAT THIS IS THE NUCLEAR OPTION. I DON'T THINK IT CAN BE UNDONE. USE AT YOUR OWN RISK.
+# From http://stackoverflow.com/a/3262033
 #alias gnuke="(GIT_INDEX_FILE=some-non-existent-file  git ls-files --exclude-standard --others --directory --ignored -z) | xargs -0 git rm --cached -r --ignore-unmatch --"
 
 ## Take screenshot of area of screen
@@ -62,9 +66,6 @@ alias gitkhere="gitk --all &"
 # Typing "!*" will insert all arguments from the previous command (works in zsh and bash)
 # If zsh keeps trying to correct the spelling of a valid command (e.g. foo), try this alias:
 # alias foo='nocorrect foo'
-
-# Search for packages and get the package names and descriptions:
-# sudo apt-cache search <package name or part of it>
 
 
 # Source .zsh_specific
