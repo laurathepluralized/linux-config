@@ -1,5 +1,10 @@
 " Laura's .vimrc additions
-"
+
+" Add <> to the types of pairs Vim recognizes as matching (to go between them
+" with %)
+set matchpairs+=<:>
+
+
 " Search settings
 set smartcase " search should become case-sensitive if there are upper-case characters
 
