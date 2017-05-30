@@ -4,6 +4,8 @@
 " with %)
 set matchpairs+=<:>
 
+" This looks useful:
+"http://stackoverflow.com/questions/2514445/turning-off-auto-indent-when-pasting-text-into-vim?rq=1
 
 " Search settings
 set smartcase " search should become case-sensitive if there are upper-case characters
