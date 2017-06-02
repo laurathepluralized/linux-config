@@ -482,9 +482,17 @@ local function bat_notification()
     })
   end
 end
+-- From https://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists/4991602#4991602
+local function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
 
-battimer = timer({timeout = 179.9})
-battimer:connect_signal("timeout", bat_notification)
-battimer:start()
+local is_this_a_laptop = file_exists("/sys/class/power_supply/BAT0/capacity")
+if (is_this_a_laptop) then
+    battimer = timer({timeout = 179.9})
+    battimer:connect_signal("timeout", bat_notification)
+    battimer:start()
+end
 
 -- end here for battery warning
