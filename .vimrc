@@ -1,14 +1,18 @@
 " Stop vim from folding everything it can find to fold upon file open
-" This does seem to allow manual code folding, though, which is nice
 set nofoldenable
+
+" YCM debugging
+let g:ycm_server_python_interpreter='python3'
+let g:ycm_server_keep_logfiles=1
+let g:ycm_server_log_level='debug'
 
 " mapping leaders
 let mapleader = "\<space>"
 let maplocalleader = "\\"
 
 "enable very magic
-nnoremap / /\v
-nnoremap ? ?\v
+"nnoremap / /\v
+"nnoremap ? ?\v
 set smartcase
 
 "plugin management
@@ -46,16 +50,17 @@ else
 endif
 
 " syntastic
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <localleader>e :SyntasticCheck<CR>
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map = {"mode": "passive"}
-nnoremap <localleader>s :SyntasticCheck<cr>
 let g:syntastic_python_checkers = ['flake8']
 " let g:syntastic_python_checkers = ['pylint']
 
@@ -65,7 +70,8 @@ let g:syntastic_python_checkers = ['flake8']
 " for cpplint, you might want
 " let g:syntastic_cpp_cpplint_args = '--root=/path/to/project/root --recursive'
 let g:syntastic_cpp_checkers = ['cpplint']
-let g:syntastic_cpp_cpplint_exec = 'cpplint'
+"let g:syntastic_cpp_checkers = []
+"let g:syntastic_cpp_cpplint_exec = 'cpplint'
 let g:syntastic_aggregate_errors = 1
 
 " ctrlp
