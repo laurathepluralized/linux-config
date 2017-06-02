@@ -17,13 +17,17 @@ endif
 let colors_name = "laura"
 
 "highlight Comment    ctermfg=8                  cterm=bold  guifg=#808080                  gui=bold
+highlight SpellBad                 ctermbg=0
+highlight SpellCap                 ctermbg=0
+highlight SyntasticError           ctermbg=0
+highlight SyntasticWarning         ctermbg=0
 highlight Constant   ctermfg=1                  cterm=bold  guifg=#d70000                  gui=none
 highlight Identifier ctermfg=6                              guifg=#00c0c0
 highlight Statement  ctermfg=99                 cterm=bold  guifg=#875fff                  gui=bold
 highlight PreProc    ctermfg=99                 cterm=bold  guifg=#875fff                  gui=bold
 highlight Type       ctermfg=2                  cterm=bold  guifg=#00c000                  gui=bold
 highlight Special    ctermfg=12                             guifg=#0000ff
-highlight Error                    ctermbg=9                               guibg=#ff0000
+highlight Error                    ctermbg=8                               guibg=#ff0000
 highlight Todo       ctermfg=4     ctermbg=3                guifg=#000080  guibg=#c0c000
 "highlight Directory  ctermfg=2                              guifg=#00c000  
 highlight StatusLine ctermfg=17    ctermbg=12   cterm=none  guifg=#00005f  guibg=#0000ff    gui=none
