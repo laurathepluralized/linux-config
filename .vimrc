@@ -83,6 +83,16 @@ let g:ctrlp_custom_ignore = {
 \ }
 nnoremap <leader>p :CtrlP getcwd()<cr>
 
+
+" nerdcommenter
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+
+
+
 "in case there are system specific settings
 try
     source ~/repos/linux-config/.vimrc_extra
