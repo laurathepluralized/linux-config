@@ -248,6 +248,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
+    -- Open Google Chrome
+    awful.key({ modkey,           }, "g", function () awful.util.spawn("google-chrome") end),
+
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact(-0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
