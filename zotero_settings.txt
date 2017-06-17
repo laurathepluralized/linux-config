@@ -1,0 +1,2 @@
+Citation key format:
+[auth:lower:nopunct:skipwords:fold][year][veryshorttitle:lower:nopunct:fold]
