@@ -25,6 +25,10 @@ call pathogen#infect()
 
 " ycm
 let g:ycm_show_diagnostics_ui = 1
+" make YCM close the scratchpad window after I'm done with it
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+
 
 " togglelist settings
 let g:toggle_list_no_mappings=1
