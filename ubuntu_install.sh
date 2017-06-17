@@ -13,8 +13,6 @@ else
     echo "Current user is ${ME}"
 fi
 
-
-
 sudo apt update
 sudo apt upgrade
 sudo apt install -y \
