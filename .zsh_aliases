@@ -1,10 +1,15 @@
+# Normal installation structure of misc repos and linux-config
+export REPOS=${HOME}"/repos"
+alias repos="cd "${REPOS}
+export LCONFIG=${HOME}"/repos/linux-config"
+alias lconfig="cd "${LCONFIG}
 
 ## Source .zshrc
 alias szrc="source ${HOME}/.zshrc"
 alias zshrc="sudo vim ${HOME}/.zshrc && source ${HOME}/.zshrc"
 
-## Fix my vertical screen
-alias sr="screen_rotate.sh"
+# zsh command history with timestamp
+alias clihist="fc -li"
 
 ## aliases aliases
 alias aliasedit="sudo vim ${HOME}/.zsh_aliases && source ${HOME}/.zshrc"
@@ -31,7 +36,18 @@ alias egrep="egrep --color=auto"
 alias fgrep="fgrep --color=auto"
 
 ## Apt-get update and upgrade
-alias uuu="sudo apt-get update && sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh"
+#alias uuu="sudo apt-get update && sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh"
+
+function uuu()
+{
+    sudo apt-get update
+    if [ -n "$1" ]
+    then
+        sudo apt-get install "$1"
+    else
+    fi
+    sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh
+}
 
 ## cd aliases
 alias cd..="cd .."
@@ -67,6 +83,10 @@ alias ldrtlink="sudo /sbin/ldconfig -v"
 # If zsh keeps trying to correct the spelling of a valid command (e.g. foo), try this alias:
 # alias foo='nocorrect foo'
 
+## Toggle between English (US) and German (DE) keyboard layouts
+#setxkbmap -option grp:alt_shift_toggle us,de
+
+#scrot is command-line screenshot tool
 
 # Source .zsh_specific
 source ${HOME}/.zsh_specific
