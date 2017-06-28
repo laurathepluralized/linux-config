@@ -23,21 +23,21 @@ set matchtime=2 " show matching bracket for 0.2 seconds
  " Switch to the file and load it into the current window >
 	nmap <silent> <Leader>of :FSHere<cr>
  " Switch to the file and load it into the window on the right >
-	nmap <silent> <Leader>ol :FSRight<cr>
- " Switch to the file and load it into a new window split on the right >
-	nmap <silent> <Leader>oL :FSSplitRight<cr>
- " Switch to the file and load it into the window on the left >
-	nmap <silent> <Leader>oh :FSLeft<cr>
- " Switch to the file and load it into a new window split on the left >
-	nmap <silent> <Leader>oH :FSSplitLeft<cr>
- " Switch to the file and load it into the window above >
-	nmap <silent> <Leader>ok :FSAbove<cr>
- " Switch to the file and load it into a new window split above >
-	nmap <silent> <Leader>oK :FSSplitAbove<cr>
- " Switch to the file and load it into the window below >
-	nmap <silent> <Leader>oj :FSBelow<cr>
- " Switch to the file and load it into a new window split below >
-	nmap <silent> <Leader>oJ :FSSplitBelow<cr>
+	" nmap <silent> <Leader>ol :FSRight<cr>
+ " " Switch to the file and load it into a new window split on the right >
+	" nmap <silent> <Leader>oL :FSSplitRight<cr>
+ " " Switch to the file and load it into the window on the left >
+	" nmap <silent> <Leader>oh :FSLeft<cr>
+ " " Switch to the file and load it into a new window split on the left >
+	" nmap <silent> <Leader>oH :FSSplitLeft<cr>
+ " " Switch to the file and load it into the window above >
+	" nmap <silent> <Leader>ok :FSAbove<cr>
+ " " Switch to the file and load it into a new window split above >
+	" nmap <silent> <Leader>oK :FSSplitAbove<cr>
+ " " Switch to the file and load it into the window below >
+	" nmap <silent> <Leader>oj :FSBelow<cr>
+ " " Switch to the file and load it into a new window split below >
+	" nmap <silent> <Leader>oJ :FSSplitBelow<cr>
 
 
 " Make resizing horizontal splits less aggravating
@@ -49,7 +49,11 @@ nmap <silent> <Leader>hc :res +10<cr>
 " (just push Enter in command mode)
 nmap <CR> o<Esc>k
 
-
+" Move between splits more easily
+nnoremap gh <C-W><C-H>
+nnoremap gj <C-W><C-J>
+nnoremap gk <C-W><C-K>
+nnoremap gl <C-W><C-L>
 
 " REMINDER
 " Space is leader

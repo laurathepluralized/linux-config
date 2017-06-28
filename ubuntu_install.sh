@@ -100,6 +100,10 @@ ln -s $DIR/ctrlp.vim ~/.vim/bundle
 git clone https://github.com/derekwyatt/vim-fswitch.git
 ln -s $DIR/vim-fswitch ~/.vim/bundle
 
+# From https://superuser.com/questions/219009/how-do-i-move-around-and-otherwise-rearrange-splits-in-vim
+git clone https://github.com/wesQ3/vim-windowswap.git
+ln -s $DIR/vim-windowswap ~/.vim/bundle
+
 # Install my colorschemes
 sudo ln -s ${CONFIG_DIR}/laura.vim /usr/share/vim/vim74/colors/laura.vim
 sudo ln -s ${CONFIG_DIR}/laura_light.vim /usr/share/vim/vim74/colors/laura_light.vim
