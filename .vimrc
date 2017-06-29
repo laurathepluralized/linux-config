@@ -87,6 +87,10 @@ let g:ctrlp_custom_ignore = {
 nnoremap <leader>p :CtrlP getcwd()<cr>
 
 
+" nerdtree
+map <localleader>n :NERDTreeToggle<CR>
+
+
 " nerdcommenter
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
