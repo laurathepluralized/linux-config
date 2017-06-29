@@ -23,6 +23,9 @@ filetype indent on
 "pathogen plugin
 call pathogen#infect()
 
+" gen_tags.vim
+nnoremap <leader>g :GenGTAGS<cr>
+
 " ycm
 let g:ycm_show_diagnostics_ui = 1
 " make YCM close the scratchpad window after I'm done with it

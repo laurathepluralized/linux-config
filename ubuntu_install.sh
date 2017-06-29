@@ -16,8 +16,16 @@ fi
 sudo apt update
 sudo apt upgrade
 sudo apt install -y \
-	git \
+    curl \
+    terminator \
 	awesome \
+	git \
+    global \
+    htop \
+    ipython \
+    python-ipdb \
+    ncurses-cmake-gui \
+    vim-youcompleteme \
 	zsh \
 	vim-gnome \
 	mercurial \
@@ -110,30 +118,35 @@ ln -s $DIR/nerdtree ~/.vim/bundle
 git clone https://github.com/scrooloose/nerdcommenter.git
 ln -s $DIR/nerdcommenter ~/.vim/bundle
 
+git clone https://github.com/jsfaint/gen_tags.vim.git
+ln -s $DIR/gen_tags.vim ~/.vim/bundle
+
 # Install my colorschemes
 sudo ln -s ${CONFIG_DIR}/laura.vim /usr/share/vim/vim74/colors/laura.vim
 sudo ln -s ${CONFIG_DIR}/laura_light.vim /usr/share/vim/vim74/colors/laura_light.vim
 
-# The next few lines, which install YouCompleteMe from source, assume
-# that the version of vim installed was compiled to use python3, not python2.
-git clone https://github.com/Valloric/YouCompleteMe.git
-ln -s $DIR/vim-YouCompleteMe ~/.vim/bundle
-# Make sure we own all the stuff in $DIR
-chown -R ${ME}:${ME} ${DIR}
-cd ${DIR}
-cd YouCompleteMe
-git submodule update --init --recursive
+#### NOTE: The native version of YouCompleteMe seems to work now. 
+#### I have yet to test whether it still requires me to have installed libclang-4.0 and friends.
+# # The next few lines, which install YouCompleteMe from source, assume
+# # that the version of vim installed was compiled to use python3, not python2.
+# git clone https://github.com/Valloric/YouCompleteMe.git
+# ln -s $DIR/vim-YouCompleteMe ~/.vim/bundle
+# # Make sure we own all the stuff in $DIR
+# chown -R ${ME}:${ME} ${DIR}
+# cd ${DIR}
+# cd YouCompleteMe
+# git submodule update --init --recursive
 
-# this is where YouCompleteMe's build files will go
-mkdir ${HOME}/ycm_build && cd ${HOME}/ycm_build
-chown -R ${ME}:${ME} ${HOME}/ycm_build
+# # this is where YouCompleteMe's build files will go
+# mkdir ${HOME}/ycm_build && cd ${HOME}/ycm_build
+# chown -R ${ME}:${ME} ${HOME}/ycm_build
 
-# This should generate CMake files for clang-4.0 installed in default directory
-# and for Vim compiled to use Python3 (since YCM has to use the same Python version Vim does)
-cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . $DIR/YouCompleteMe/third_party/ycmd/cpp 
+# # This should generate CMake files for clang-4.0 installed in default directory
+# # and for Vim compiled to use Python3 (since YCM has to use the same Python version Vim does)
+# cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . $DIR/YouCompleteMe/third_party/ycmd/cpp
 
-# Now build YCM
-cmake --build . --target ycm_core --config Release
+# # Now build YCM
+# cmake --build . --target ycm_core --config Release
 
 # This may not be necessary, but let's cd back to the directory we ran this script from
 cd ${DIR}
