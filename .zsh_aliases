@@ -27,8 +27,10 @@ alias chr="google-chrome"
 alias lsa="ls --color=always -A"
 # Show hidden files except .. and ., and show in column format with human-readable sizes.
 alias lf="ls --color=always -lhA"
-# Like ls -lhA, but sorted by modification time.
+# Like ls -lhA, but sorted by modification time (newest first)
 alias lt="ls --color=always -lhAt"
+# Like ls -lhA, but sorted by modification time (newest last)
+alias lT="ls --color=always -lhAtr"
 # Like ls -lhA, but sorted by file extension.
 alias lx="ls --color=always -lhAX"
 # Like ls -lhA, but sorted by file size.
