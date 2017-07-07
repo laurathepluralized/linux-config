@@ -15,6 +15,10 @@ alias clihist="fc -li"
 alias aliasedit="sudo vim ${HOME}/.zsh_aliases && source ${HOME}/.zshrc"
 alias aliases="sudo vim ${HOME}/.zsh_aliases && source ${HOME}/.zshrc"
 
+## Unambiguous python version for pip
+alias pip2="python2.7 -m pip"
+alias pip3="python3 -m pip"
+
 ## Open a new instance of Google Chrome
 alias chr="google-chrome"
 
