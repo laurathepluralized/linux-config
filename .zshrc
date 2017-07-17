@@ -43,8 +43,10 @@ export KEYTIMEOUT=1
 # Put the time previous command executed on first line of prompt, 
 # then show status info, path, and allow new command input on next line
 # (adapted from af-magic theme)
-PROMPT='$FG[237][%*]------------------------------------------------------------%{$reset_color%}
+PROMPT='$FG[237][%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
 $FG[032]'$PROMPT
+# PROMPT='$FG[237][%*]------------------------------------------------------------%{$reset_color%}
+# $FG[032]'$PROMPT
 
 #git aliases
 alias gs='git status'
