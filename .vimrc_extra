@@ -17,6 +17,9 @@ set fileformats=unix,dos " only detect unix file format, and display  in dos fi
 set showmatch " briefly show matching bracket
 set matchtime=2 " show matching bracket for 0.2 seconds
 
+" Wrap lines for text and LaTeX files, but not for other types
+au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
+
 " FSwitch mappings
 " From FSwitch documentation
 " 
