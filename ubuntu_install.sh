@@ -121,6 +121,9 @@ ln -s $DIR/nerdcommenter ~/.vim/bundle
 git clone https://github.com/jsfaint/gen_tags.vim.git
 ln -s $DIR/gen_tags.vim ~/.vim/bundle
 
+git clone https://github.com/tpope/tpope-vim-abolish.git
+ln -s $DIR/tpope-vim-abolish ~/.vim/bundle
+
 # Install my colorschemes
 sudo ln -s ${CONFIG_DIR}/laura.vim /usr/share/vim/vim74/colors/laura.vim
 sudo ln -s ${CONFIG_DIR}/laura_light.vim /usr/share/vim/vim74/colors/laura_light.vim
