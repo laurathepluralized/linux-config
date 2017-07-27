@@ -1,5 +1,12 @@
 " Laura's .vimrc additions
 
+" tab is ALWAYS ALWAYS ALWAYS four spaces, which is equivalent to one indent.
+set expandtab
+set smarttab
+set tabstop=4
+set softtabstop=0
+set shiftwidth=4
+
 " Add <> to the types of pairs Vim recognizes as matching (to go between them
 " with %)
 set matchpairs+=<:>

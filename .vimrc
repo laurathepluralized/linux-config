@@ -47,14 +47,14 @@ set bs=2
 
 "colorscheme stuff
 colorscheme laura
-"change background
+
 set t_Co=256
-if has("gui_running")
-    set spell
-else
-    "spell check comes out as poor highlighting
-    set nospell
-endif
+" if has("gui_running")
+    " set spell
+" else
+    " "spell check comes out as poor highlighting
+    " set nospell
+" endif
 
 " syntastic
 set statusline+=%#warningmsg#
