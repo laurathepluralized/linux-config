@@ -1,4 +1,5 @@
 ZSH_THEME="miloshadzic" # my favorite
+DISABLE_AUTO_UPDATE="true" # need this before source $ZSH/oh-my-zsh.sh in order to make it quit asking if I want to update
 source $ZSH/oh-my-zsh.sh # this has to go after the theme
 plugins=(git bundler osx rake ruby history-substring-search)
 CASE_SENSITIVE="true"
