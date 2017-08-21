@@ -94,5 +94,10 @@ alias ldrtlink="sudo /sbin/ldconfig -v"
 
 #scrot is command-line screenshot tool
 
+# How to add a public key for a ppa:
+#https://askubuntu.com/questions/13065/how-do-i-fix-the-gpg-error-no-pubkey/15272#15272
+#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <PUBKEY>
+
+
 # Source .zsh_specific
 source ${HOME}/.zsh_specific
