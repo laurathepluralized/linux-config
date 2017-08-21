@@ -110,6 +110,7 @@ try
     source ~/.vimrc_extra
     source ~/.vimrc_specific
     source ~/repos/linux-config/.vimrc_specific
+    source ~/repos/misc-scripts/.vimrc_specific
 catch
 endtry
 
