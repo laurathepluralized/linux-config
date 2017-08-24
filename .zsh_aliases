@@ -89,9 +89,6 @@ alias ldrtlink="sudo /sbin/ldconfig -v"
 # If zsh keeps trying to correct the spelling of a valid command (e.g. foo), try this alias:
 # alias foo='nocorrect foo'
 
-## Toggle between English (US) and German (DE) keyboard layouts
-#setxkbmap -option grp:alt_shift_toggle us,de
-
 #scrot is command-line screenshot tool
 
 # How to add a public key for a ppa:
