@@ -1,6 +1,20 @@
 " Stop vim from folding everything it can find to fold upon file open
 set nofoldenable
 
+" from
+" https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
+" toggle text wrapping
+function ToggleWrap()
+    if (&wrap == 1)
+        set nowrap
+    else
+        set wrap
+    endif
+endfunction
+
+map <F9> :call ToggleWrap()<CR>
+map! <F9> ^[:call ToggleWrap()<CR>
+
 " YCM debugging
 let g:ycm_server_python_interpreter='python3'
 let g:ycm_server_keep_logfiles=1
@@ -10,9 +24,6 @@ let g:ycm_server_log_level='debug'
 let mapleader = "\<space>"
 let maplocalleader = "\\"
 
-"enable very magic
-"nnoremap / /\v
-"nnoremap ? ?\v
 set smartcase
 
 "plugin management
