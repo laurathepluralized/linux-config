@@ -76,6 +76,9 @@ if beautiful.wallpaper then
 end
 -- }}}
 
+-- Keyboard layout switching between English and German
+--kbdcfg.layout = { { "us", "" }, { "de,us", "" } }
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
