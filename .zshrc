@@ -4,6 +4,9 @@ source $ZSH/oh-my-zsh.sh # this has to go after the theme
 plugins=(git bundler osx rake ruby history-substring-search)
 CASE_SENSITIVE="true"
 
+# Unify HOST and HOSTNAME
+export HOSTNAME=$HOST
+
 export HISTFILE=~/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=10000
