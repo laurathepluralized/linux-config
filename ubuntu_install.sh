@@ -112,8 +112,8 @@ ln -s $DIR/vim-fswitch ~/.vim/bundle
 git clone https://github.com/wesQ3/vim-windowswap.git
 ln -s $DIR/vim-windowswap ~/.vim/bundle
 
-git clone https://github.com/scrooloose/nerdtree.git
-ln -s $DIR/nerdtree ~/.vim/bundle
+# git clone https://github.com/scrooloose/nerdtree.git
+# ln -s $DIR/nerdtree ~/.vim/bundle
 
 git clone https://github.com/scrooloose/nerdcommenter.git
 ln -s $DIR/nerdcommenter ~/.vim/bundle
