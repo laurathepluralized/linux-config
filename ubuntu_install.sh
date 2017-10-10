@@ -16,24 +16,25 @@ fi
 sudo apt update
 sudo apt upgrade
 sudo apt install -y \
-    curl \
-    terminator \
 	awesome \
+    cmake \
+    curl \
+    exuberant-ctags \
 	git \
     global \
     htop \
     ipython \
-    python-ipdb \
-    ncurses-cmake-gui \
-    vim-youcompleteme \
-	zsh \
-	vim-gnome \
-	mercurial \
-    cmake \
-    python-dev \
-    python3-dev \
     libgtk2.0-dev \
     libnotify-dev \
+	mercurial \
+    ncurses-cmake-gui \
+    python-dev \
+    python3-dev \
+    python-ipdb \
+    terminator \
+	vim-gnome \
+    vim-youcompleteme \
+	zsh
 
 sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main'
     #clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 lldb-4.0-dev lld-4.0 libfuzzer-4.0-dev libclang-4.0
