@@ -42,8 +42,8 @@ au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmarg
 	" nmap <silent> <Leader>oH :FSSplitLeft<cr>
  " " Switch to the file and load it into the window above >
 	" nmap <silent> <Leader>ok :FSAbove<cr>
- " " Switch to the file and load it into a new window split above >
-	" nmap <silent> <Leader>oK :FSSplitAbove<cr>
+ " Switch to the file and load it into a new window split above >
+	nmap <silent> <Leader>oK :FSSplitAbove<cr>
  " " Switch to the file and load it into the window below >
 	" nmap <silent> <Leader>oj :FSBelow<cr>
  " " Switch to the file and load it into a new window split below >
