@@ -6,9 +6,9 @@ python3 powerline_setup()
 python3 del powerline_setup
 set rtp+=/usr/local/lib/python3.5/dist-packages/powerline/bindings/vim
 " set rtp+=/usr/local/bin/powerline/bindings/vim
-let g:powerline_pycmd="py3"
+" let g:powerline_pycmd="py3"
 " let g:powerline_pyeval="py3eval"
-set encoding=utf-8
+" set encoding=utf-8
 
 " from
 " https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
