@@ -189,9 +189,9 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    if s == 2 then right_layout:add(wibox.widget.systray()) end
-    -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
     right_layout:add(powerline_widget)
+    right_layout:add(wibox.widget.systray())
+    -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
     -- right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
     -- right_layout:add(cbatticon)
@@ -507,12 +507,12 @@ local function file_exists(name)
    if f~=nil then io.close(f) return true else return false end
 end
 
-local is_this_a_laptop = file_exists("/sys/class/power_supply/BAT0/capacity")
-if (is_this_a_laptop) then
-    battimer = timer({timeout = 179.9})
-    battimer:connect_signal("timeout", bat_notification)
-    battimer:start()
-end
+-- local is_this_a_laptop = file_exists("/sys/class/power_supply/BAT0/capacity")
+-- if (is_this_a_laptop) then
+    -- battimer = timer({timeout = 179.9})
+    -- battimer:connect_signal("timeout", bat_notification)
+    -- battimer:start()
+-- end
 
 -- end here for battery warning
 
@@ -521,7 +521,6 @@ do
     local cmds
     cmds = 
     {
-        "cbatticon",
         "nm-applet"
     }
 
