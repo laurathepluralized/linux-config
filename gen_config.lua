@@ -76,8 +76,6 @@ if beautiful.wallpaper then
 end
 -- }}}
 
--- Keyboard layout switching between English and German
---kbdcfg.layout = { { "us", "" }, { "de,us", "" } }
 
 
 -- {{{ Menu
@@ -106,6 +104,13 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
+-- {{{ Powerline widget
+    -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
+    package.path = package.path .. ';/usr/local/lib/python3.5/dist-packages/powerline/bindings/awesome/?.lua'
+    require('powerline')
+-- }}}
+
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -115,10 +120,10 @@ mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 1, awful.tag.viewonly),
                     awful.button({ modkey }, 1, awful.client.movetotag),
                     awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
-                    )
+                    awful.button({ modkey }, 3, awful.client.toggletag))
+                    -- stop making my scroll wheel change tag numbers, please
+                    -- awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+                    -- awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
                      awful.button({ }, 1, function (c)
@@ -184,9 +189,12 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(mytextclock)
+    if s == 2 then right_layout:add(wibox.widget.systray()) end
+    -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
+    right_layout:add(powerline_widget)
+    -- right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
+    -- right_layout:add(cbatticon)
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -200,10 +208,11 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
+    awful.button({ }, 3, function () mymainmenu:toggle() end)))
+    -- NOTE: This should prevent my scroll wheel from messing with what tags
+    -- are showing if my mouse happens to dare be near the edge of the monitor.
+    -- awful.button({ }, 4, awful.tag.viewnext),
+    -- awful.button({ }, 5, awful.tag.viewprev)
 -- }}}
 
 -- {{{ Disable tap-to-click
@@ -256,6 +265,7 @@ globalkeys = awful.util.table.join(
 
     -- Open Google Chrome
     awful.key({ modkey,           }, "g", function () awful.util.spawn("google-chrome") end),
+    awful.key({ modkey,           }, "e", function () awful.util.spawn("evolution") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact(-0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact( 0.05)    end),
@@ -505,3 +515,20 @@ if (is_this_a_laptop) then
 end
 
 -- end here for battery warning
+
+-- {{{ Startup
+do
+    local cmds
+    cmds = 
+    {
+        "cbatticon",
+        "nm-applet"
+    }
+
+    for _,i in pairs(cmds) do
+        awful.util.spawn(i)
+    end
+end
+-- }}}
+
+
