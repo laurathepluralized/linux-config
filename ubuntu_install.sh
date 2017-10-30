@@ -33,7 +33,6 @@ sudo apt install -y \
     python-ipdb \
     terminator \
 	vim-gnome \
-    vim-youcompleteme \
 	zsh
 
 sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main'
@@ -47,6 +46,22 @@ yes | sudo apt-get update && sudo apt-get install libclang-4.0 libclang-4.0-dev 
 # bunch of unsigned repo warnings, but that repo is in fact the official way to install a later 
 # libclang than Ubuntu's suggested version, so no worries.
 # TODO: actually download the correct key to verify clang-4.0 and related packages
+
+if ! sudo python3 -m pip install --user powerline-status
+then
+    wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
+    wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf
+    FONTPATH=/usr/share/fonts/X11/misc/PowerlineSymbols.otf
+    sudo mv PowerlineSymbols.otf ${FONTPATH}
+    sudo fc-cache -vf ${FONTPATH}
+    FONTCONFIGPATH=~/.config/fontconfig/conf.d
+    mkdir -p ${FONTCONFIGPATH}
+    mv 10-powerline-symbols.conf ${FONTCONFIGPATH}
+    echo "For powerline's symbols to work correctly, restart x once this script finishes."
+else
+    echo "powerline already installed, so not installing fonts"
+fi
+
 
 curl -o ~/.git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
@@ -80,80 +95,143 @@ echo "set bind-tty-special-chars off" >> ~/.inputrc
 DIR=~/repos/vim
 mkdir ${DIR}
 chown -R ${ME}:${ME} $DIR
-cd $DIR
+pushd $DIR
 
-git clone https://github.com/tpope/vim-pathogen.git
-ln -s $DIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
+if ! git clone https://github.com/tpope/vim-pathogen.git
+then
+    pushd vim-pathogen && git pull origin master
+    popd
+else
+    ln -s $DIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
+fi
 
-git clone https://github.com/milkypostman/vim-togglelist
-ln -s $DIR/vim-togglelist ~/.vim/bundle/
+if ! git clone https://github.com/milkypostman/vim-togglelist
+then
+    pushd vim-togglelist && git pull origin master
+    popd
+else
+    ln -s $DIR/vim-togglelist ~/.vim/bundle/
+fi
 
-git clone https://github.com/esquires/lvdb
-ln -s $DIR/lvdb ~/.vim/bundle/
+if ! git clone https://github.com/esquires/lvdb
+then
+    pushd lvdb && git pull origin master
+    popd
+else
+    ln -s $DIR/lvdb ~/.vim/bundle/
+fi
 
-git clone https://github.com/esquires/tabcity
-ln -s $DIR/tabcity ~/.vim/bundle
+if ! git clone https://github.com/esquires/tabcity
+then
+    pushd tabcity && git pull origin master
+    popd
+else
+    ln -s $DIR/tabcity ~/.vim/bundle
+fi
 
-git clone https://github.com/esquires/vim-map-medley
-ln -s $DIR/vim-map-medley ~/.vim/bundle/
+if ! git clone https://github.com/esquires/vim-map-medley
+then
+    pushd vim-map-medley && git pull origin master
+    popd
+else
+    ln -s $DIR/vim-map-medley ~/.vim/bundle/
+fi
 
-git clone https://github.com/scrooloose/syntastic.git
-ln -s $DIR/syntastic ~/.vim/bundle
+# if ! git clone https://github.com/scrooloose/syntastic.git
+# then
+    # pushd syntastic.git && git pull origin master
+    # popd
+# else
+    # ln -s $DIR/syntastic ~/.vim/bundle
+# fi
 
-git clone https://github.com/scrooloose/syntastic.git
-ln -s $DIR/syntastic ~/.vim/bundle
+if ! git clone https://github.com/scrooloose/syntastic.git
+then
+    pushd syntastic && git pull origin master
+    popd
+else
+    ln -s $DIR/syntastic ~/.vim/bundle
+fi
 
-git clone https://github.com/ctrlpvim/ctrlp.vim.git
-ln -s $DIR/ctrlp.vim ~/.vim/bundle
+if ! git clone https://github.com/ctrlpvim/ctrlp.vim.git
+then
+    pushd ctrlp.vim && git pull origin master
+    popd
+else
+    ln -s $DIR/ctrlp.vim ~/.vim/bundle
+fi
 
-git clone https://github.com/derekwyatt/vim-fswitch.git
-ln -s $DIR/vim-fswitch ~/.vim/bundle
+if ! git clone https://github.com/derekwyatt/vim-fswitch.git
+then
+    pushd vim-fswitch && git pull origin master
+    popd
+else
+    ln -s $DIR/vim-fswitch ~/.vim/bundle
+fi
 
 # From https://superuser.com/questions/219009/how-do-i-move-around-and-otherwise-rearrange-splits-in-vim
-git clone https://github.com/wesQ3/vim-windowswap.git
-ln -s $DIR/vim-windowswap ~/.vim/bundle
+if ! git clone https://github.com/wesQ3/vim-windowswap.git
+then
+    pushd vim-windowswap && git pull origin master
+    popd
+else
+    ln -s $DIR/vim-windowswap ~/.vim/bundle
+fi
 
-# git clone https://github.com/scrooloose/nerdtree.git
-# ln -s $DIR/nerdtree ~/.vim/bundle
+if ! git clone https://github.com/scrooloose/nerdcommenter.git
+then
+    pushd nerdcommenter && git pull origin master
+    popd
+else
+    ln -s $DIR/nerdcommenter ~/.vim/bundle
+fi
 
-git clone https://github.com/scrooloose/nerdcommenter.git
-ln -s $DIR/nerdcommenter ~/.vim/bundle
+if ! git clone https://github.com/jsfaint/gen_tags.vim.git
+then
+    pushd gen_tags.vim && git pull origin master
+    popd
+else
+    ln -s $DIR/gen_tags.vim ~/.vim/bundle
+fi
 
-git clone https://github.com/jsfaint/gen_tags.vim.git
-ln -s $DIR/gen_tags.vim ~/.vim/bundle
-
-git clone https://github.com/tpope/tpope-vim-abolish.git
-ln -s $DIR/tpope-vim-abolish ~/.vim/bundle
+if ! git clone https://github.com/tpope/tpope-vim-abolish.git
+then
+    pushd tpope-vim-abolish && git pull origin master
+    popd
+else
+    ln -s $DIR/tpope-vim-abolish ~/.vim/bundle
+fi
 
 # Install my colorschemes
 sudo ln -s ${CONFIG_DIR}/laura.vim /usr/share/vim/vim74/colors/laura.vim
 sudo ln -s ${CONFIG_DIR}/laura_light.vim /usr/share/vim/vim74/colors/laura_light.vim
 
-#### NOTE: The native version of YouCompleteMe seems to work now. 
-#### I have yet to test whether it still requires me to have installed libclang-4.0 and friends.
 # # The next few lines, which install YouCompleteMe from source, assume
 # # that the version of vim installed was compiled to use python3, not python2.
-# git clone https://github.com/Valloric/YouCompleteMe.git
-# ln -s $DIR/vim-YouCompleteMe ~/.vim/bundle
-# # Make sure we own all the stuff in $DIR
-# chown -R ${ME}:${ME} ${DIR}
-# cd ${DIR}
-# cd YouCompleteMe
-# git submodule update --init --recursive
+if ! git clone https://github.com/Valloric/YouCompleteMe.git
+ln -s $DIR/vim-YouCompleteMe ~/.vim/bundle
+# Make sure we own all the stuff in $DIR
+chown -R ${ME}:${ME} ${DIR}
+pushd ${DIR}
+pushd YouCompleteMe
+git submodule update --init --recursive
 
-# # this is where YouCompleteMe's build files will go
-# mkdir ${HOME}/ycm_build && cd ${HOME}/ycm_build
-# chown -R ${ME}:${ME} ${HOME}/ycm_build
+# this is where YouCompleteMe's build files will go
+mkdir ${HOME}/ycm_build && pushd ${HOME}/ycm_build
+chown -R ${ME}:${ME} ${HOME}/ycm_build
 
-# # This should generate CMake files for clang-4.0 installed in default directory
-# # and for Vim compiled to use Python3 (since YCM has to use the same Python version Vim does)
-# cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . $DIR/YouCompleteMe/third_party/ycmd/cpp
+# This should generate CMake files for clang-4.0 installed in default directory
+# and for Vim compiled to use Python3 (since YCM has to use the same Python version Vim does)
+cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . $DIR/YouCompleteMe/third_party/ycmd/cpp
 
-# # Now build YCM
-# cmake --build . --target ycm_core --config Release
+# Now build YCM
+cmake --build . --target ycm_core --config Release
 
-# This may not be necessary, but let's cd back to the directory we ran this script from
-cd ${DIR}
+# go back to original directory
+popd
+popd
+popd
+popd
 
 echo "Now changing the following user's default shell to zsh:"
 echo ${ME}
