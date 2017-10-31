@@ -49,8 +49,7 @@ yes | sudo apt-get update && sudo apt-get install libclang-4.0 libclang-4.0-dev 
 
 CONFIG_DIR="~/repos/linux-config"
 
-if ! sudo python3 -m pip install --user powerline-status
-then
+if [ ! sudo python3 -m pip install --user powerline-status ]; then
     # we're just going to do pretty much every font installation procedure powerline offers
     pushd ${CONFIG_DIR} && \
         git clone https://github.com/powerline/fonts.git --depth=1 \
@@ -74,10 +73,8 @@ else
     echo "powerline already installed, so assuming fonts and themes are already configured"
 fi
 
-
 curl -o ~/.git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
@@ -108,106 +105,93 @@ mkdir ${DIR}
 chown -R ${ME}:${ME} $DIR
 pushd $DIR
 
-if ! git clone https://github.com/tpope/vim-pathogen.git
-then
-    pushd vim-pathogen && git pull origin master
+if [ ! git clone https://github.com/tpope/vim-pathogen.git ]; then
+    pushd vim-pathogen && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
 fi
 
-if ! git clone https://github.com/milkypostman/vim-togglelist
-then
-    pushd vim-togglelist && git pull origin master
+if [ ! git clone https://github.com/milkypostman/vim-togglelist ]; then
+    pushd vim-togglelist && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/vim-togglelist ~/.vim/bundle/
 fi
 
-if ! git clone https://github.com/esquires/lvdb
-then
-    pushd lvdb && git pull origin master
+if [ ! git clone https://github.com/esquires/lvdb ]; then
+    pushd lvdb && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/lvdb ~/.vim/bundle/
 fi
 
-if ! git clone https://github.com/esquires/tabcity
-then
-    pushd tabcity && git pull origin master
+if [ ! git clone https://github.com/esquires/tabcity ]; then
+    pushd tabcity && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/tabcity ~/.vim/bundle
 fi
 
-if ! git clone https://github.com/esquires/vim-map-medley
-then
-    pushd vim-map-medley && git pull origin master
+if [ ! git clone https://github.com/esquires/vim-map-medley ]; then
+    pushd vim-map-medley && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/vim-map-medley ~/.vim/bundle/
 fi
 
-# if ! git clone https://github.com/scrooloose/syntastic.git
-# then
-    # pushd syntastic.git && git pull origin master
+# if [ ! git clone https://github.com/scrooloose/syntastic.git ]; then
+    # pushd syntastic.git && git stash && git pull origin master && git stash apply
     # popd
 # else
     # ln -s $DIR/syntastic ~/.vim/bundle
 # fi
 
-if ! git clone https://github.com/scrooloose/syntastic.git
-then
-    pushd syntastic && git pull origin master
+if [ ! git clone https://github.com/scrooloose/syntastic.git ]; then
+    pushd syntastic && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/syntastic ~/.vim/bundle
 fi
 
-if ! git clone https://github.com/ctrlpvim/ctrlp.vim.git
-then
-    pushd ctrlp.vim && git pull origin master
+if [ ! git clone https://github.com/ctrlpvim/ctrlp.vim.git ]; then
+    pushd ctrlp.vim && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/ctrlp.vim ~/.vim/bundle
 fi
 
-if ! git clone https://github.com/derekwyatt/vim-fswitch.git
-then
-    pushd vim-fswitch && git pull origin master
+if [ ! git clone https://github.com/derekwyatt/vim-fswitch.git ]; then
+    pushd vim-fswitch && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/vim-fswitch ~/.vim/bundle
 fi
 
 # From https://superuser.com/questions/219009/how-do-i-move-around-and-otherwise-rearrange-splits-in-vim
-if ! git clone https://github.com/wesQ3/vim-windowswap.git
-then
-    pushd vim-windowswap && git pull origin master
+if [ ! git clone https://github.com/wesQ3/vim-windowswap.git ]; then
+    pushd vim-windowswap && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/vim-windowswap ~/.vim/bundle
 fi
 
-if ! git clone https://github.com/scrooloose/nerdcommenter.git
-then
-    pushd nerdcommenter && git pull origin master
+if [ ! git clone https://github.com/scrooloose/nerdcommenter.git ]; then
+    pushd nerdcommenter && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/nerdcommenter ~/.vim/bundle
 fi
 
-if ! git clone https://github.com/jsfaint/gen_tags.vim.git
-then
-    pushd gen_tags.vim && git pull origin master
+if [ ! git clone https://github.com/jsfaint/gen_tags.vim.git ]; then
+    pushd gen_tags.vim && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/gen_tags.vim ~/.vim/bundle
 fi
 
-if ! git clone https://github.com/tpope/tpope-vim-abolish.git
-then
-    pushd tpope-vim-abolish && git pull origin master
+if [ ! git clone https://github.com/tpope/tpope-vim-abolish.git ]; then
+    pushd tpope-vim-abolish && git stash && git pull origin master && git stash apply
     popd
 else
     ln -s $DIR/tpope-vim-abolish ~/.vim/bundle
@@ -219,29 +203,31 @@ sudo ln -s ${CONFIG_DIR}/laura_light.vim /usr/share/vim/vim74/colors/laura_light
 
 # # The next few lines, which install YouCompleteMe from source, assume
 # # that the version of vim installed was compiled to use python3, not python2.
-if ! git clone https://github.com/Valloric/YouCompleteMe.git
-ln -s $DIR/vim-YouCompleteMe ~/.vim/bundle
-# Make sure we own all the stuff in $DIR
-chown -R ${ME}:${ME} ${DIR}
-pushd ${DIR}
-pushd YouCompleteMe
-git submodule update --init --recursive
+if [ ! git clone https://github.com/Valloric/YouCompleteMe.git ]; then
+    ln -s $DIR/vim-YouCompleteMe ~/.vim/bundle
+    # Make sure we own all the stuff in $DIR
+    chown -R ${ME}:${ME} ${DIR}
+    pushd ${DIR}
+    pushd YouCompleteMe
+    git submodule update --init --recursive
 
-# this is where YouCompleteMe's build files will go
-mkdir ${HOME}/ycm_build && pushd ${HOME}/ycm_build
-chown -R ${ME}:${ME} ${HOME}/ycm_build
+    # this is where YouCompleteMe's build files will go
+    mkdir ${HOME}/ycm_build && pushd ${HOME}/ycm_build
+    chown -R ${ME}:${ME} ${HOME}/ycm_build
 
-# This should generate CMake files for clang-4.0 installed in default directory
-# and for Vim compiled to use Python3 (since YCM has to use the same Python version Vim does)
-cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . $DIR/YouCompleteMe/third_party/ycmd/cpp
+    # This should generate CMake files for clang-4.0 installed in default directory
+    # and for Vim compiled to use Python3 (since YCM has to use the same Python version Vim does)
+    cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . $DIR/YouCompleteMe/third_party/ycmd/cpp
 
-# Now build YCM
-cmake --build . --target ycm_core --config Release
+    # Now build YCM
+    cmake --build . --target ycm_core --config Release
 
-# go back to original directory
-popd
-popd
-popd
+    # go back to original directory
+    popd
+    popd
+    popd
+fi
+
 popd
 
 echo "Now changing the following user's default shell to zsh:"
