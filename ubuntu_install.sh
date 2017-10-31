@@ -47,8 +47,17 @@ yes | sudo apt-get update && sudo apt-get install libclang-4.0 libclang-4.0-dev 
 # libclang than Ubuntu's suggested version, so no worries.
 # TODO: actually download the correct key to verify clang-4.0 and related packages
 
+CONFIG_DIR="~/repos/linux-config"
+
 if ! sudo python3 -m pip install --user powerline-status
 then
+    # we're just going to do pretty much every font installation procedure powerline offers
+    pushd ${CONFIG_DIR} && \
+        git clone https://github.com/powerline/fonts.git --depth=1 \
+        && pushd fonts \
+        && ./install.sh \
+        && popd && popd
+
     wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
     wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf
     FONTPATH=/usr/share/fonts/X11/misc/PowerlineSymbols.otf
@@ -58,15 +67,17 @@ then
     mkdir -p ${FONTCONFIGPATH}
     mv 10-powerline-symbols.conf ${FONTCONFIGPATH}
     echo "For powerline's symbols to work correctly, restart x once this script finishes."
+    sudo ln -s ${CONFIG_DIR}/laura_awesome /usr/share/awesome/themes/laura_awesome
+    sudo mv /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.json /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.old
+    sudo ln -s ${CONFIG_DIR}/powerline_wm_default.json /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.json
 else
-    echo "powerline already installed, so not installing fonts"
+    echo "powerline already installed, so assuming fonts and themes are already configured"
 fi
 
 
 curl -o ~/.git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
-CONFIG_DIR="~/repos/linux-config"
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 

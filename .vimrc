@@ -9,6 +9,8 @@ set rtp+=/usr/local/lib/python3.5/dist-packages/powerline/bindings/vim
 " let g:powerline_pycmd="py3"
 " let g:powerline_pyeval="py3eval"
 set encoding=utf-8
+set laststatus=2 " Always display the statusline in all windows
+set showtabline=2 " Always display the tabline, even if there is only one tab
 
 " from
 " https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
