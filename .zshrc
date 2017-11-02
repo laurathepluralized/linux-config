@@ -88,7 +88,7 @@ $FG[032]'$PROMPT
 # }
 # zle -N down-line-or-local-history
 
-source ${HOME}/repos/ssh-find-agent/ssh-find-agent.sh
+# source ${HOME}/repos/ssh-find-agent/ssh-find-agent.sh
 
 
 
