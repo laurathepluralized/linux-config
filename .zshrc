@@ -17,6 +17,13 @@ export SAVEHIST=10000
 setopt sharehistory
 setopt extendedhistory
 
+# source ${REPOS}/ssh-find-agent/ssh-find-agent.sh
+# ssh-find-agent -a || eval $(ssh-agent) > /dev/null
+# if [ -z "$SSH_AUTH_SOCK" ]; then
+    # eval $(ssh-agent) > /dev/null
+    # ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null | ssh-add && unalias ssh; ssh'
+# fi
+
 export EDITOR=vim
 
 bindkey -v
@@ -57,9 +64,6 @@ export KEYTIMEOUT=1
 # (adapted from af-magic theme)
 PROMPT='$FG[237][%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
 $FG[032]'$PROMPT
-# PROMPT='$FG[237][%*]------------------------------------------------------------%{$reset_color%}
-# $FG[032]'$PROMPT
-
 
 # From https://superuser.com/questions/446594/separate-up-arrow-lookback-for-local-and-global-zsh-history/691603#691603
 # Up and down keys scroll through terminal's local history
@@ -84,7 +88,7 @@ $FG[032]'$PROMPT
 # }
 # zle -N down-line-or-local-history
 
-
+source ${HOME}/repos/ssh-find-agent/ssh-find-agent.sh
 
 
 

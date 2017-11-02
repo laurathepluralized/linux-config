@@ -2,8 +2,16 @@
 	"segments": {
 		"right": [
 			{
+				"function": "powerline.segments.common.net.internal_ip",
+				"priority": 10,
+				"args": {
+                    "ipv": 4,
+					"interface": "eno1"
+				}
+			},
+			{
 				"function": "powerline.segments.common.net.hostname",
-				"priority": 50,
+				"priority": 70,
 				"args": {
 					"only_if_ssh": false,
 					"exclude_domain": false
