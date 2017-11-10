@@ -265,6 +265,7 @@ globalkeys = awful.util.table.join(
 
     -- Open Google Chrome
     awful.key({ modkey,           }, "g", function () awful.util.spawn("google-chrome") end),
+    awful.key({ modkey,           }, "f", function () awful.util.spawn("pcmanfm") end),
     awful.key({ modkey,           }, "e", function () awful.util.spawn("evolution") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact(-0.05)    end),
@@ -296,7 +297,7 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+    -- awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
