@@ -28,6 +28,7 @@ sudo apt install -y \
     libnotify-dev \
 	mercurial \
     ncurses-cmake-gui \
+    pcmanfm \
     python-dev \
     python3-dev \
     python-ipdb \
