@@ -26,6 +26,13 @@ endfunction
 map <F9> :call ToggleWrap()<CR>
 map! <F9> ^[:call ToggleWrap()<CR>
 
+" Tell vim to look for ctags tags files from current directory up to the repos
+" directory so I don't have to open every file from project root directory to
+" use tags
+" http://benoithamelin.tumblr.com/post/15101202004/using-vim-exuberant-ctags-easy-source-navigation
+set tags=./tags;~/repos
+
+
 " YCM debugging
 let g:ycm_server_python_interpreter='python3'
 let g:ycm_server_keep_logfiles=1
