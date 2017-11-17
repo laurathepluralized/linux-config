@@ -116,7 +116,7 @@ let g:ctrlp_custom_ignore = {
 \ 'file': '\v\.(exe|so(\.\d\.\d\.\d)?|dll|pyc)$',
 \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 \ }
-nnoremap <leader>f :CtrlP getcwd()<cr>
+nnoremap <localleader>f :CtrlP getcwd()<cr>
 
 " nerdcommenter
 " Add spaces after comment delimiters by default
