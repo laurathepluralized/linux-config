@@ -27,6 +27,10 @@ set matchtime=2 " show matching bracket for 0.2 seconds
 " Wrap lines for text and LaTeX files, but not for other types
 au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
 
+" Take the current line, put \cite{ at the beginning and } at the end, then go
+" to the next line
+nmap <Leader>c I\cite{A}j
+
 " Make resizing horizontal splits less aggravating
 nmap <silent> <Leader>hh :res -10<cr>
 nmap <silent> <Leader>hc :res +10<cr>
