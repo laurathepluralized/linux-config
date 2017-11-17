@@ -125,8 +125,6 @@ let g:NERDSpaceDelims = 1
 let g:NERDTrimTrailingWhitespace = 1
 
 
-
-
 "in case there are system specific settings
 try
     source ~/.vimrc_specific
