@@ -29,7 +29,7 @@ au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmarg
 
 " Take the current line, put \cite{ at the beginning and } at the end, then go
 " to the next line
-nmap <Leader>c I\cite{A}j
+nmap <localleader>c I\cite{A}j
 
 " Make resizing horizontal splits less aggravating
 nmap <silent> <Leader>hh :res -10<cr>
