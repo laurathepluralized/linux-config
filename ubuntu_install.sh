@@ -162,12 +162,12 @@ else
     ln -s $DIR/ctrlp.vim ~/.vim/bundle
 fi
 
-if [ ! git clone https://github.com/derekwyatt/vim-fswitch.git ]; then
-    pushd vim-fswitch && git stash && git pull origin master && git stash apply
-    popd
-else
-    ln -s $DIR/vim-fswitch ~/.vim/bundle
-fi
+# if [ ! git clone https://github.com/derekwyatt/vim-fswitch.git ]; then
+    # pushd vim-fswitch && git stash && git pull origin master && git stash apply
+    # popd
+# else
+    # ln -s $DIR/vim-fswitch ~/.vim/bundle
+# fi
 
 # From https://superuser.com/questions/219009/how-do-i-move-around-and-otherwise-rearrange-splits-in-vim
 if [ ! git clone https://github.com/wesQ3/vim-windowswap.git ]; then
