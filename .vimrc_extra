@@ -37,6 +37,8 @@ nmap <localleader>c I\cite{A}j
 nmap <silent> <Leader>hh :res -10<cr>
 nmap <silent> <Leader>hc :res +10<cr>
 
+" Netrw tree
+let g:netrw_liststyle = 3
 
 " Enter a line below current line and stay in command mode
 " (just push Enter in command mode)
