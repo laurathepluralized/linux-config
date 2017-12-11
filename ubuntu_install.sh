@@ -87,20 +87,21 @@ ln -s ${CONFIG_DIR}/glmb.sh ~/bin/glmb
 echo "export ZSH=~/.oh-my-zsh" >> ~/.zshrc
 echo "source ${CONFIG_DIR}/.zshrc" >> ~/.zshrc
 
-mkdir ~/.vim 
-mkdir ~/.vim/{bundle,autoload,swaps,backups}
+mkdir ${DOTVIM} 
+mkdir ${DOTVIM}/{bundle,autoload,swaps,backups}
 
-chown -R ${ME}:${ME} ~/.vim
+chown -R ${ME}:${ME} ${DOTVIM}
 
-echo "source ${CONFIG_DIR}/.vimrc" >> ~/.vimrc
-echo "set backup" >> ~/.vimrc
-echo "set backupdir=~/.vim/backups" >> ~/.vimrc
-echo "set dir=~/.vim/swaps" >> ~/.vimrc
+echo "source ${CONFIG_DIR}/.vimrc" >> ${DOTVIM}rc
+echo "set backup" >> ${DOTVIM}rc
+echo "set backupdir=${DOTVIM}/backups" >> ${DOTVIM}rc
+echo "set dir=${DOTVIM}/swaps" >> ${DOTVIM}rc
 
 echo "set keymap vi" >> ~/.inputrc
 echo "set editing-mode vi" >> ~/.inputrc
 echo "set bind-tty-special-chars off" >> ~/.inputrc
 
+DOTVIM=${DOTVIM}
 DIR=~/repos/vim
 mkdir ${DIR}
 chown -R ${ME}:${ME} $DIR
@@ -110,63 +111,73 @@ if [ ! git clone https://github.com/tpope/vim-pathogen.git ]; then
     pushd vim-pathogen && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
+    ln -s $DIR/vim-pathogen/autoload/pathogen.vim ${DOTVIM}/autoload/pathogen.vim
 fi
 
 if [ ! git clone https://github.com/milkypostman/vim-togglelist ]; then
     pushd vim-togglelist && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/vim-togglelist ~/.vim/bundle/
+    ln -s $DIR/vim-togglelist ${DOTVIM}/bundle/
 fi
 
 if [ ! git clone https://github.com/esquires/lvdb ]; then
     pushd lvdb && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/lvdb ~/.vim/bundle/
+    ln -s $DIR/lvdb ${DOTVIM}/bundle/
 fi
 
 if [ ! git clone https://github.com/esquires/tabcity ]; then
     pushd tabcity && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/tabcity ~/.vim/bundle
+    ln -s $DIR/tabcity ${DOTVIM}/bundle/
 fi
 
 if [ ! git clone https://github.com/esquires/vim-map-medley ]; then
     pushd vim-map-medley && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/vim-map-medley ~/.vim/bundle/
+    ln -s $DIR/vim-map-medley ${DOTVIM}/bundle/
 fi
+
+if [ ! git clone https://github.com/chrisbra/csv.vim.git ]; then
+    pushd csv.vim && git stash && git pull origin master && git stash apply
+    popd
+else
+    ln -s $DIR/csv.vim ${DOTVIM}/bundle/
+    ln -s ${CONFIG_DIR}/filetype.vim ${DOTVIM}/filetype.vim
+fi
+
+
 
 # if [ ! git clone https://github.com/scrooloose/syntastic.git ]; then
     # pushd syntastic.git && git stash && git pull origin master && git stash apply
     # popd
 # else
-    # ln -s $DIR/syntastic ~/.vim/bundle
+    # ln -s $DIR/syntastic ${DOTVIM}/bundle
 # fi
 
 if [ ! git clone https://github.com/scrooloose/syntastic.git ]; then
     pushd syntastic && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/syntastic ~/.vim/bundle
+    ln -s $DIR/syntastic ${DOTVIM}/bundle/
 fi
 
 if [ ! git clone https://github.com/ctrlpvim/ctrlp.vim.git ]; then
     pushd ctrlp.vim && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/ctrlp.vim ~/.vim/bundle
+    ln -s $DIR/ctrlp.vim ${DOTVIM}/bundle/
 fi
 
 # if [ ! git clone https://github.com/derekwyatt/vim-fswitch.git ]; then
     # pushd vim-fswitch && git stash && git pull origin master && git stash apply
     # popd
 # else
-    # ln -s $DIR/vim-fswitch ~/.vim/bundle
+    # ln -s $DIR/vim-fswitch ${DOTVIM}/bundle
 # fi
 
 # From https://superuser.com/questions/219009/how-do-i-move-around-and-otherwise-rearrange-splits-in-vim
@@ -174,28 +185,28 @@ if [ ! git clone https://github.com/wesQ3/vim-windowswap.git ]; then
     pushd vim-windowswap && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/vim-windowswap ~/.vim/bundle
+    ln -s $DIR/vim-windowswap ${DOTVIM}/bundle
 fi
 
 if [ ! git clone https://github.com/scrooloose/nerdcommenter.git ]; then
     pushd nerdcommenter && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/nerdcommenter ~/.vim/bundle
+    ln -s $DIR/nerdcommenter ${DOTVIM}/bundle
 fi
 
 if [ ! git clone https://github.com/jsfaint/gen_tags.vim.git ]; then
     pushd gen_tags.vim && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/gen_tags.vim ~/.vim/bundle
+    ln -s $DIR/gen_tags.vim ${DOTVIM}/bundle
 fi
 
 if [ ! git clone https://github.com/tpope/tpope-vim-abolish.git ]; then
     pushd tpope-vim-abolish && git stash && git pull origin master && git stash apply
     popd
 else
-    ln -s $DIR/tpope-vim-abolish ~/.vim/bundle
+    ln -s $DIR/tpope-vim-abolish ${DOTVIM}/bundle
 fi
 
 # Install my colorschemes
@@ -205,7 +216,7 @@ sudo ln -s ${CONFIG_DIR}/laura_light.vim /usr/share/vim/vim74/colors/laura_light
 # # The next few lines, which install YouCompleteMe from source, assume
 # # that the version of vim installed was compiled to use python3, not python2.
 if [ ! git clone https://github.com/Valloric/YouCompleteMe.git ]; then
-    ln -s $DIR/vim-YouCompleteMe ~/.vim/bundle
+    ln -s $DIR/YouCompleteMe ${DOTVIM}/bundle
     # Make sure we own all the stuff in $DIR
     chown -R ${ME}:${ME} ${DIR}
     pushd ${DIR}
