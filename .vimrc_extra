@@ -3,9 +3,13 @@
 " tab is ALWAYS ALWAYS ALWAYS four spaces, which is equivalent to one indent.
 set expandtab
 set smarttab
-set tabstop=4
-set softtabstop=0
-set shiftwidth=4
+autocmd FileType xml setlocal shiftwidth=2 tabstop=2
+autocmd FileType cpp setlocal shiftwidth=4 tabstop=4
+autocmd FileType c setlocal shiftwidth=4 tabstop=4
+autocmd FileType python setlocal shiftwidth=4 tabstop=4
+autocmd FileType text setlocal shiftwidth=4 tabstop=4
+autocmd FileType tex setlocal shiftwidth=4 tabstop=4
+autocmd FileType sh setlocal shiftwidth=4 tabstop=4
 
 " Add <> to the types of pairs Vim recognizes as matching (to go between them
 " with %)
@@ -34,10 +38,10 @@ au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmarg
 nmap <localleader>c I\cite{A}j
 
 " Make resizing horizontal splits less aggravating
-nmap <silent> <Leader>hh :res -10<cr>
-nmap <silent> <Leader>hc :res +10<cr>
+" nmap <silent> <Leader>hh :res -10<cr>
+" nmap <silent> <Leader>hc :res +10<cr>
 
-" Netrw tree
+" Netrw list setting
 let g:netrw_liststyle = 1
 
 " Enter a line below current line and stay in command mode
@@ -45,10 +49,10 @@ let g:netrw_liststyle = 1
 nmap <CR> o<Esc>k
 
 " Move between splits more easily
-nnoremap gh <C-W><C-H>
-nnoremap gj <C-W><C-J>
-nnoremap gk <C-W><C-K>
-nnoremap gl <C-W><C-L>
+" nnoremap gh <C-W><C-H>
+" nnoremap gj <C-W><C-J>
+" nnoremap gk <C-W><C-K>
+" nnoremap gl <C-W><C-L>
 
 " REMINDER
 " Space is leader

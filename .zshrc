@@ -17,21 +17,9 @@ export SAVEHIST=10000
 setopt sharehistory
 setopt extendedhistory
 
-# source ${REPOS}/ssh-find-agent/ssh-find-agent.sh
-# ssh-find-agent -a || eval $(ssh-agent) > /dev/null
-# if [ -z "$SSH_AUTH_SOCK" ]; then
-    # eval $(ssh-agent) > /dev/null
-    # ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null | ssh-add && unalias ssh; ssh'
-# fi
-
 export EDITOR=vim
 
 bindkey -v
-
-# function abcdefg {
-    # up-history
-    # vi-cmd-mode
-# }
 
 bindkey '^P' up-history
 bindkey '^N' down-history
