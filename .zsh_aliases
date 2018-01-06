@@ -41,9 +41,8 @@ alias grep="grep --color=auto"
 alias egrep="egrep --color=auto"
 alias fgrep="fgrep --color=auto"
 
-## Apt-get update and upgrade
-#alias uuu="sudo apt-get update && sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh"
-
+## Apt-get update and upgrade, plus install one specified package
+# (TODO: multiple args so multiple packages can be installed at once)
 function uuu()
 {
     sudo apt-get update
@@ -95,6 +94,6 @@ alias ldrtlink="sudo /sbin/ldconfig -v"
 #https://askubuntu.com/questions/13065/how-do-i-fix-the-gpg-error-no-pubkey/15272#15272
 #sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <PUBKEY>
 
-
-# Source .zsh_specific
-source ${HOME}/.zsh_specific
+if [ -f ${HOME}/.zsh_specific ]; then
+    source ${HOME}/.zsh_specific
+fi

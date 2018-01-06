@@ -132,3 +132,6 @@ alias gvim="gvim -p 2>/dev/null"
 alias gvimdiff="gvimdiff 2> /dev/null"
 alias g='gnome-open 2>/dev/null'
 
+if [ -f ~/repos/linux-config/.zsh_aliases ]; then
+    source ~/repos/linux-config/.zsh_aliases
+fi

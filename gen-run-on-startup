@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+## For the love of sanity, quit turning my screen off after ten minutes of inactivity. I manually lock my screen for a REASON.
+xset s 0 s blank
+
+synclient MaxTapTime=0
+synclient MaxTapMove=0
+synclient MaxDoubleTapTime=0
+synclient SingleTapTimeout=0
+synclient PalmDetect=1
+synclient TapAndDragGesture=0
+synclient HorizTwoFingerScroll=1
+synclient RTCornerButton=0
+synclient RBCornerButton=0
+synclient LTCornerButton=0
+synclient LBCornerButton=0
+synclient TapButton1=0
+synclient TapButton2=0
+synclient TapButton3=0
+
+echo "Touchpad settings set"
+
+dropbox start && echo "Started Dropbox service"
+
+## Toggle between English (US) and German (DE) keyboard layouts using alt-shift
+setxkbmap -option grp:alt_shift_toggle us,de
+echo "Keyboard layout switch with alt-shift enabled"
+
+powerline-daemon -r && echo "Restarted powerline"
+
