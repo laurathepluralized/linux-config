@@ -89,6 +89,9 @@ alias ldrtlink="sudo /sbin/ldconfig -v"
 # alias foo='nocorrect foo'
 
 #scrot is command-line screenshot tool
+# Screen brightness settings are controlled by the files in the following directory:
+# /sys/class/backlight/intel_backlight/
+# Modify the brightness file there to change current brightness, max_brightness to change max brightness, etc.
 
 # How to add a public key for a ppa:
 #https://askubuntu.com/questions/13065/how-do-i-fix-the-gpg-error-no-pubkey/15272#15272
