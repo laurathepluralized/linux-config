@@ -135,7 +135,3 @@ alias g='gnome-open 2>/dev/null'
 if [ -f ~/repos/linux-config/.zsh_aliases ]; then
     source ~/repos/linux-config/.zsh_aliases
 fi
-
-if [ -f ~/.zsh_specific ]; then
-    source ~/.zsh_specific
-fi

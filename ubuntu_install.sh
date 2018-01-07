@@ -37,7 +37,6 @@ sudo apt install -y \
 	zsh
 
 sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main'
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
     #clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 lldb-4.0-dev lld-4.0 libfuzzer-4.0-dev libclang-4.0
 yes | sudo apt-get update && sudo apt-get install libclang-4.0 libclang-4.0-dev liblldb-4.0 liblldb-4.0-dbg liblldb-4.0-dev
 	#vim-youcompleteme   # If this is installed with apt or apt-get, it will install the version that requires clang-3.9+ but 
@@ -47,6 +46,7 @@ yes | sudo apt-get update && sudo apt-get install libclang-4.0 libclang-4.0-dev 
 # for Ubuntu 16.04 requires clang-3.9 or later. The clang repository added earlier throws up a 
 # bunch of unsigned repo warnings, but that repo is in fact the official way to install a later 
 # libclang than Ubuntu's suggested version, so no worries.
+# TODO: actually download the correct key to verify clang-4.0 and related packages
 
 CONFIG_DIR="~/repos/linux-config"
 
