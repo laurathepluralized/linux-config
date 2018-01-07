@@ -214,16 +214,17 @@ root.buttons(awful.util.table.join(
     -- awful.button({ }, 4, awful.tag.viewnext),
     -- awful.button({ }, 5, awful.tag.viewprev)
 -- }}}
+awful.util.spawn_with_shell("run-on-startup")
 
 -- {{{ Disable tap-to-click
 --awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
 --awful.util.spawn_with_shell("xinput set-prop 'DLL07D0:01 044E:120B' 'Synaptics Tap Time' 0")
 --DLL07D0:01 044E:120B is dell latitude touchpad
 --SynPS/2 is Thinkpad touchpad
-awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
+-- awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
 -- }}}
 
-awful.util.spawn_with_shell("cbatticon")
+-- awful.util.spawn_with_shell("cbatticon")
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
