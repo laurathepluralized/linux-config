@@ -48,31 +48,33 @@ yes | sudo apt-get update && sudo apt-get install libclang-4.0 libclang-4.0-dev 
 # bunch of unsigned repo warnings, but that repo is in fact the official way to install a later 
 # libclang than Ubuntu's suggested version, so no worries.
 
-CONFIG_DIR="~/repos/linux-config"
+CONFIG_DIR=${HOME}"/repos/linux-config"
 
-if [ ! sudo python3 -m pip install --user powerline-status ]; then
-    # we're just going to do pretty much every font installation procedure powerline offers
-    pushd ${CONFIG_DIR} && \
-        git clone https://github.com/powerline/fonts.git --depth=1 \
-        && pushd fonts \
-        && ./install.sh \
-        && popd && popd
-
-    wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
-    wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf
-    FONTPATH=/usr/share/fonts/X11/misc/PowerlineSymbols.otf
-    sudo mv PowerlineSymbols.otf ${FONTPATH}
-    sudo fc-cache -vf ${FONTPATH}
-    FONTCONFIGPATH=~/.config/fontconfig/conf.d
-    mkdir -p ${FONTCONFIGPATH}
-    mv 10-powerline-symbols.conf ${FONTCONFIGPATH}
-    echo "For powerline's symbols to work correctly, restart x once this script finishes."
-    sudo ln -s ${CONFIG_DIR}/laura_awesome /usr/share/awesome/themes/laura_awesome
-    sudo mv /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.json /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.old
-    sudo ln -s ${CONFIG_DIR}/powerline_wm_default.json /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.json
-else
-    echo "powerline already installed, so assuming fonts and themes are already configured"
-fi
+### TODO: Fix checking whether powerline is installed, or add command-line arg for whether 
+#to do powerline font installation and such
+# if [ ! sudo python3 -m pip install --user powerline-status ]; then
+#     # we're just going to do pretty much every font installation procedure powerline offers
+#     pushd ${CONFIG_DIR} && \
+#         git clone https://github.com/powerline/fonts.git --depth=1 \
+#         && pushd fonts \
+#         && ./install.sh \
+#         && popd && popd
+# 
+#     wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
+#     wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf
+#     FONTPATH=/usr/share/fonts/X11/misc/PowerlineSymbols.otf
+#     sudo mv PowerlineSymbols.otf ${FONTPATH}
+#     sudo fc-cache -vf ${FONTPATH}
+#     FONTCONFIGPATH=~/.config/fontconfig/conf.d
+#     mkdir -p ${FONTCONFIGPATH}
+#     mv 10-powerline-symbols.conf ${FONTCONFIGPATH}
+#     echo "For powerline's symbols to work correctly, restart x once this script finishes."
+#     sudo ln -s ${CONFIG_DIR}/laura_awesome /usr/share/awesome/themes/laura_awesome
+#     sudo mv /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.json /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.old
+#     sudo ln -s ${CONFIG_DIR}/powerline_wm_default.json /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.json
+# else
+#     echo "powerline already installed, so assuming fonts and themes are already configured"
+# fi
 
 curl -o ~/.git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
@@ -81,30 +83,33 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 echo "source ${CONFIG_DIR}/.bashrc" >> ~/.bashrc
 echo "PATH=${PATH}:~/bin" >> ~/.bashrc
-mkdir ~/bin
+mkdir -p ~/bin
 ln -s ${CONFIG_DIR}/glmb.sh ~/bin/glmb
 
 echo "export ZSH=~/.oh-my-zsh" >> ~/.zshrc
 echo "source ${CONFIG_DIR}/.zshrc" >> ~/.zshrc
 
-mkdir ${DOTVIM} 
-mkdir ${DOTVIM}/{bundle,autoload,swaps,backups}
+DOTVIM=${HOME}/.vim
+VIMRC=${HOME}/.vimrc
+INPUTRC=${HOME}/.inputrc
 
-chown -R ${ME}:${ME} ${DOTVIM}
+mkdir -p ${DOTVIM} 
+mkdir -p ${DOTVIM}/{bundle,autoload,swaps,backups}
 
-echo "source ${CONFIG_DIR}/.vimrc" >> ${DOTVIM}rc
-echo "set backup" >> ${DOTVIM}rc
-echo "set backupdir=${DOTVIM}/backups" >> ${DOTVIM}rc
-echo "set dir=${DOTVIM}/swaps" >> ${DOTVIM}rc
+sudo chown -R ${ME}:${ME} ${DOTVIM}
 
-echo "set keymap vi" >> ~/.inputrc
-echo "set editing-mode vi" >> ~/.inputrc
-echo "set bind-tty-special-chars off" >> ~/.inputrc
+echo "source ${CONFIG_DIR}/.vimrc" >> ${VIMRC}
+echo "set backup" >> ${VIMRC}
+echo "set backupdir=${DOTVIM}/backups" >> ${VIMRC}
+echo "set dir=${DOTVIM}/swaps" >> ${VIMRC}
 
-DOTVIM=${DOTVIM}
+echo "set keymap vi" >> ${INPUTRC}
+echo "set editing-mode vi" >> ${INPUTRC}
+echo "set bind-tty-special-chars off" >> ${INPUTRC}
+
 DIR=~/repos/vim
-mkdir ${DIR}
-chown -R ${ME}:${ME} $DIR
+mkdir -p ${DIR}
+sudo chown -R ${ME}:${ME} $DIR
 pushd $DIR
 
 if [ ! git clone https://github.com/tpope/vim-pathogen.git ]; then
@@ -149,15 +154,6 @@ else
     ln -s $DIR/csv.vim ${DOTVIM}/bundle/
     ln -s ${CONFIG_DIR}/filetype.vim ${DOTVIM}/filetype.vim
 fi
-
-
-
-# if [ ! git clone https://github.com/scrooloose/syntastic.git ]; then
-    # pushd syntastic.git && git stash && git pull origin master && git stash apply
-    # popd
-# else
-    # ln -s $DIR/syntastic ${DOTVIM}/bundle
-# fi
 
 if [ ! git clone https://github.com/scrooloose/syntastic.git ]; then
     pushd syntastic && git stash && git pull origin master && git stash apply
@@ -218,14 +214,14 @@ sudo ln -s ${CONFIG_DIR}/laura_light.vim /usr/share/vim/vim74/colors/laura_light
 if [ ! git clone https://github.com/Valloric/YouCompleteMe.git ]; then
     ln -s $DIR/YouCompleteMe ${DOTVIM}/bundle
     # Make sure we own all the stuff in $DIR
-    chown -R ${ME}:${ME} ${DIR}
+    sudo chown -R ${ME}:${ME} ${DIR}
     pushd ${DIR}
     pushd YouCompleteMe
     git submodule update --init --recursive
 
     # this is where YouCompleteMe's build files will go
-    mkdir ${HOME}/ycm_build && pushd ${HOME}/ycm_build
-    chown -R ${ME}:${ME} ${HOME}/ycm_build
+    mkdir -p ${HOME}/ycm_build && pushd ${HOME}/ycm_build
+    sudo chown -R ${ME}:${ME} ${HOME}/ycm_build
 
     # This should generate CMake files for clang-4.0 installed in default directory
     # and for Vim compiled to use Python3 (since YCM has to use the same Python version Vim does)
