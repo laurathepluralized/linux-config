@@ -107,25 +107,10 @@ git config --global merge.tool vimdiff
 git config --global color.ui true
 #git config --global core.whitespace trailing-space, space-before-tab
 
-#other aliases
-alias grep='grep --color=auto'
-alias find1='find -maxdepth 1 -mindepth 1'
-alias CLR='for i in {1..99}; do echo; done; clear'
-
-function git_fetch_dirs {
-
-    TEMP_OLDPWD=$OLDPWD
-
-    for d in $(dirname $(find -name "\.git")); do
-        cd $d
-        echo "fetching " $d
-        git fetch
-        cd $OLDPWD
-    done
-
-    OLDPWD=$TEMP_OLDPWD
-
-}
+#other aliases and environment variables
+if [ -f ~/.zsh_specific ]; then
+    source ~/.zsh_specific
+fi
 
 #stuff whose error I don't want to see
 alias gvim="gvim -p 2>/dev/null"
@@ -136,6 +121,3 @@ if [ -f ~/repos/linux-config/.zsh_aliases ]; then
     source ~/repos/linux-config/.zsh_aliases
 fi
 
-if [ -f ~/.zsh_specific ]; then
-    source ~/.zsh_specific
-fi
