@@ -84,6 +84,7 @@ $FG[032]'$PROMPT
 alias gs='git status'
 alias ggs='git status'
 alias gf='git fetch'
+alias gfa='git fetch --all'
 alias gm='git merge'
 alias gms='git merge -S'
 alias ga='git add'
