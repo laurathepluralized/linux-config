@@ -30,11 +30,11 @@ function git_fetch_dirs {
 alias clihist="fc -li"
 
 ## Unambiguous python version for pip
-alias pip2="python2.7 -m pip"
-alias pip3="python3 -m pip"
+# alias pip2="python2.7 -m pip"
+# alias pip3="python3 -m pip"
 
 ## Open a new instance of Google Chrome
-alias chr="google-chrome"
+# alias chr="google-chrome"
 
 ## ls aliases and colorization
 # Dont show . or .., but show hidden files.
@@ -115,7 +115,7 @@ alias ldrtlink="sudo /sbin/ldconfig -v"
 #https://askubuntu.com/questions/13065/how-do-i-fix-the-gpg-error-no-pubkey/15272#15272
 #sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <PUBKEY>
 
-if [ -f ${HOME}/.zsh_specific ]; then
-    source ${HOME}/.zsh_specific
-fi
+# if [ -f ${HOME}/.zsh_specific ]; then
+    # source ${HOME}/.zsh_specific
+# fi
 

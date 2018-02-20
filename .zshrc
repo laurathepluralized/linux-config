@@ -108,17 +108,18 @@ git config --global merge.tool vimdiff
 git config --global color.ui true
 #git config --global core.whitespace trailing-space, space-before-tab
 
-#other aliases and environment variables
-if [ -f ~/.zsh_specific ]; then
-    source ~/.zsh_specific
-fi
 
 #stuff whose error I don't want to see
 alias gvim="gvim -p 2>/dev/null"
 alias gvimdiff="gvimdiff 2> /dev/null"
 alias g='gnome-open 2>/dev/null'
 
-if [ -f ~/repos/linux-config/.zsh_aliases ]; then
-    source ~/repos/linux-config/.zsh_aliases
+if [ -f ${HOME}/repos/linux-config/.zsh_aliases ]; then
+    source ${HOME}/repos/linux-config/.zsh_aliases
+fi
+
+#other aliases and environment variables
+if [ -f ${HOME}/.zsh_specific ]; then
+    source ${HOME}/.zsh_specific
 fi
 
