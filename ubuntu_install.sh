@@ -184,12 +184,12 @@ else
     ln -s $DIR/vim-windowswap ${DOTVIM}/bundle
 fi
 
-if [ ! git clone https://github.com/scrooloose/nerdcommenter.git ]; then
-    pushd nerdcommenter && git stash && git pull origin master && git stash apply
-    popd
-else
-    ln -s $DIR/nerdcommenter ${DOTVIM}/bundle
-fi
+# if [ ! git clone https://github.com/scrooloose/nerdcommenter.git ]; then
+    # pushd nerdcommenter && git stash && git pull origin master && git stash apply
+    # popd
+# else
+    # ln -s $DIR/nerdcommenter ${DOTVIM}/bundle
+# fi
 
 if [ ! git clone https://github.com/jsfaint/gen_tags.vim.git ]; then
     pushd gen_tags.vim && git stash && git pull origin master && git stash apply
@@ -203,6 +203,20 @@ if [ ! git clone https://github.com/tpope/tpope-vim-abolish.git ]; then
     popd
 else
     ln -s $DIR/tpope-vim-abolish ${DOTVIM}/bundle
+fi
+
+if [ ! git clone https://github.com/tpope/vim-fugitive.git ]; then
+    pushd vim-fugitive && git stash && git pull origin master && git stash apply
+    popd
+else
+    ln -s $DIR/vim-fugitive ${DOTVIM}/bundle
+fi
+
+if [ ! git clone https://github.com/tpope/vim-commentary.git ]; then
+    pushd vim-commentary && git stash && git pull origin master && git stash apply
+    popd
+else
+    ln -s $DIR/vim-commentary ${DOTVIM}/bundle
 fi
 
 # Install my colorschemes
