@@ -11,6 +11,8 @@ set rtp+=/usr/local/lib/python3.5/dist-packages/powerline/bindings/vim
 set encoding=utf-8
 set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
+" set ruler
+" set wildmenu
 
 " from
 " https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
@@ -77,7 +79,28 @@ set bs=2
 "colorscheme stuff
 colorscheme laura
 
+
+if &tabpagemax < 50
+    set tabpagemax=50
+endif
+
+" Always leave at least one line above or below the highlighted search term 
+" so the search term isn't at the very edge of the top or bottom
+if !&scrolloff
+    set scrolloff=1
+endif
+" Similar for side
+if !&sidescrolloff
+    set sidescrolloff=5
+endif
+" If a single line is long and would cause Vim to show a bunch of 
+" @@@ or ~~~ until the entire line gets scrolled onto screen,
+" instead just print as much of the line as possible
+set display+=lastline
+
+
 set t_Co=256
+set spell
 " if has("gui_running")
     " set spell
 " else
@@ -88,6 +111,11 @@ set t_Co=256
 " syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+" Add fugitive to statusline
+" I don't think this does anything new with powerline installed
+set statusline+=%{fugitive#statusline()}
 set statusline+=%*
 
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
