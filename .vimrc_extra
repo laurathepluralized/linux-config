@@ -32,6 +32,11 @@ set matchtime=2 " show matching bracket for 0.2 seconds
 " Wrap lines for text and LaTeX files, but not for other types
 au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
 
+" from http://vim.wikia.com/wiki/80_character_line_wrap_without_broken_words
+set formatoptions+=w
+set tw=80
+nnoremap <localleader>W qgip
+
 " Encoded by following this process:
 " https://www.reddit.com/r/vim/comments/1ramn9/whats_the_best_way_to_save_macros_persistently/cdlau12/
 " Take the current line, put \cite{ at the beginning and } at the end, then go
