@@ -28,3 +28,5 @@ echo "Keyboard layout switch with alt-shift enabled"
 
 powerline-daemon -r && echo "Restarted powerline"
 
+redshift &
+echo "Started redshift"
