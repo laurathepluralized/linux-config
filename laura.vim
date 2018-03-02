@@ -17,6 +17,7 @@ endif
 let colors_name = "laura"
 
 "highlight Comment              ctermfg=8                  cterm=bold  guifg=#808080                  gui=bold
+highlight ColorColumn          ctermbg=66                                  guibg=#808080 
 highlight SpellBad             ctermfg=7                  ctermbg=0
 highlight SpellCap             ctermfg=7                  ctermbg=0
 highlight SyntasticError       ctermfg=7                  ctermbg=0

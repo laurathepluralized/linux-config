@@ -28,6 +28,12 @@ endfunction
 map <F9> :call ToggleWrap()<CR>
 map! <F9> ^[:call ToggleWrap()<CR>
 
+
+set colorcolumn=80
+
+
+
+
 " Tell vim to look for ctags tags files from current directory up to the repos
 " directory so I don't have to open every file from project root directory to
 " use tags
