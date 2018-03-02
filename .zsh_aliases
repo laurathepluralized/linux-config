@@ -29,6 +29,12 @@ function git_fetch_dirs {
 # zsh command history with timestamp
 alias clihist="fc -li"
 
+# pretty print paths
+# https://www.unix.com/shell-programming-and-scripting/28047-split-print-path.html
+function echopath {
+    echo $1 | tr -s ':' '\n'
+}
+
 ## Unambiguous python version for pip
 # alias pip2="python2.7 -m pip"
 # alias pip3="python3 -m pip"
