@@ -31,7 +31,7 @@ alias clihist="fc -li"
 
 # pretty print paths
 # https://www.unix.com/shell-programming-and-scripting/28047-split-print-path.html
-function echopath {
+function echovar {
     echo $1 | tr -s ':' '\n'
 }
 
