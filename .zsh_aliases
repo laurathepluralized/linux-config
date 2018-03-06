@@ -9,6 +9,7 @@ export LCONFIG=${REPOS}/linux-config
 
 alias repos="pushd ${REPOS}"
 alias lconfig="pushd ${LCONFIG}"
+alias csepaper="pushd ${REPOS}/cse6242-project-latex"
 
 function git_fetch_dirs {
 
