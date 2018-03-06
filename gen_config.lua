@@ -266,6 +266,7 @@ globalkeys = awful.util.table.join(
 
     -- Open Google Chrome
     awful.key({ modkey,           }, "g", function () awful.util.spawn("google-chrome") end),
+    awful.key({ modkey,           }, "z", function () awful.util.spawn("zotero") end),
     awful.key({ modkey,           }, "f", function () awful.util.spawn("pcmanfm") end),
     awful.key({ modkey,           }, "e", function () awful.util.spawn("evolution") end),
 

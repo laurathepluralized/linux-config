@@ -65,7 +65,8 @@ alias fgrep="fgrep --color=auto"
 alias find1='find -maxdepth 1 -mindepth 1'
 alias CLR='for i in {1..99}; do echo; done; clear'
 
-alias zotero="/home/laura/Zotero_linux-x86_64/zotero &"
+export PATH=${PATH}:${HOME}/Zotero_linux-x86_64
+# alias zotero="/home/laura/Zotero_linux-x86_64/zotero &"
 
 ## Apt-get update and upgrade, plus install one specified package
 # (TODO: multiple args so multiple packages can be installed at once)

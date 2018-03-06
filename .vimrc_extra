@@ -35,7 +35,7 @@ au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmarg
 " from http://vim.wikia.com/wiki/80_character_line_wrap_without_broken_words
 set formatoptions+=w
 set tw=80
-nnoremap <localleader>W qgip
+nnoremap <localleader>W gqip
 
 " Encoded by following this process:
 " https://www.reddit.com/r/vim/comments/1ramn9/whats_the_best_way_to_save_macros_persistently/cdlau12/
