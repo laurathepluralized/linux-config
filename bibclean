@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+BIBFILE=$1
+
+if [ ${BIBFILE: -4} != ".bib" ]
+then
+    BIBFILE=${BIBFILE}".bib"
+fi
+
+biber --tool --output-fieldcase=title --output-indent=4 --output-align --output-file=bibliography.bib --configfile=bib-cleanup.conf --validate-config ${BIBFILE}
+
