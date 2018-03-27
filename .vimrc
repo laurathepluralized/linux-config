@@ -77,6 +77,7 @@ nnoremap <leader>q :call ToggleQuickfixList()<cr>
 
 " lvdb settings  (always toggle line numbers)
 let g:lvdb_toggle_lines = 3
+nnoremap <localleader>d :call lvdb#Python_debug()<cr>
 
 " color setup
 " backspace/colors

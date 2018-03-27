@@ -169,6 +169,14 @@ else
     ln -s $DIR/ctrlp.vim ${DOTVIM}/bundle/
 fi
 
+# syntax highlighting for .scala files (needed for one homework assignment, 
+# maybe never again?  )
+if [ ! git clone git@github.com:derekwyatt/vim-scala.git ]; then
+    pushd vim-scala && git stash && git pull origin master && git stash apply
+    popd
+else
+    ln -s $DIR/vim-scala ${DOTVIM}/bundle/
+fi
 # if [ ! git clone https://github.com/derekwyatt/vim-fswitch.git ]; then
     # pushd vim-fswitch && git stash && git pull origin master && git stash apply
     # popd
