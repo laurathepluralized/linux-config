@@ -34,7 +34,7 @@ au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmarg
 
 " from http://vim.wikia.com/wiki/80_character_line_wrap_without_broken_words
 set formatoptions+=w
-set tw=80
+" set tw=80
 nnoremap <localleader>W gqip
 
 " Encoded by following this process:
