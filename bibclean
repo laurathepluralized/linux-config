@@ -7,5 +7,5 @@ then
     BIBFILE=${BIBFILE}".bib"
 fi
 
-biber --tool --output-fieldcase=title --output-indent=4 --output-align --output-file=sorted-${BIBFILE} --configfile=bib-cleanup.conf --validate-config ${BIBFILE}
+biber --tool --output-fieldcase=lower --output-indent=4 --output-align --output-file=sorted-${BIBFILE} --configfile=bib-cleanup.conf --validate-config ${BIBFILE}
 
