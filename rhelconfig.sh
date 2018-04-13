@@ -136,8 +136,8 @@ ln -sfn ${DIR}/vim-commentary ${DOTVIM}/bundle
 
 # Install my colorschemes
 mkdir -p ${HOME}/.vim/colors
-sudo ln -sfn ${CONFIG_DIR}/laura.vim ${HOME}/.vim/colors/laura.vim
-sudo ln -sfn ${CONFIG_DIR}/laura_light.vim ${HOME}/.vim/colors/laura_light.vim
+ln -sfn ${CONFIG_DIR}/laura.vim ${HOME}/.vim/colors/laura.vim
+ln -sfn ${CONFIG_DIR}/laura_light.vim ${HOME}/.vim/colors/laura_light.vim
 
 # echo "Now changing the following user's default shell to zsh:"
 # echo ${ME}
