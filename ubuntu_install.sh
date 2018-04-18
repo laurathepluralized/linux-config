@@ -237,6 +237,14 @@ cmake --build . --target ycm_core --config Release
 # go back to original directory
 cd ${PRE_YCM_INSTALL_DIR}
 
+# Install vim bindings for jupyter notebooks
+# https://github.com/lambdalisue/jupyter-vim-binding
+sudo pip3 install jupyter
+mkdir -p $(jupyter --data-dir)/nbextensions
+cd $(jupyter --data-dir)/nbextensions
+git clone https://github.com/lambdalisue/jupyter-vim-binding vim_binding
+jupyter nbextension enable vim_binding/vim_binding
+
 echo "Now changing the following user's default shell to zsh:"
 echo ${ME}
 
