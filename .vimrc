@@ -41,11 +41,6 @@ set colorcolumn=80
 set tags=./tags;~/repos
 
 
-" YCM debugging
-let g:ycm_server_python_interpreter='python3'
-let g:ycm_server_keep_logfiles=1
-let g:ycm_server_log_level='debug'
-
 " mapping leaders
 let mapleader = "\<space>"
 let maplocalleader = "\\"
@@ -59,6 +54,11 @@ filetype indent on
 
 "pathogen plugin
 call pathogen#infect()
+
+" YCM debugging
+let g:ycm_server_python_interpreter='python3'
+let g:ycm_server_keep_logfiles=1
+let g:ycm_server_log_level='debug'
 
 " gen_tags.vim
 nnoremap <leader>g :GenGTAGS<cr>
@@ -134,6 +134,8 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['flake8']
 " let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_enable_r_lintr_checker = 1
+let g:syntastic_r_checkers = ['lintr']
 
 " note for cppcheck, you probably need a '-I' set, so use
 " let g:syntastic_cpp_cppcheck_args = '-I /path/to/incl/ -I /path/to/other_incl'
