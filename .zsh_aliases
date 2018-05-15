@@ -129,3 +129,15 @@ alias ldrtlink="sudo /sbin/ldconfig -v"
     # source ${HOME}/.zsh_specific
 # fi
 
+
+# Bash command line event designators, word designators,
+# and modifiers:
+# https://www.gnu.org/software/bash/manual/bashref.html#Event-Designators
+# https://www.gnu.org/software/bash/manual/bashref.html#Word-Designators
+# https://www.gnu.org/software/bash/manual/bashref.html#Modifiers
+
+
+
+
+
+
