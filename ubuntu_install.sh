@@ -60,6 +60,7 @@ sudo apt install -y \
     libnotify-dev \
 	mercurial \
     ncurses-cmake-gui \
+    ntp \
     pcmanfm \
     python-dev \
     python3-dev \
