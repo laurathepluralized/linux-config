@@ -1,7 +1,4 @@
 
-# Use nvim instead of vim
-alias vim="nvim"
-
 ZSH_THEME="miloshadzic" # my favorite
 # . /usr/local/lib/python3.5/dist-packages/powerline/bindings/zsh/powerline.zsh
 
@@ -50,7 +47,7 @@ zle -N zle-keymap-select
 zle -N zle-history-line-set
 export KEYTIMEOUT=1
 
-# Put the time previous command executed on first line of prompt, 
+# Put the time previous command executed on first line of prompt,
 # then show status info, path, and allow new command input on next line
 # (adapted from af-magic theme)
 PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
@@ -79,13 +76,8 @@ PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ------------------------------------------
 # }
 # zle -N down-line-or-local-history
 
-# source ${HOME}/repos/ssh-find-agent/ssh-find-agent.sh
-
-
-
 #git aliases
 alias gs='git status'
-alias ggs='git status'
 alias gf='git fetch'
 alias gfa='git fetch --all'
 alias gm='git merge'
@@ -96,25 +88,25 @@ alias gcms='git commit -S'
 alias gco='git checkout'
 alias gd='git difftool -y 2> /dev/null'
 alias gb='git branch'
+alias gba='git branch -a'
 alias gh='git help'
 alias gl='git log --pretty=format:"%C(yellow)%h %ad %Creset%s %C(red)%d %Cgreen[%an] %Creset" --decorate --date=short -10 --graph'
 git config --global alias.unstage 'reset HEAD --'
 git config --global --replace-all core.pager "less -F -X"
 alias gu='git unstage'
+compdef __git_branch_names glmb
 
 #see here: http://travisjeffery.com/b/2012/02/search-a-git-repo-like-a-ninja
 git config --global grep.extendRegexp true
 git config --global grep.lineNumber true
 git config --global alias.g "grep --break --heading --line-number"
-git config --global core.editor vim
-git config --global merge.tool vimdiff
+git config --global core.editor nvim
+git config --global merge.tool nvimdiff
 git config --global color.ui true
 #git config --global core.whitespace trailing-space, space-before-tab
 
 
 #stuff whose error I don't want to see
-alias gvim="gvim -p 2>/dev/null"
-alias gvimdiff="gvimdiff 2> /dev/null"
 alias g='gnome-open 2>/dev/null'
 alias evince='evince 2>/dev/null'
 
@@ -126,4 +118,6 @@ fi
 if [ -f ${HOME}/.zsh_specific ]; then
     source ${HOME}/.zsh_specific
 fi
+
+alias vim="nvim"
 
