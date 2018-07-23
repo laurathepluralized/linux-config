@@ -1,14 +1,17 @@
 " Stop vim from folding everything it can find to fold upon file open
 set nofoldenable
 
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-set rtp+=/usr/local/lib/python3.5/dist-packages/powerline/bindings/vim
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+
+" python3 from powerline.vim import setup as powerline_setup
+" python3 powerline_setup()
+" python3 del powerline_setup
+" set rtp+=/usr/local/lib/python3.5/dist-packages/powerline/bindings/vim
 " set rtp+=/usr/local/bin/powerline/bindings/vim
 " let g:powerline_pycmd="py3"
 " let g:powerline_pyeval="py3eval"
-set encoding=utf-8
+" set encoding=utf-8
+let g:airline#extensions#tabline#enabled = 1
 set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
 " set ruler
@@ -28,10 +31,7 @@ endfunction
 map <F9> :call ToggleWrap()<CR>
 map! <F9> ^[:call ToggleWrap()<CR>
 
-
 set colorcolumn=80
-
-set cmdheight=1
 
 " Tell vim to look for ctags tags files from current directory up to the repos
 " directory so I don't have to open every file from project root directory to
@@ -83,14 +83,17 @@ nnoremap <localleader>d :call lvdb#Python_debug()<cr>
 set bs=2
 
 "colorscheme stuff
-colorscheme laura
-
+syntax enable
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" colorscheme laura
+colorscheme Iosvkem
+set background=dark
 
 if &tabpagemax < 50
     set tabpagemax=50
 endif
 
-" Always leave at least one line above or below the highlighted search term 
+" Always leave at least one line above or below the highlighted search term
 " so the search term isn't at the very edge of the top or bottom
 if !&scrolloff
     set scrolloff=1
@@ -99,11 +102,10 @@ endif
 if !&sidescrolloff
     set sidescrolloff=5
 endif
-" If a single line is long and would cause Vim to show a bunch of 
+" If a single line is long and would cause Vim to show a bunch of
 " @@@ or ~~~ until the entire line gets scrolled onto screen,
 " instead just print as much of the line as possible
 set display+=lastline
-
 
 set t_Co=256
 set spell
@@ -115,14 +117,13 @@ set spell
 " endif
 
 " syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
-" Add fugitive to statusline
-" I don't think this does anything new with powerline installed
-set statusline+=%{fugitive#statusline()}
-set statusline+=%*
+" " Add fugitive to statusline
+" set statusline+=%{fugitive#statusline()}
+" set statusline+=%*
 
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 nnoremap <localleader>e :SyntasticCheck<CR>

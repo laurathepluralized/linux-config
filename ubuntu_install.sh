@@ -155,6 +155,21 @@ REPONAME=vim-togglelist
 clone_or_pull
 ln -sfn ${DIR}/vim-togglelist ${DOTVIM}/bundle/
 
+THEURL=https://github.com/vim-airline/vim-airline.git
+REPONAME=vim-airline
+clone_or_pull
+ln -sfn ${DIR}/vim-airline ${DOTVIM}/bundle/
+
+THEURL=https://github.com/vim-airline/vim-airline-themes.git
+REPONAME=vim-airline-themes
+clone_or_pull
+ln -sfn ${DIR}/vim-airline-themes ${DOTVIM}/bundle/
+
+THEURL=https://github.com/majutsushi/tagbar.git
+REPONAME=tagbar
+clone_or_pull
+ln -sfn ${DIR}/tagbar ${DOTVIM}/bundle/
+
 THEURL=https://github.com/esquires/lvdb
 REPONAME=lvdb
 clone_or_pull
@@ -196,10 +211,10 @@ REPONAME=tpope-vim-abolish
 clone_or_pull
 ln -sfn ${DIR}/tpope-vim-abolish ${DOTVIM}/bundle
 
-THEURL=https://github.com/tpope/vim-fugitive.git
-REPONAME=vim-fugitive
-clone_or_pull
-ln -sfn ${DIR}/vim-fugitive ${DOTVIM}/bundle
+# THEURL=https://github.com/tpope/vim-fugitive.git
+# REPONAME=vim-fugitive
+# clone_or_pull
+# ln -sfn ${DIR}/vim-fugitive ${DOTVIM}/bundle
 
 THEURL=https://github.com/tpope/vim-commentary.git
 REPONAME=vim-commentary

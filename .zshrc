@@ -11,8 +11,8 @@ CASE_SENSITIVE="true"
 export HOSTNAME=$HOST
 
 export HISTFILE=~/.zsh_history
-export HISTSIZE=10000
-export SAVEHIST=10000
+export HISTSIZE=1000000
+export SAVEHIST=1000000
 
 setopt sharehistory
 setopt extendedhistory
@@ -50,8 +50,8 @@ export KEYTIMEOUT=1
 # Put the time previous command executed on first line of prompt, 
 # then show status info, path, and allow new command input on next line
 # (adapted from af-magic theme)
-PROMPT='$FG[237][%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
-$FG[032]'$PROMPT
+PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
+%{$FG[032]%}'$PROMPT
 
 # From https://superuser.com/questions/446594/separate-up-arrow-lookback-for-local-and-global-zsh-history/691603#691603
 # Up and down keys scroll through terminal's local history
@@ -113,6 +113,7 @@ git config --global color.ui true
 alias gvim="gvim -p 2>/dev/null"
 alias gvimdiff="gvimdiff 2> /dev/null"
 alias g='gnome-open 2>/dev/null'
+alias evince='evince 2>/dev/null'
 
 if [ -f ${HOME}/repos/linux-config/.zsh_aliases ]; then
     source ${HOME}/repos/linux-config/.zsh_aliases
