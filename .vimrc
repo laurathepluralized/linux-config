@@ -1,7 +1,10 @@
 " Stop vim from folding everything it can find to fold upon file open
 set nofoldenable
 
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+" This var isn't used anymore. Instead, put
+" set guicursor=
+" in ~/.config/nvim/init.vim to stop attempts at cursor shaping.
+" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 " python3 from powerline.vim import setup as powerline_setup
 " python3 powerline_setup()
