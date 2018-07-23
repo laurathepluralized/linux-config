@@ -1,4 +1,7 @@
 
+# Use nvim instead of vim
+alias vim="nvim"
+
 ZSH_THEME="miloshadzic" # my favorite
 # . /usr/local/lib/python3.5/dist-packages/powerline/bindings/zsh/powerline.zsh
 
