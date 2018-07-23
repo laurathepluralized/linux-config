@@ -1,53 +1,7 @@
-" Stop vim from folding everything it can find to fold upon file open
-set nofoldenable
-
-" This var isn't used anymore. Instead, put
-" set guicursor=
-" in ~/.config/nvim/init.vim to stop attempts at cursor shaping.
-" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
-
-" python3 from powerline.vim import setup as powerline_setup
-" python3 powerline_setup()
-" python3 del powerline_setup
-" set rtp+=/usr/local/lib/python3.5/dist-packages/powerline/bindings/vim
-" set rtp+=/usr/local/bin/powerline/bindings/vim
-" let g:powerline_pycmd="py3"
-" let g:powerline_pyeval="py3eval"
-" set encoding=utf-8
-let g:airline#extensions#tabline#enabled = 1
-set laststatus=2 " Always display the statusline in all windows
-set showtabline=2 " Always display the tabline, even if there is only one tab
-" set ruler
-" set wildmenu
-
-" from
-" https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
-" toggle text wrapping
-function ToggleWrap()
-    if (&wrap == 1)
-        set nowrap
-    else
-        set wrap
-    endif
-endfunction
-
-map <F9> :call ToggleWrap()<CR>
-map! <F9> ^[:call ToggleWrap()<CR>
-
-set colorcolumn=80
-
-" Tell vim to look for ctags tags files from current directory up to the repos
-" directory so I don't have to open every file from project root directory to
-" use tags
-" http://benoithamelin.tumblr.com/post/15101202004/using-vim-exuberant-ctags-easy-source-navigation
-set tags=./tags;~/repos
-
 
 " mapping leaders
 let mapleader = "\<space>"
 let maplocalleader = "\\"
-
-set smartcase
 
 "plugin management
 filetype on
@@ -57,21 +11,6 @@ filetype indent on
 "pathogen plugin
 call pathogen#infect()
 
-" YCM debugging
-let g:ycm_server_python_interpreter='python3'
-let g:ycm_server_keep_logfiles=1
-let g:ycm_server_log_level='debug'
-
-" gen_tags.vim
-nnoremap <leader>g :GenGTAGS<cr>
-
-" ycm
-let g:ycm_show_diagnostics_ui = 1
-" make YCM close the scratchpad window after I'm done with it
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-
-
 " togglelist settings
 let g:toggle_list_no_mappings=1
 nnoremap <leader>l :call ToggleLocationList()<cr>
@@ -79,76 +18,21 @@ nnoremap <leader>q :call ToggleQuickfixList()<cr>
 
 " lvdb settings  (always toggle line numbers)
 let g:lvdb_toggle_lines = 3
+let g:lvdb_close_tabs = 1
 nnoremap <localleader>d :call lvdb#Python_debug()<cr>
 
 " color setup
 " backspace/colors
 set bs=2
 
-"colorscheme stuff
-syntax enable
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-" colorscheme laura
-colorscheme Iosvkem
-set background=dark
-
-if &tabpagemax < 50
-    set tabpagemax=50
-endif
-
-" Always leave at least one line above or below the highlighted search term
-" so the search term isn't at the very edge of the top or bottom
-if !&scrolloff
-    set scrolloff=1
-endif
-" Similar for side
-if !&sidescrolloff
-    set sidescrolloff=5
-endif
-" If a single line is long and would cause Vim to show a bunch of
-" @@@ or ~~~ until the entire line gets scrolled onto screen,
-" instead just print as much of the line as possible
-set display+=lastline
-
 set t_Co=256
-set spell
+colorscheme Iosvkem
 " if has("gui_running")
-    " set spell
+    set spell
 " else
     " "spell check comes out as poor highlighting
-    " set nospell
+    set nospell
 " endif
-
-" syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" " Add fugitive to statusline
-" set statusline+=%{fugitive#statusline()}
-" set statusline+=%*
-
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
-nnoremap <localleader>e :SyntasticCheck<CR>
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['flake8']
-" let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_enable_r_lintr_checker = 1
-let g:syntastic_r_checkers = ['lintr']
-
-" note for cppcheck, you probably need a '-I' set, so use
-" let g:syntastic_cpp_cppcheck_args = '-I /path/to/incl/ -I /path/to/other_incl'
-"
-" for cpplint, you might want
-" let g:syntastic_cpp_cpplint_args = '--root=/path/to/project/root --recursive'
-let g:syntastic_cpp_checkers = ['cpplint']
-"let g:syntastic_cpp_checkers = []
-"let g:syntastic_cpp_cpplint_exec = 'cpplint'
-let g:syntastic_aggregate_errors = 1
 
 " ctrlp
 let g:ctrlp_custom_ignore = {
