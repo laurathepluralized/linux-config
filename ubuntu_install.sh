@@ -65,9 +65,28 @@ sudo apt install -y \
     python-dev \
     python3-dev \
     python-ipdb \
+    software-properties-common \
     terminator \
 	vim-gnome \
 	zsh
+
+sudo apt-add-repository ppa:neovim-ppa/stable
+sudo apt-get update && sudo apt-get install -y neovim
+
+# use neovim as alternatives for vi, vim, and editor
+sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+sudo update-alternatives --config vi
+sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+sudo update-alternatives --config vim
+sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+sudo update-alternatives --config editor
+
+if [ ! -f ${HOME}/.config/nvim/init.vim ]; then
+    echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> ~/.config/nvim/init.vim
+    echo "let &packpath = &runtimepath" >> ~/.config/nvim/init.vim
+    echo "set guicursor=" >> ~/.config/nvim/init.vim
+    echo "source ~/.vimrc" >> ~/.config/nvim/init.vim
+fi
 
 sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main'
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
@@ -164,6 +183,11 @@ THEURL=https://github.com/vim-airline/vim-airline-themes.git
 REPONAME=vim-airline-themes
 clone_or_pull
 ln -sfn ${DIR}/vim-airline-themes ${DOTVIM}/bundle/
+
+THEURL=https://github.com/neutaaaaan/iosvkem.git
+REPONAME=iosvkem
+clone_or_pull
+ln -sfn ${DIR}/iosvkem ${DOTVIM}/bundle/
 
 THEURL=https://github.com/majutsushi/tagbar.git
 REPONAME=tagbar
