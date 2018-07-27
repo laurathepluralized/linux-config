@@ -68,7 +68,9 @@ sudo apt install -y \
     software-properties-common \
     terminator \
 	vim-gnome \
+    xclip \
 	zsh
+# installing xclip makes sure neovim enables the clipboard registers!
 
 sudo apt-add-repository ppa:neovim-ppa/stable
 sudo apt-get update && sudo apt-get install -y neovim

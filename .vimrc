@@ -23,11 +23,12 @@ nnoremap <localleader>d :call lvdb#Python_debug()<cr>
 
 " color setup
 " backspace/colors
+let g:solarized_termtrans=1
+"set termguicolors
+set bg=dark
 set bs=2
 
 set t_Co=256
-set t_AB=^[[48;5;%dm
-set t_AF=^[[38;5;%dm
 colorscheme Iosvkem
 " if has("gui_running")
     set spell
