@@ -21,15 +21,6 @@ let g:lvdb_toggle_lines = 3
 let g:lvdb_close_tabs = 1
 nnoremap <localleader>d :call lvdb#Python_debug()<cr>
 
-" color setup
-" backspace/colors
-let g:solarized_termtrans=1
-"set termguicolors
-set bg=dark
-set bs=2
-
-set t_Co=256
-colorscheme Iosvkem
 " if has("gui_running")
     set spell
 " else
@@ -60,4 +51,6 @@ try
     source ~/repos/misc-scripts/.vimrc_extra
 catch
 endtry
+
+colorscheme Iosvkem
 

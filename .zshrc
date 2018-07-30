@@ -143,6 +143,7 @@ if [ "$TERM" = "xterm" ] ; then
                 # Instead you need to compare it and perform some guesses
                 # based upon the value. This is, perhaps, too simplistic.
                 TERM="gnome-256color"
+                COLORTERM="truecolor"
                 ;;
             *)
                 echo "Warning: Unrecognized COLORTERM: $COLORTERM"
@@ -185,3 +186,5 @@ if [ -z "$SCREEN_COLORS" ] ; then
     esac
     SCREEN_COLORS=`tput colors`
 fi
+
+COLORTERM="truecolor"
