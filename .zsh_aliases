@@ -57,6 +57,11 @@ alias lx="ls --color=always -lhAX"
 # Like ls -lhA, but sorted by file size.
 alias lss="ls --color=always -lhAS"
 
+# The following alias will work if I have the following line (minus hash for comment, and with username and hostname filled in) in /etc/sudoers.d/pm-suspend (remember to edit this only with visudo: visudo -f /etc/sudoers.d/pm-suspend)
+# ${USERNAME} ${HOSTNAME} = (root) NOPASSWD: /usr/sbin/pm-suspend
+# Lock screen and sleep
+alias gotosleep="slock sudo pm-suspend"
+
 ## Grep colorization
 alias grep="grep --color=auto"
 alias egrep="egrep --color=auto"
