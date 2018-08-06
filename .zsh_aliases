@@ -103,6 +103,9 @@ alias gitkhere="gitk --all &"
 # From https://itsfoss.com/solve-open-shared-object-file-quick-tip
 alias ldrtlink="sudo /sbin/ldconfig -v"
 
+# Open network manager gui window
+alias networkmanager="nm-connection-editor &"
+
 # tar reference
 # tar xzf = unzip tgz or tar.gz
 # tar xjf = unzip tar.bz2

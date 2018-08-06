@@ -75,14 +75,16 @@ sudo apt install -y \
 sudo apt-add-repository ppa:neovim-ppa/stable
 sudo apt-get update && sudo apt-get install -y neovim
 
-# use neovim as alternatives for vi, vim, and editor
-sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
-sudo update-alternatives --config vi
-sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
-sudo update-alternatives --config vim
-sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
-sudo update-alternatives --config editor
+echo "Now updating vi, vim, and editor commands to point to neovim"
 
+sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+# next line just opens an interactive menu that allows user to choose from alternatives
+# sudo update-alternatives --config vi 
+sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+# sudo update-alternatives --config vim
+sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+# sudo update-alternatives --config editor
+#
 if [ ! -f ${HOME}/.config/nvim/init.vim ]; then
     echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> ~/.config/nvim/init.vim
     echo "let &packpath = &runtimepath" >> ~/.config/nvim/init.vim
