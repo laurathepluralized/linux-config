@@ -1,5 +1,117 @@
 " Laura's .vimrc additions
+
+" Stop vim from folding everything it can find to fold upon file open
+set nofoldenable
+
+" This var isn't used anymore. Instead, put
+" set guicursor=
+" in ~/.config/nvim/init.vim to stop attempts at cursor shaping.
+" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+
+let g:airline#extensions#tabline#enabled = 1
+set laststatus=2 " Always display the statusline in all windows
+set showtabline=2 " Always display the tabline, even if there is only one tab
+
+set smartcase
+
+" from
+" https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
+" toggle text wrapping
+function ToggleWrap()
+    if (&wrap == 1)
+        set nowrap
+    else
+        set wrap
+    endif
+endfunction
+
+map <F9> :call ToggleWrap()<CR>
+map! <F9> ^[:call ToggleWrap()<CR>
+
+" Tell vim to look for ctags tags files from current directory up to the repos
+" directory so I don't have to open every file from project root directory to
+" use tags
+" http://benoithamelin.tumblr.com/post/15101202004/using-vim-exuberant-ctags-easy-source-navigation
+set tags=./tags;~/repos
+
+" YCM debugging
+let g:ycm_server_python_interpreter='python3'
+let g:ycm_server_keep_logfiles=1
+let g:ycm_server_log_level='debug'
+
+" ycm
+let g:ycm_show_diagnostics_ui = 1
+" make YCM close the scratchpad window after I'm done with it
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+syntax enable
+
+" Let me have up to 50 tabs
+if &tabpagemax < 50
+    set tabpagemax=50
+endif
+
+" Always leave at least one line above or below the highlighted search term
+" so the search term isn't at the very edge of the top or bottom
+if !&scrolloff
+    set scrolloff=1
+endif
+" Similar for side
+if !&sidescrolloff
+    set sidescrolloff=5
+endif
+" If a single line is long and would cause Vim to show a bunch of
+" @@@ or ~~~ until the entire line gets scrolled onto screen,
+" instead just print as much of the line as possible
+set display+=lastline
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <localleader>e :SyntasticCheck<CR>
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['flake8']
+" let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_enable_r_lintr_checker = 1
+let g:syntastic_r_checkers = ['lintr']
+
+" note for cppcheck, you probably need a '-I' set, so use
+" let g:syntastic_cpp_cppcheck_args = '-I /path/to/incl/ -I /path/to/other_incl'
 "
+" for cpplint, you might want
+" let g:syntastic_cpp_cpplint_args = '--root=/path/to/project/root --recursive'
+let g:syntastic_cpp_checkers = ['cpplint']
+"let g:syntastic_cpp_checkers = []
+"let g:syntastic_cpp_cpplint_exec = 'cpplint'
+let g:syntastic_aggregate_errors = 1
+
+" tab is ALWAYS ALWAYS ALWAYS four spaces, which is equivalent to one indent.
+" except for xml, and maybe I should add javascript for its awkward half-tabs?
+set expandtab
+set smarttab
+autocmd FileType xml setlocal shiftwidth=2 tabstop=2
+autocmd FileType cpp setlocal shiftwidth=4 tabstop=4
+autocmd FileType c setlocal shiftwidth=4 tabstop=4
+autocmd FileType python setlocal shiftwidth=4 tabstop=4
+autocmd FileType text setlocal shiftwidth=4 tabstop=4
+autocmd FileType tex setlocal shiftwidth=4 tabstop=4
+autocmd FileType sh setlocal shiftwidth=4 tabstop=4
+
+" Add <> to the types of pairs Vim recognizes as matching (to go between them
+" with %)
+set matchpairs+=<:>
+
+" This looks useful:
+"http://stackoverflow.com/questions/2514445/turning-off-auto-indent-when-pasting-text-into-vim?rq=1
+
 " Search settings
 set smartcase " search should become case-sensitive if there are upper-case characters
 
@@ -10,37 +122,48 @@ set fileformats=unix,dos " only detect unix file format, and display  in dos fi
 set showmatch " briefly show matching bracket
 set matchtime=2 " show matching bracket for 0.2 seconds
 
-" FSwitch mappings
-" From FSwitch documentation
-" 
- " Switch to the file and load it into the current window >
-	nmap <silent> <Leader>of :FSHere<cr>
- " Switch to the file and load it into the window on the right >
-	nmap <silent> <Leader>ol :FSRight<cr>
- " Switch to the file and load it into a new window split on the right >
-	nmap <silent> <Leader>oL :FSSplitRight<cr>
- " Switch to the file and load it into the window on the left >
-	nmap <silent> <Leader>oh :FSLeft<cr>
- " Switch to the file and load it into a new window split on the left >
-	nmap <silent> <Leader>oH :FSSplitLeft<cr>
- " Switch to the file and load it into the window above >
-	nmap <silent> <Leader>ok :FSAbove<cr>
- " Switch to the file and load it into a new window split above >
-	nmap <silent> <Leader>oK :FSSplitAbove<cr>
- " Switch to the file and load it into the window below >
-	nmap <silent> <Leader>oj :FSBelow<cr>
- " Switch to the file and load it into a new window split below >
-	nmap <silent> <Leader>oJ :FSSplitBelow<cr>
+" Wrap lines for text and LaTeX files, but not for other types
+au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
 
+" from http://vim.wikia.com/wiki/80_character_line_wrap_without_broken_words
+set formatoptions+=w
+" set tw=80
+nnoremap <localleader>W gqip
+
+" Encoded by following this process:
+" https://www.reddit.com/r/vim/comments/1ramn9/whats_the_best_way_to_save_macros_persistently/cdlau12/
+" Take the current line, put \cite{ at the beginning and } at the end, then go
+" to the next line
+nmap <localleader>c I\cite{A}j
 
 " Make resizing horizontal splits less aggravating
-nmap <silent> <Leader>hh :res -10<cr>
-nmap <silent> <Leader>hc :res +10<cr>
+" nmap <silent> <Leader>hh :res -10<cr>
+" nmap <silent> <Leader>hc :res +10<cr>
 
+" Netrw list setting
+let g:netrw_liststyle = 1
+
+" Enter a line below current line and stay in command mode
+" (just push Enter in command mode)
+nmap <CR> o<Esc>k
+
+" http://vim.wikia.com/wiki/Switching_case_of_characters#Twiddle_case
+function! TwiddleCase(str)
+  if a:str ==# toupper(a:str)
+    let result = tolower(a:str)
+  elseif a:str ==# tolower(a:str)
+    " next line inspired by http://vim.wikia.com/wiki/Switching_case_of_characters#Comments
+    let result = substitute(a:str,'\(\<\([A-ZÀ-Ý]\)\([A-ZÀ-Ý]\+\)\>\)', '\u\1', 'g')
+  else
+    let result = toupper(a:str)
+  endif
+  return result
+endfunction
+vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 
 
 " REMINDER
 " Space is leader
 " \ is localleader
-"
+
 

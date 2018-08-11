@@ -1,63 +1,151 @@
 
-## Frequently-used directory shortcuts
+## Source .zshrc
+alias szrc="source ${HOME}/.zshrc"
+alias zshrc="sudo vim ${HOME}/.zshrc && source ${HOME}/.zshrc"
+
+# Normal installation structure of misc repos and linux-config
+export REPOS=${HOME}/repos
+export LCONFIG=${REPOS}/linux-config
+
+alias repos="pushd ${REPOS}"
+alias lconfig="pushd ${LCONFIG}"
+alias csepaper="pushd ${REPOS}/cse6242-project-latex"
+
+function git_fetch_dirs {
+
+    TEMP_OLDPWD=$OLDPWD
+
+    for d in $(dirname $(find -name "\.git")); do
+        cd $d
+        echo "fetching " $d
+        git fetch
+        cd $OLDPWD
+    done
+
+    OLDPWD=$TEMP_OLDPWD
+
+}
 
 
-## vim aliases:
-alias svim="sudo vim"
+# zsh command history with timestamp
+alias clihist="fc -li"
 
-## Source .bashrc
-alias szrc="source ~/.zshrc"
-alias zshrc="sudo vim ~/.zshrc && source ~/.zshrc"
+# pretty print paths
+# https://www.unix.com/shell-programming-and-scripting/28047-split-print-path.html
+function echovar {
+    echo $1 | tr -s ':' '\n'
+}
 
-## aliases aliases
-alias aliasedit="svim ~/.zsh_aliases && source ~/.zshrc"
-alias aliases="svim ~/.zsh_aliases && source ~/.zshrc"
+## Unambiguous python version for pip
+# alias pip2="python2.7 -m pip"
+# alias pip3="python3 -m pip"
+
+## Open a new instance of Google Chrome
+# alias chr="google-chrome"
 
 ## ls aliases and colorization
 # Dont show . or .., but show hidden files.
 alias lsa="ls --color=always -A"
 # Show hidden files except .. and ., and show in column format with human-readable sizes.
-alias lsl="ls --color=always -lhA"
-alias ll="ls --color=always -lhA"
 alias lf="ls --color=always -lhA"
-# Like ls -lhA, but sorted by modification time.
+# Like ls -lhA, but sorted by modification time (newest first)
 alias lt="ls --color=always -lhAt"
+# Like ls -lhA, but sorted by modification time (newest last)
+alias lT="ls --color=always -lhAtr"
 # Like ls -lhA, but sorted by file extension.
-alias lsx="ls --color=always -lhAX"
+alias lx="ls --color=always -lhAX"
 # Like ls -lhA, but sorted by file size.
 alias lss="ls --color=always -lhAS"
+
+# The following alias will work if I have the following line (minus hash for comment, and with username and hostname filled in) in /etc/sudoers.d/pm-suspend (remember to edit this only with visudo: visudo -f /etc/sudoers.d/pm-suspend)
+# ${USERNAME} ${HOSTNAME} = (root) NOPASSWD: /usr/sbin/pm-suspend
+# Lock screen and sleep
+alias gotosleep="slock sudo pm-suspend"
 
 ## Grep colorization
 alias grep="grep --color=auto"
 alias egrep="egrep --color=auto"
 alias fgrep="fgrep --color=auto"
 
-## Apt-get update and upgrade
-alias updall="sudo apt-get update && sudo apt-get upgrade"
-alias dupdall="sudo apt-get update && sudo apt-get dist-upgrade"
-alias uuu="sudo apt-get update && sudo apt-get upgrade && sudo apt-get dist-upgrade"
+## misc aliases
+alias find1='find -maxdepth 1 -mindepth 1'
+alias CLR='for i in {1..99}; do echo; done; clear'
+
+export PATH=${PATH}:${HOME}/Zotero_linux-x86_64
+# alias zotero="/home/laura/Zotero_linux-x86_64/zotero &"
+
+## Apt-get update and upgrade, plus install one specified package
+# (TODO: multiple args so multiple packages can be installed at once)
+function uuu()
+{
+    sudo apt-get update
+    if [ -n "$1" ]; then
+        sudo apt-get install "$1"
+    fi
+
+    sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh
+}
 
 ## cd aliases
+# TODO: there is probably a regex-fu way of doing this more flexibly; figure it out
 alias cd..="cd .."
 alias ..="cd .."
 alias ...="cd ../../"
 alias ....="cd ../../../"
 alias .....="cd ../../../../"
 alias ......="cd ../../../../../"
+alias .......="cd ../../../../../../"
+alias ........="cd ../../../../../../../"
 
 ## git aliases
 alias gitkhere="gitk --all &"
 
-# Do a git diff with meld on current file and its most recent commit
-# Syntax: gd <filename> (Bug Kyle in old lab if this still doesn't work)
-gd()
-{
-    yes | git difftool -t meld $1;
-}
+# From https://itsfoss.com/solve-open-shared-object-file-quick-tip
+alias ldrtlink="sudo /sbin/ldconfig -v"
 
-# Take everything in the current directory (not children) that matches the gitignore and remove it from the repo's cache. From http://stackoverflow.com/a/3262033
-alias gnuke="(GIT_INDEX_FILE=some-non-existent-file  git ls-files --exclude-standard --others --directory --ignored -z) | xargs -0 git rm --cached -r --ignore-unmatch --"
+# Open network manager gui window
+alias networkmanager="nm-connection-editor &"
+
+# tar reference
+# tar xzf = unzip tgz or tar.gz
+# tar xjf = unzip tar.bz2
+
+# Take everything in the current directory (not children) that matches the gitignore and remove it from the repo's cache.
+# NOTE THAT THIS IS THE NUCLEAR OPTION. I DON'T THINK IT CAN BE UNDONE. USE AT YOUR OWN RISK.
+# From http://stackoverflow.com/a/3262033
+#alias gnuke="(GIT_INDEX_FILE=some-non-existent-file  git ls-files --exclude-standard --others --directory --ignored -z) | xargs -0 git rm --cached -r --ignore-unmatch --"
 
 ## Take screenshot of area of screen
-alias ssa="gnome-screenshot -a"
+#alias ssa="gnome-screenshot -a"
+
+# Useful tips:
+# Typing "!$" will insert the last argument from the previous command (works in zsh and bash)
+# Typing "!*" will insert all arguments from the previous command (works in zsh and bash)
+# If zsh keeps trying to correct the spelling of a valid command (e.g. foo), try this alias:
+# alias foo='nocorrect foo'
+
+#scrot is command-line screenshot tool
+# Screen brightness settings are controlled by the files in the following directory:
+# /sys/class/backlight/intel_backlight/
+# Modify the brightness file there to change current brightness, max_brightness to change max brightness, etc.
+
+# How to add a public key for a ppa:
+#https://askubuntu.com/questions/13065/how-do-i-fix-the-gpg-error-no-pubkey/15272#15272
+#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <PUBKEY>
+
+# if [ -f ${HOME}/.zsh_specific ]; then
+    # source ${HOME}/.zsh_specific
+# fi
+
+
+# Bash command line event designators, word designators,
+# and modifiers:
+# https://www.gnu.org/software/bash/manual/bashref.html#Event-Designators
+# https://www.gnu.org/software/bash/manual/bashref.html#Word-Designators
+# https://www.gnu.org/software/bash/manual/bashref.html#Modifiers
+
+
+
+
+
 

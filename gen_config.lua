@@ -38,10 +38,10 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("~/repos/linux-config/laura_awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -54,15 +54,14 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.fair,
     awful.layout.suit.tile.left,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.top,
     awful.layout.suit.magnifier,
     awful.layout.suit.max,
     --awful.layout.suit.floating
-    --awful.layout.suit.fair.horizontal,
-    --awful.layout.suit.tile,
-    --awful.layout.suit.tile.bottom,
-    --awful.layout.suit.tile.top,
     --awful.layout.suit.spiral,
     --awful.layout.suit.spiral.dwindle,
     --awful.layout.suit.max.fullscreen,
@@ -76,6 +75,7 @@ if beautiful.wallpaper then
     end
 end
 -- }}}
+
 
 
 -- {{{ Menu
@@ -95,6 +95,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
+
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
@@ -102,6 +103,13 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
+
+-- {{{ Powerline widget
+    -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
+    package.path = package.path .. ';/usr/local/lib/python3.5/dist-packages/powerline/bindings/awesome/?.lua'
+    require('powerline')
+-- }}}
+
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -112,10 +120,10 @@ mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 1, awful.tag.viewonly),
                     awful.button({ modkey }, 1, awful.client.movetotag),
                     awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
-                    )
+                    awful.button({ modkey }, 3, awful.client.toggletag))
+                    -- stop making my scroll wheel change tag numbers, please
+                    -- awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+                    -- awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
                      awful.button({ }, 1, function (c)
@@ -181,9 +189,12 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(mytextclock)
+    right_layout:add(powerline_widget)
+    right_layout:add(wibox.widget.systray())
+    -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
+    -- right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
+    -- right_layout:add(cbatticon)
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -197,11 +208,23 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
+    awful.button({ }, 3, function () mymainmenu:toggle() end)))
+    -- NOTE: This should prevent my scroll wheel from messing with what tags
+    -- are showing if my mouse happens to dare be near the edge of the monitor.
+    -- awful.button({ }, 4, awful.tag.viewnext),
+    -- awful.button({ }, 5, awful.tag.viewprev)
 -- }}}
+awful.util.spawn_with_shell("run-on-startup")
+
+-- {{{ Disable tap-to-click
+--awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
+--awful.util.spawn_with_shell("xinput set-prop 'DLL07D0:01 044E:120B' 'Synaptics Tap Time' 0")
+--DLL07D0:01 044E:120B is dell latitude touchpad
+--SynPS/2 is Thinkpad touchpad
+-- awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
+-- }}}
+
+-- awful.util.spawn_with_shell("cbatticon")
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
@@ -237,8 +260,15 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
+    --awful.key({ modkey, "Control" }, "r", awesome.restart),
+    awful.key({ modkey, "Shift" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+
+    -- Open Google Chrome
+    awful.key({ modkey,           }, "g", function () awful.util.spawn("google-chrome") end),
+    awful.key({ modkey,           }, "z", function () awful.util.spawn("zotero") end),
+    awful.key({ modkey,           }, "f", function () awful.util.spawn("pcmanfm") end),
+    awful.key({ modkey,           }, "e", function () awful.util.spawn("evolution") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact(-0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact( 0.05)    end),
@@ -264,12 +294,12 @@ globalkeys = awful.util.table.join(
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end),
 
-    --lock the computer (added by eric)
-    awful.key({ modkey, "Control" }, "s",     function () awful.util.spawn("cinnamon-screensaver-command -l") end)
+    --lock the computer (added by Eric, switched to slock by Laura)
+    awful.key({ modkey, "Control" }, "s",     function () awful.util.spawn("slock") end)
 )
 
 clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+    -- awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
@@ -368,13 +398,13 @@ awful.rules.rules = {
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
-    -- Enable sloppy focus
+    -- Enable sloppy focus --NOOOOOO!
     c:connect_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
+        --if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+            --and awful.client.focus.filter(c) then
+            --client.focus = c
+        --end
+   end)
 
     if not startup then
         -- Set the windows at the slave,
@@ -437,3 +467,70 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+--
+-- Battery warning
+-- From bpdp.blogspot.be/2013/06/battery-warning-notification-for.html
+-- created by bpdp
+
+local function trim(s)
+  return s:find'^%s*$' and '' or s:match'^%s*(.*%S)'
+end
+
+local function bat_notification()
+  
+  local f_capacity = assert(io.open("/sys/class/power_supply/BAT0/capacity", "r"))
+  local f_status = assert(io.open("/sys/class/power_supply/BAT0/status", "r"))
+
+  local bat_capacity = tonumber(f_capacity:read("*all"))
+  local bat_status = trim(f_status:read("*all"))
+
+  if (bat_capacity <= 10 and bat_status == "Discharging") then
+    naughty.notify({ title      = "Battery low! " .. bat_capacity .."%"
+      --, text       = "Battery low! " .. bat_capacity .."%" .. " left!"
+      , fg="#ff0000"
+      , bg="#deb887"
+      , timeout    = 180
+      --, position   = "bottom_left"
+      , position   = "top_right"
+    })
+  end
+  if (bat_capacity <= 100 and bat_status == "Discharging") then
+    naughty.notify({ title      = "Battery " .. bat_capacity .."%"
+      , height=20
+      , fg="#ff0000"
+      , bg="#deb887"
+      , timeout    = 180
+      , position   = "top_right"
+    })
+  end
+end
+-- From https://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists/4991602#4991602
+local function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+
+-- local is_this_a_laptop = file_exists("/sys/class/power_supply/BAT0/capacity")
+-- if (is_this_a_laptop) then
+    -- battimer = timer({timeout = 179.9})
+    -- battimer:connect_signal("timeout", bat_notification)
+    -- battimer:start()
+-- end
+
+-- end here for battery warning
+
+-- {{{ Startup
+do
+    local cmds
+    cmds = 
+    {
+        "nm-applet"
+    }
+
+    for _,i in pairs(cmds) do
+        awful.util.spawn(i)
+    end
+end
+-- }}}
+
+
