@@ -1,30 +1,43 @@
+
 PATCH=$PWD/patches/0001-open-tag-in-reverse_goto-when-indicated-by-switchbuf.patch
 sudo apt update
 sudo apt -y upgrade
 sudo apt install -y \
-    ccache \
-    curl \
-    gnome-terminal \
-    terminator \
-    awesome \
-    zsh \
-    zathura \
     aptitude \
+    awesome \
+    ccache \
+    cmake-curses-gui \
+    curl \
     exuberant-ctags \
+    flake8 \
+    flawfinder \
+    git \
     global \
+    gnome-terminal \
     htop \
     ipython \
     ipython3 \
-    python-ipdb \
-    xclip \
-    cmake-curses-gui \
     libnotify-dev \
+    mercurial \
     ninja-build \
-    flake8 \
-    flawfinder
+    ntp \
+    pcmanfm \
+    python-dev \
+    python3-dev \
+    python-ipdb \
+    python3-ipdb \
+    python-pip \
+    python3-pip \
+    software-properties-common \
+    terminator \
+    xclip \
+    zathura \
+    zsh
 
 curl -o ~/.git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+sudo python3 -m pip install matplotlib numpy pandas scipy jupyter
 
 CONFIG_DIR="/home/$USER/repos/linux-config"
 
@@ -32,7 +45,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 echo "source $CONFIG_DIR/.bashrc" >> ~/.bashrc
 echo "PATH=$PATH:~/bin" >> ~/.bashrc
-mkdir ~/bin
+mkdir -p ~/bin
 ln -v -s $CONFIG_DIR/glmb.sh /home/$USER/bin/glmb
 ln -v -s $CONFIG_DIR/cpp_static_wrapper.py /home/$USER/bin
 ln -v -s $CONFIG_DIR/cmd_monitor.py /home/$USER/bin/cmd_monitor
@@ -41,17 +54,7 @@ echo "export ZSH=~/.oh-my-zsh" >> ~/.zshrc
 echo "source $CONFIG_DIR/.zshrc" >> ~/.zshrc
 echo "source $CONFIG_DIR/.bashrc" >> ~/.bashrc
 
-THEURL=https://github.com/jsfaint/gen_tags.vim.git
-REPONAME=gen_tags.vim
-clone_or_pull
-ln -sfn ${DIR}/gen_tags.vim ${DOTVIM}/bundle
-
-THEURL=https://github.com/tpope/tpope-vim-abolish.git
-REPONAME=tpope-vim-abolish
-clone_or_pull
-ln -sfn ${DIR}/tpope-vim-abolish ${DOTVIM}/bundle
-
-mkdir ~/repos
+mkdir -p ~/repos
 cd ~/repos
 sudo apt install -y libnotify-dev libgtk-3-dev
 git clone https://github.com/valr/cbatticon.git
@@ -61,26 +64,27 @@ git pull
 make PREFIX=/usr/local
 sudo make PREFIX=/usr/local install
 
-DIR=~/repos/vim
+VIMREPODIR=~/repos/vim
 BUNDLE_DIR=~/.vim/bundle
-mkdir $DIR
-cd $DIR
+mkdir -p $VIMREPODIR
+cd $VIMREPODIR
 
 function add_vim_repo {
     NAME=$(echo $1 | rev | cut -d '/' -f 1 | rev)
-    cd $DIR
+    cd $VIMREPODIR
     git clone $1 $NAME
-    cd $DIR/$NAME
+    cd $VIMREPODIR/$NAME
     pwd
     git pull
-    ln -s $DIR/$NAME $BUNDLE_DIR
-}
+    ln -s $VIMREPODIR/$NAME $BUNDLE_DIR
+    echo "Added repo ${NAME}"; }
 
 git clone https://github.com/tpope/vim-pathogen.git
 cd vim-pathogen
 git pull
-ln -s $DIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
+ln -s $VIMREPODIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
 
+echo "Adding vim repos"
 add_vim_repo 'https://github.com/milkypostman/vim-togglelist'
 add_vim_repo 'https://github.com/esquires/lvdb'
 add_vim_repo 'https://github.com/Shougo/deoplete.nvim'
@@ -97,8 +101,13 @@ add_vim_repo 'https://github.com/esquires/neosnippet-snippets'
 add_vim_repo 'https://github.com/Shougo/neosnippet.vim.git'
 add_vim_repo 'https://github.com/jlanzarotta/bufexplorer.git'
 add_vim_repo 'https://github.com/lervag/vimtex'
+add_vim_repo 'https://github.com/tpope/tpope-vim-abolish.git'
+add_vim_repo 'https://github.com/wesQ3/vim-windowswap.git'
+add_vim_repo 'https://github.com/vim-airline/vim-airline.git'
+add_vim_repo 'https://github.com/vim-airline/vim-airline-themes.git'
+add_vim_repo 'https://github.com/neutaaaaan/iosvkem.git'
 
-cd $DIR/vimtex
+cd $VIMREPODIR/vimtex
 git checkout master
 git reset --hard origin/master
 git am -3 $PATCH
@@ -115,19 +124,22 @@ git clone https://github.com/neovim/neovim.git
 git fetch
 cd neovim
 git checkout origin/master # v0.2.2 has a lua build error. This is a later commit where the build worked but prior to v0.2.3 which has not been released yet
-mkdir .deps
+mkdir -p .deps
 cd .deps && cmake ../third-party -DCMAKE_CXX_FLAGS=-march=native -DCMAKE_BUILD_TYPE=Release && make
-cd .. 
-mkdir build 
+cd ..
+mkdir -p build
 cd build && cmake .. -G Ninja -DCMAKE_CXX_FLAGS=-march=native -DCMAKE_BUILD_TYPE=Release && ninja &&  sudo ninja install
 
-mkdir -p ~/.config/nvim
-echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after
-let &packpath = &runtimepath
-source ~/.vimrc" > ~/.config/nvim/init.vim
+# mkdir -p -p ~/.config/nvim
+# echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after
+# let &packpath = &runtimepath
+# set guicursor=
+# source ~/.vimrc" > ~/.config/nvim/init.vim
 
-echo "Now changing the following user's default shell to zsh:"
-echo ${ME}
+echo "Now updating vi, vim, and editor commands to point to neovim"
+sudo update-alternatives --install /usr/bin/vi vi /usr/local/bin/nvim 60
+sudo update-alternatives --install /usr/bin/vim vim /usr/local/bin/nvim 60
+sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim 60
 
 # cppcheck
 cd ~/repos
@@ -136,7 +148,7 @@ cd cppcheck
 git pull
 make -j $(($(nproc --all) - 1)) SRCDIR=build CFGDIR=/usr/local/share/cppcheck/cfg HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function -march=native"
 sudo install cppcheck /usr/local/bin
-sudo mkdir /usr/local/share/cppcheck/cfg -p
+sudo mkdir -p /usr/local/share/cppcheck/cfg -p
 sudo install -D ./cfg/* /usr/local/share/cppcheck/cfg
 
 # cppclean
@@ -163,7 +175,7 @@ git config --global alias.g "grep --break --heading --line-number"
 git config --global core.editor nvim
 git config --global merge.tool nvimdiff
 git config --global color.ui true
-git config --global core.whitespace trailing-space, space-before-tab
+#git config --global core.whitespace trailing-space, space-before-tab
 
 # CodeChecker
 sudo apt-get install clang build-essential curl doxygen gcc-multilib \
