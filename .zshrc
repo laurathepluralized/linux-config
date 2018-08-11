@@ -91,100 +91,28 @@ alias gb='git branch'
 alias gba='git branch -a'
 alias gh='git help'
 alias gl='git log --pretty=format:"%C(yellow)%h %ad %Creset%s %C(red)%d %Cgreen[%an] %Creset" --decorate --date=short -10 --graph'
-git config --global alias.unstage 'reset HEAD --'
-git config --global --replace-all core.pager "less -F -X"
 alias gu='git unstage'
 compdef __git_branch_names glmb
 
-#see here: http://travisjeffery.com/b/2012/02/search-a-git-repo-like-a-ninja
-git config --global grep.extendRegexp true
-git config --global grep.lineNumber true
-git config --global alias.g "grep --break --heading --line-number"
-git config --global core.editor nvim
-git config --global merge.tool nvimdiff
-git config --global color.ui true
-#git config --global core.whitespace trailing-space, space-before-tab
+#other aliases
+alias grep='grep --color=auto'
+alias find1='find -maxdepth 1 -mindepth 1'
+alias CLR='for i in {1..99}; do echo; done; clear'
 
+function git_pull_dirs {
 
-#stuff whose error I don't want to see
-alias g='gnome-open 2>/dev/null'
-alias evince='evince 2>/dev/null'
+    TEMP_OLDPWD=$OLDPWD
 
-if [ -f ${HOME}/repos/linux-config/.zsh_aliases ]; then
-    source ${HOME}/repos/linux-config/.zsh_aliases
-fi
+    for d in $(dirname $(find -name "\.git")); do
+        cd $d
+        git pull
+        cd $OLDPWD
+    done
 
-#other aliases and environment variables
-if [ -f ${HOME}/.zsh_specific ]; then
-    source ${HOME}/.zsh_specific
-fi
+    OLDPWD=$TEMP_OLDPWD
 
-# From comment on this article, how to properly set TERM:
-# http://vim.wikia.com/wiki/256_colors_in_vim
-if [ "$TERM" = "xterm" ] ; then
-    if [ -z "$COLORTERM" ] ; then
-        if [ -z "$XTERM_VERSION" ] ; then
-            echo "Warning: Terminal wrongly calling itself 'xterm'."
-        else
-            case "$XTERM_VERSION" in
-            "XTerm(256)") TERM="xterm-256color" ;;
-            "XTerm(88)") TERM="xterm-88color" ;;
-            "XTerm") ;;
-            *)
-                echo "Warning: Unrecognized XTERM_VERSION: $XTERM_VERSION"
-                ;;
-            esac
-        fi
-    else
-        case "$COLORTERM" in
-            gnome-terminal)
-                # Those crafty Gnome folks require you to check COLORTERM,
-                # but don't allow you to just *favor* the setting over TERM.
-                # Instead you need to compare it and perform some guesses
-                # based upon the value. This is, perhaps, too simplistic.
-                TERM="gnome-256color"
-                COLORTERM="truecolor"
-                ;;
-            *)
-                echo "Warning: Unrecognized COLORTERM: $COLORTERM"
-                ;;
-        esac
-    fi
-fi
-SCREEN_COLORS="`tput colors`"
-if [ -z "$SCREEN_COLORS" ] ; then
-    case "$TERM" in
-        screen-*color-bce)
-            echo "Unknown terminal $TERM. Falling back to 'screen-bce'."
-            export TERM=screen-bce
-            ;;
-        *-88color)
-            echo "Unknown terminal $TERM. Falling back to 'xterm-88color'."
-            export TERM=xterm-88color
-            ;;
-        *-256color)
-            echo "Unknown terminal $TERM. Falling back to 'xterm-256color'."
-            export TERM=xterm-256color
-            ;;
-    esac
-    SCREEN_COLORS=`tput colors`
-fi
-if [ -z "$SCREEN_COLORS" ] ; then
-    case "$TERM" in
-        gnome*|xterm*|konsole*|aterm|[Ee]term)
-            echo "Unknown terminal $TERM. Falling back to 'xterm'."
-            export TERM=xterm
-            ;;
-        rxvt*)
-            echo "Unknown terminal $TERM. Falling back to 'rxvt'."
-            export TERM=rxvt
-            ;;
-        screen*)
-            echo "Unknown terminal $TERM. Falling back to 'screen'."
-            export TERM=screen
-            ;;
-    esac
-    SCREEN_COLORS=`tput colors`
-fi
+}
 
-COLORTERM="truecolor"
+alias vim="nvim"
+alias gvim="gnome-terminal -- nvim -p"
+export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket

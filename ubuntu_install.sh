@@ -1,296 +1,193 @@
-#!/bin/bash
-#
-# Usage: bash ubuntu_install.sh
 
-clone_or_pull () {
-    # THEURL is assumed to be the git url
-    # REPONAME is name of repo
-    # DIR is dir repos are contained in
-    
-    CURRENT_DIRECTORY=$(pwd)
-    if cd ${DIR}/${REPONAME}; then
-        git pull;
-    else
-        git clone ${THEURL} ${DIR}/${REPONAME};
-    fi
-    cd ${CURRENT_DIRECTORY}
-
-    return 0
-}
-
-hg_clone_or_pull () {
-    # THEURL is assumed to be the git url
-    # REPONAME is name of repo
-    # DIR is dir repos are contained in
-    
-    CURRENT_DIRECTORY=$(pwd)
-    if cd ${DIR}/${REPONAME}; then
-        hg pull;
-    else
-        hg clone ${THEURL} ${DIR}/${REPONAME};
-    fi
-    cd ${CURRENT_DIRECTORY}
-
-    return 0
-}
-
-# Borrowing technique from here for checking for rootness
-# http://stackoverflow.com/questions/18215973/how-to-check-if-running-as-root-in-a-bash-script/21622456#21622456
-# The sudo method they suggest may also be useful
-if (( $EUID == 0 ))
-    then echo "Please do not run this script as root"
-    exit
-else
-    ME=`(whoami)`
-    echo "Current user is ${ME}"
-fi
-
+PATCH=$PWD/patches/0001-open-tag-in-reverse_goto-when-indicated-by-switchbuf.patch
 sudo apt update
-sudo apt upgrade
+sudo apt -y upgrade
 sudo apt install -y \
-	awesome \
-    cmake \
+    aptitude \
+    awesome \
+    ccache \
+    cmake-curses-gui \
     curl \
     exuberant-ctags \
-	git \
+    flake8 \
+    flawfinder \
+    git \
     global \
+    gnome-terminal \
     htop \
     ipython \
-    libgtk2.0-dev \
+    ipython3 \
     libnotify-dev \
-	mercurial \
-    ncurses-cmake-gui \
+    mercurial \
+    ninja-build \
     ntp \
     pcmanfm \
     python-dev \
     python3-dev \
     python-ipdb \
+    python3-ipdb \
+    python-pip \
+    python3-pip \
     software-properties-common \
     terminator \
-	vim-gnome \
     xclip \
-	zsh
-# installing xclip makes sure neovim enables the clipboard registers!
-
-sudo apt-add-repository ppa:neovim-ppa/stable
-sudo apt-get update && sudo apt-get install -y neovim
-
-echo "Now updating vi, vim, and editor commands to point to neovim"
-
-sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
-# next line just opens an interactive menu that allows user to choose from alternatives
-# sudo update-alternatives --config vi 
-sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
-# sudo update-alternatives --config vim
-sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
-# sudo update-alternatives --config editor
-#
-if [ ! -f ${HOME}/.config/nvim/init.vim ]; then
-    echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> ~/.config/nvim/init.vim
-    echo "let &packpath = &runtimepath" >> ~/.config/nvim/init.vim
-    echo "set guicursor=" >> ~/.config/nvim/init.vim
-    echo "source ~/.vimrc" >> ~/.config/nvim/init.vim
-fi
-
-sudo add-apt-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main'
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-    #clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 lldb-4.0-dev lld-4.0 libfuzzer-4.0-dev libclang-4.0
-yes | sudo apt-get update && sudo apt-get install libclang-4.0 libclang-4.0-dev liblldb-4.0 liblldb-4.0-dbg liblldb-4.0-dev
-	#vim-youcompleteme   # If this is installed with apt or apt-get, it will install the version that requires clang-3.9+ but 
-                         # that has clang-3.8 listed as a required dependency. Not sure what happened there. 
-
-# NOTE: clang-4.0 is included here due to the most up-to-date version of YouCompleteMe available 
-# for Ubuntu 16.04 requires clang-3.9 or later. The clang repository added earlier throws up a 
-# bunch of unsigned repo warnings, but that repo is in fact the official way to install a later 
-# libclang than Ubuntu's suggested version, so no worries.
-
-CONFIG_DIR=${HOME}"/repos/linux-config"
-
-### TODO: Fix checking whether powerline is installed, or add command-line arg for whether 
-#to do powerline font installation and such
-# if [ ! sudo python3 -m pip install --user powerline-status ]; then
-#     # we're just going to do pretty much every font installation procedure powerline offers
-#     pushd ${CONFIG_DIR} && \
-#         git clone https://github.com/powerline/fonts.git --depth=1 \
-#         && pushd fonts \
-#         && ./install.sh \
-#         && popd && popd
-# 
-#     wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
-#     wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf
-#     FONTPATH=/usr/share/fonts/X11/misc/PowerlineSymbols.otf
-#     sudo mv PowerlineSymbols.otf ${FONTPATH}
-#     sudo fc-cache -vf ${FONTPATH}
-#     FONTCONFIGPATH=~/.config/fontconfig/conf.d
-#     mkdir -p ${FONTCONFIGPATH}
-#     mv 10-powerline-symbols.conf ${FONTCONFIGPATH}
-#     echo "For powerline's symbols to work correctly, restart x once this script finishes."
-#     sudo ln -sfn ${CONFIG_DIR}/laura_awesome /usr/share/awesome/themes/laura_awesome
-#     sudo mv /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.json /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.old
-#     sudo ln -sfn ${CONFIG_DIR}/powerline_wm_default.json /usr/local/lib/python3.5/dist-packages/powerline/config_fiiles/themes/wm/default.json
-# else
-#     echo "powerline already installed, so assuming fonts and themes are already configured"
-# fi
+    zathura \
+    zsh
 
 curl -o ~/.git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
+sudo python3 -m pip install matplotlib numpy pandas scipy jupyter
+
+CONFIG_DIR="/home/$USER/repos/linux-config"
+
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-echo "source ${CONFIG_DIR}/.bashrc" >> ~/.bashrc
-echo "PATH=${PATH}:~/bin" >> ~/.bashrc
+echo "source $CONFIG_DIR/.bashrc" >> ~/.bashrc
+echo "PATH=$PATH:~/bin" >> ~/.bashrc
 mkdir -p ~/bin
-ln -sfn ${CONFIG_DIR}/glmb.sh ~/bin/glmb
+ln -v -s $CONFIG_DIR/glmb.sh /home/$USER/bin/glmb
+ln -v -s $CONFIG_DIR/cpp_static_wrapper.py /home/$USER/bin
+ln -v -s $CONFIG_DIR/cmd_monitor.py /home/$USER/bin/cmd_monitor
 
 echo "export ZSH=~/.oh-my-zsh" >> ~/.zshrc
-echo "source ${CONFIG_DIR}/.zshrc" >> ~/.zshrc
+echo "source $CONFIG_DIR/.zshrc" >> ~/.zshrc
+echo "source $CONFIG_DIR/.bashrc" >> ~/.bashrc
 
-DOTVIM=${HOME}/.vim
-VIMRC=${HOME}/.vimrc
-INPUTRC=${HOME}/.inputrc
+mkdir -p ~/repos
+cd ~/repos
+sudo apt install -y libnotify-dev libgtk-3-dev
+git clone https://github.com/valr/cbatticon.git
+git pull
+cd cbatticon
+git pull
+make PREFIX=/usr/local
+sudo make PREFIX=/usr/local install
 
-mkdir -p ${DOTVIM} 
-mkdir -p ${DOTVIM}/{bundle,autoload,swaps,backups}
+VIMREPODIR=~/repos/vim
+BUNDLE_DIR=~/.vim/bundle
+mkdir -p $VIMREPODIR
+cd $VIMREPODIR
 
-chown -R ${ME}:${ME} ${DOTVIM}
+function add_vim_repo {
+    NAME=$(echo $1 | rev | cut -d '/' -f 1 | rev)
+    cd $VIMREPODIR
+    git clone $1 $NAME
+    cd $VIMREPODIR/$NAME
+    pwd
+    git pull
+    ln -s $VIMREPODIR/$NAME $BUNDLE_DIR
+    echo "Added repo ${NAME}"; }
 
-echo "source ${CONFIG_DIR}/.vimrc" >> ${VIMRC}
-echo "set backup" >> ${VIMRC}
-echo "set backupdir=${DOTVIM}/backups" >> ${VIMRC}
-echo "set dir=${DOTVIM}/swaps" >> ${VIMRC}
+git clone https://github.com/tpope/vim-pathogen.git
+cd vim-pathogen
+git pull
+ln -s $VIMREPODIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
 
-echo "set keymap vi" >> ${INPUTRC}
-echo "set editing-mode vi" >> ${INPUTRC}
-echo "set bind-tty-special-chars off" >> ${INPUTRC}
+echo "Adding vim repos"
+add_vim_repo 'https://github.com/milkypostman/vim-togglelist'
+add_vim_repo 'https://github.com/esquires/lvdb'
+add_vim_repo 'https://github.com/Shougo/deoplete.nvim'
+add_vim_repo 'https://github.com/neomake/neomake'
+add_vim_repo 'https://github.com/tpope/vim-fugitive'
+add_vim_repo 'https://github.com/esquires/tabcity'
+add_vim_repo 'https://github.com/esquires/vim-map-medley'
+add_vim_repo 'https://github.com/ctrlpvim/ctrlp.vim'
+add_vim_repo 'https://github.com/majutsushi/tagbar'
+add_vim_repo 'https://github.com/tmhedberg/SimpylFold'
+add_vim_repo 'https://github.com/ludovicchabant/vim-gutentags'
+add_vim_repo 'https://github.com/tomtom/tcomment_vim.git'
+add_vim_repo 'https://github.com/esquires/neosnippet-snippets'
+add_vim_repo 'https://github.com/Shougo/neosnippet.vim.git'
+add_vim_repo 'https://github.com/jlanzarotta/bufexplorer.git'
+add_vim_repo 'https://github.com/lervag/vimtex'
+add_vim_repo 'https://github.com/tpope/tpope-vim-abolish.git'
+add_vim_repo 'https://github.com/wesQ3/vim-windowswap.git'
+add_vim_repo 'https://github.com/vim-airline/vim-airline.git'
+add_vim_repo 'https://github.com/vim-airline/vim-airline-themes.git'
+add_vim_repo 'https://github.com/neutaaaaan/iosvkem.git'
 
-DIR=${HOME}/repos/vim
-mkdir -p ${DIR}
-chown -R ${ME}:${ME} ${DIR}
-pushd ${DIR}
+cd $VIMREPODIR/vimtex
+git checkout master
+git reset --hard origin/master
+git am -3 $PATCH
 
-THEURL=https://github.com/tpope/vim-pathogen.git
-REPONAME=vim-pathogen
-clone_or_pull
-ln -sfn ${DIR}/vim-pathogen/autoload/pathogen.vim ${DOTVIM}/autoload/pathogen.vim
+#install neovim
+cd ~/repos
+sudo apt-get install -y libtool libtool-bin autoconf automake cmake g++ pkg-config unzip python-pip python3-pip
 
-THEURL=https://github.com/milkypostman/vim-togglelist
-REPONAME=vim-togglelist
-clone_or_pull
-ln -sfn ${DIR}/vim-togglelist ${DOTVIM}/bundle/
+sudo apt install -y python{,3}-flake8 pylint{,3}
+touch ~/.pylintrc
 
-THEURL=https://github.com/vim-airline/vim-airline.git
-REPONAME=vim-airline
-clone_or_pull
-ln -sfn ${DIR}/vim-airline ${DOTVIM}/bundle/
+sudo pip3 install neovim cpplint pydocstyle neovim-remote
+git clone https://github.com/neovim/neovim.git
+git fetch
+cd neovim
+git checkout origin/master # v0.2.2 has a lua build error. This is a later commit where the build worked but prior to v0.2.3 which has not been released yet
+mkdir -p .deps
+cd .deps && cmake ../third-party -DCMAKE_CXX_FLAGS=-march=native -DCMAKE_BUILD_TYPE=Release && make
+cd ..
+mkdir -p build
+cd build && cmake .. -G Ninja -DCMAKE_CXX_FLAGS=-march=native -DCMAKE_BUILD_TYPE=Release && ninja &&  sudo ninja install
 
-THEURL=https://github.com/vim-airline/vim-airline-themes.git
-REPONAME=vim-airline-themes
-clone_or_pull
-ln -sfn ${DIR}/vim-airline-themes ${DOTVIM}/bundle/
+# mkdir -p -p ~/.config/nvim
+# echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after
+# let &packpath = &runtimepath
+# set guicursor=
+# source ~/.vimrc" > ~/.config/nvim/init.vim
 
-THEURL=https://github.com/neutaaaaan/iosvkem.git
-REPONAME=iosvkem
-clone_or_pull
-ln -sfn ${DIR}/iosvkem ${DOTVIM}/bundle/
+echo "Now updating vi, vim, and editor commands to point to neovim"
+sudo update-alternatives --install /usr/bin/vi vi /usr/local/bin/nvim 60
+sudo update-alternatives --install /usr/bin/vim vim /usr/local/bin/nvim 60
+sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim 60
 
-THEURL=https://github.com/majutsushi/tagbar.git
-REPONAME=tagbar
-clone_or_pull
-ln -sfn ${DIR}/tagbar ${DOTVIM}/bundle/
+# cppcheck
+cd ~/repos
+git clone https://github.com/danmar/cppcheck
+cd cppcheck
+git pull
+make -j $(($(nproc --all) - 1)) SRCDIR=build CFGDIR=/usr/local/share/cppcheck/cfg HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function -march=native"
+sudo install cppcheck /usr/local/bin
+sudo mkdir -p /usr/local/share/cppcheck/cfg -p
+sudo install -D ./cfg/* /usr/local/share/cppcheck/cfg
 
-THEURL=https://github.com/esquires/lvdb
-REPONAME=lvdb
-clone_or_pull
-ln -sfn ${DIR}/lvdb ${DOTVIM}/bundle/
+# cppclean
+cd ~/repos
+git clone https://github.com/myint/cppclean.git
+cd cppclean
+git pull
+sudo pip3 install -e .
 
-THEURL=https://github.com/esquires/tabcity
-REPONAME=tabcity
-clone_or_pull
-ln -sfn ${DIR}/tabcity ${DOTVIM}/bundle/
+# setup python (and setup vim bindings for the shell)
+ipython profile create
+sed -i "s/#\(c.TerminalInteractiveShell.editing_mode = \)'emacs'/\1 'vi'/" ~/.ipython/profile_default/ipython_config.py
 
-THEURL=https://github.com/esquires/vim-map-medley
-REPONAME=vim-map-medley
-clone_or_pull
-ln -sfn ${DIR}/vim-map-medley ${DOTVIM}/bundle/
+cd ~/repos/vim/lvdb/python
+sudo python setup.py develop
+sudo python3 setup.py develop
 
-THEURL=https://github.com/scrooloose/syntastic.git
-REPONAME=syntastic
-clone_or_pull
-ln -sfn ${DIR}/syntastic ${DOTVIM}/bundle/
+#see here: http://travisjeffery.com/b/2012/02/search-a-git-repo-like-a-ninja
+git config --global alias.unstage 'reset HEAD --'
+git config --global --replace-all core.pager "less -F -X"
+git config --global grep.extendRegexp true
+git config --global grep.lineNumber true
+git config --global alias.g "grep --break --heading --line-number"
+git config --global core.editor nvim
+git config --global merge.tool nvimdiff
+git config --global color.ui true
+#git config --global core.whitespace trailing-space, space-before-tab
 
-THEURL=https://github.com/ctrlpvim/ctrlp.vim.git
-REPONAME=ctrlp.vim
-clone_or_pull
-ln -sfn ${DIR}/ctrlp.vim ${DOTVIM}/bundle/
+# CodeChecker
+sudo apt-get install clang build-essential curl doxygen gcc-multilib \
+  git python-virtualenv python-dev thrift-compiler
+cd ~/repos
+git clone https://github.com/Ericsson/CodeChecker.git
+cd CodeChecker
+git pull
+make venv
 
-# From https://superuser.com/questions/219009/how-do-i-move-around-and-otherwise-rearrange-splits-in-vim
-THEURL=https://github.com/wesQ3/vim-windowswap.git
-REPONAME=vim-windowswap
-clone_or_pull
-ln -sfn ${DIR}/vim-windowswap ${DOTVIM}/bundle
+make package
+echo 'export PATH=$PATH:~/repos/CodeChecker/build/CodeChecker/bin' >> ~/.zshrc
+echo 'export PATH=$PATH:~/repos/CodeChecker/build/CodeChecker/bin' >> ~/.bashrc
 
-THEURL=https://github.com/jsfaint/gen_tags.vim.git
-REPONAME=gen_tags.vim
-clone_or_pull
-ln -sfn ${DIR}/gen_tags.vim ${DOTVIM}/bundle
-
-THEURL=https://github.com/tpope/tpope-vim-abolish.git
-REPONAME=tpope-vim-abolish
-clone_or_pull
-ln -sfn ${DIR}/tpope-vim-abolish ${DOTVIM}/bundle
-
-# THEURL=https://github.com/tpope/vim-fugitive.git
-# REPONAME=vim-fugitive
-# clone_or_pull
-# ln -sfn ${DIR}/vim-fugitive ${DOTVIM}/bundle
-
-THEURL=https://github.com/tpope/vim-commentary.git
-REPONAME=vim-commentary
-clone_or_pull
-ln -sfn ${DIR}/vim-commentary ${DOTVIM}/bundle
-
-# Install my colorschemes
-mkdir -p ${HOME}/.vim/colors
-sudo ln -sfn ${CONFIG_DIR}/laura.vim ${HOME}/.vim/colors/laura.vim
-sudo ln -sfn ${CONFIG_DIR}/laura_light.vim ${HOME}/.vim/colors/laura_light.vim
-
-# # The next few lines, which install YouCompleteMe from source, assume
-# # that the version of vim installed was compiled to use python3, not python2.
-PRE_YCM_INSTALL_DIR=$(pwd)
-THEURL=https://github.com/Valloric/YouCompleteMe.git
-REPONAME=YouCompleteMe
-clone_or_pull
-ln -sfn ${DIR}/YouCompleteMe ${DOTVIM}/bundle
-# Make sure we own all the stuff in ${DIR}
-chown -R ${ME}:${ME} ${DIR}
-pushd ${DIR}
-pushd YouCompleteMe
-git submodule update --init --recursive
-
-# this is where YouCompleteMe's build files will go
-mkdir -p ${HOME}/ycm_build && pushd ${HOME}/ycm_build
-chown -R ${ME}:${ME} ${HOME}/ycm_build
-
-# This should generate CMake files for clang-4.0 installed in default directory
-# and for Vim compiled to use Python3 (since YCM has to use the same Python version Vim does)
-cmake -G "Unix Makefiles" -DEXTERNAL_LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu/libclang-4.0.so -DUSE_PYTHON2=OFF . ${DIR}/YouCompleteMe/third_party/ycmd/cpp
-
-# Now build YCM
-cmake --build . --target ycm_core --config Release
-
-# go back to original directory
-cd ${PRE_YCM_INSTALL_DIR}
-
-# Install vim bindings for jupyter notebooks
-# https://github.com/lambdalisue/jupyter-vim-binding
-sudo pip3 install jupyter
-mkdir -p $(jupyter --data-dir)/nbextensions
-cd $(jupyter --data-dir)/nbextensions
-git clone https://github.com/lambdalisue/jupyter-vim-binding vim_binding
-jupyter nbextension enable vim_binding/vim_binding
-
-echo "Now changing the following user's default shell to zsh:"
-echo ${ME}
-
-sudo chsh -s /usr/bin/zsh ${ME}
-
+ln -v -s $CONFIG_DIR/run_clang.py /home/$USER/bin/run_clang

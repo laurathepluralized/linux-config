@@ -4,124 +4,60 @@ Linux Config-Laura's Version
 Installation
 ---
 
-general configuration
+This assumes a particular path for installation::
 
-    curl -o ~/.git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-    curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+    mkdir ~/repos
+    cd repos
+    git clone https://github.com/esquires/linux-config.git
+    cd linux-config
+    bash ubuntu_install.sh
 
-place this in ~/.bashrc
+Manual steps:
 
-    if [ -f <dir>/.bashrc ]; then
-        source <dir>/.bashrc
-    fi
+* Put this in `~/.gitconfig`. See [here](https://github.com/neovim/neovim/issues/2377)
 
-    PATH=$PATH:~/bin
+    ```
+    [merge]
+        tool = nvimdiff
+    [difftool "nvimdiff"] 
+        cmd = terminator -x nvim -d $LOCAL $REMOTE
+    [user]
+        name = your_name
+        email = your_email
+    ``` 
 
-place this in ~/.zshrc (and install https://github.com/robbyrussell/oh-my-zsh)
+* nvim, run ``:UpdateRemotePlugins`` for deoplete to work
+
+* open ``/etc/xdg/awesome/rc.lua`` and change the following:
+
+    ```
+    local layouts =
+        awful.layout.suit.floating,
+        awful.layout.suit.tile.left,
+        awful.layout.suit.fair,
+        awful.layout.suit.max,
+        awful.layout.suit.magnifier
+    }
     
-    export ZSH=~/path_to_oh_my_zsh_install
-    source ~/repos/linux-config/.zshrc
+    terminal = "terminator -x nvim -c term -c \"normal A\""
+    ```
 
-place this in ~/.vimrc
+* see ``notes/.gdbinit`` for an init file. You can run gdb linked to vim
+  by hitting ``\d`` in vim and running in a terminal.
 
-    try
-        source <dir>/.vimrc
-    catch
-    endtry
+  ```gdb -x .gdbinit -f binary```
 
-    set backup
-    set backupdir=~/.vim/backups
-    set dir=~/.vim/swaps
+  see [lvdb](https://github.com/esquires/lvdb) for details
 
-place this in ~/.inputrc
+* for clang static analysis, execute
 
-    #get vi mode for all binaries called from bash
-    #http://acg.github.io/2011/05/17/put-everything-in-vi-mode.html
-    set keymap vi
-    set editing-mode vi
-    
-    $if mode=vi
-        set keymap vi-insert
-        "jk": vi-movement-mode
-        "\C-p": "jkk"
-    $endif
-
-    set bind-tty-special-chars off
-
-to get various plugins for vim
-
-    mkdir ~/.vim/swaps 
-    mkdir ~/.vim/backups
-
-    cd into some place where you want your repos
-
-    DIR=$(pwd)
-    mkdir -p ~/.vim/autoload
-    mkdir ~/.vim/bundle
-
-    pathogen:
-
-        git clone https://github.com/tpope/vim-pathogen.git
-        ln -s $DIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
-
-    togglelist:
-
-        git clone https://github.com/milkypostman/vim-togglelist
-        ln -s $DIR/vim-togglelist ~/.vim/bundle/
-
-    lvdb:
-
-        git clone https://github.com/esquires/lvdb
-        ln -s $DIR/lvdb ~/.vim/bundle/
-
-    tabcity:
-        git clone https://github.com/esquires/tabcity
-        ln -s $DIR/tabcity ~/.vim/bundle
-
-    vim-map-medley:
-
-        git clone https://github.com/esquires/vim-map-medley
-        ln -s $DIR/vim-map-medley ~/.vim/bundle/
-
-    syntastic:
-
-        git clone https://github.com/scrooloose/syntastic.git
-        ln -s $DIR/syntastic ~/.vim/bundle
-
-    vim-l9:
-        # installed as a dependency for vim-fuzzyfinder
-        hg clone https://bitbucket.org/ns9tks/vim-l9
-        ln -s $DIR/vim-l9 ~/.vim/bundle
-
-    vim-fuzzyfinder:
-        hg clone https://bitbucket.org/ns9tks/vim-fuzzyfinder
-        ln -s $DIR/vim-fuzzyfinder ~/.vim/bundle
-
-    youcompleteme:
-        # this is in the ubuntu packages under `vim-youcompleteme` or
-        # arch linux in the aur
-        # for ubuntu, do 
-        sudo apt install vim-youcompleteme && vam install youcompleteme
-
-
-awesome window manager setup
-
-    in ~/.config/awesome/rc.lua, place the following:
-
-        terminal = 'whatever your terminal program is'
-        local awful = require("awful")
-
-        require("gen_config")
-
-        -- {{{ Tags
-        -- Define a tag table which hold all screen tags.
-        tags = {}
-        for s = 1, screen.count() do
-            -- Each screen has its own tag table.
-            tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
-        end
-        -- }}}
-
-    then in bash, type
-
-        ln -s <dir>/gen_config.lua ~/.config/awesome/gen_config.lua
+  ```
+  source ~/repos/CodeChecker/venv/bin/activate
+  cd build
+  rm CMakeCache.txt
+  cmake .. -G Ninja
+  CodeChecker log -b "ninja" -o compilation.json
+  CodeChecker analyze compilation.json -o ./reports
+  CodeChecker parse ./reports -i skipfile
+  ```
+  
