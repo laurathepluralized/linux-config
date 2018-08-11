@@ -33,20 +33,21 @@ HISTCONTROL=ignoredups
 #note, to quit a searchm, use ctrl_G,
 #      to save a history command without running it, use "#" before the command
 #see http://ruslanspivak.com/2010/11/20/bash-history-reverse-intelligent-search
-stty -ixon
+#stty -ixon
 
 #setup the bash prompt
 WHITE='\[\e[0;37m\]'
 GREEN='\[\e[0;32m\]'
 if [ -f ~/.git-prompt.sh ]; then
-    source ~/.git-prompt.sh
-    PS1="${WHITE}\$(__git_ps1)${GREEN}\W: ${WHITE}"
+   source ~/.git-prompt.sh
+   PS1="${WHITE}\$(__git_ps1)${GREEN}\W: ${WHITE}"
 else
-    PS1="${GREEN}\W\$ ${WHITE}"
+   PS1="${GREEN}\W\$ ${WHITE}"
 fi
 
 #git aliases
 alias gs='git status'
+alias ggs='git status'
 alias gf='git fetch'
 alias gm='git merge'
 alias gms='git merge -S'
@@ -128,11 +129,11 @@ git config --global merge.tool gvimdiff
 git config --global color.ui true
 git config --global core.whitespace trailing-space, space-before-tab
 
-#other aliases
+other aliases
 alias cb='xclip -selection clipboard'
 alias grep='grep --color=auto'
 alias find1='find -maxdepth 1 -mindepth 1'
-alias l='ls -lh'
+#alias l='ls -lh'
 alias CLR='for i in {1..99}; do echo; done; clear'
 alias g="gnome-terminal -x nvim -p"
 

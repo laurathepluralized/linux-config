@@ -41,16 +41,15 @@ echo "export ZSH=~/.oh-my-zsh" >> ~/.zshrc
 echo "source $CONFIG_DIR/.zshrc" >> ~/.zshrc
 echo "source $CONFIG_DIR/.bashrc" >> ~/.bashrc
 
-mkdir ~/.vim
-mkdir ~/.vim/{bundle,autoload,swaps,backups}
-echo "source $CONFIG_DIR/.vimrc" >> ~/.vimrc
-echo "set backup" >> ~/.vimrc
-echo "set backupdir=~/.vim/backups" >> ~/.vimrc
-echo "set dir=~/.vim/swaps" >> ~/.vimrc
+THEURL=https://github.com/jsfaint/gen_tags.vim.git
+REPONAME=gen_tags.vim
+clone_or_pull
+ln -sfn ${DIR}/gen_tags.vim ${DOTVIM}/bundle
 
-echo "set keymap vi" >> ~/.inputrc
-echo "set editing-mode vi" >> ~/.inputrc
-echo "set bind-tty-special-chars off" >> ~/.inputrc
+THEURL=https://github.com/tpope/tpope-vim-abolish.git
+REPONAME=tpope-vim-abolish
+clone_or_pull
+ln -sfn ${DIR}/tpope-vim-abolish ${DOTVIM}/bundle
 
 mkdir ~/repos
 cd ~/repos
@@ -127,7 +126,8 @@ echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 source ~/.vimrc" > ~/.config/nvim/init.vim
 
-sudo chsh -s /usr/bin/zsh $USER
+echo "Now changing the following user's default shell to zsh:"
+echo ${ME}
 
 # cppcheck
 cd ~/repos

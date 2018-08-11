@@ -1,3 +1,4 @@
+
 " mapping leaders
 let mapleader = "\<space>"
 let maplocalleader = "\\"
@@ -70,20 +71,12 @@ nnoremap <leader>q :call ToggleQuickfixList()<cr>
 let g:lvdb_toggle_lines = 3
 let g:lvdb_close_tabs = 1
 
-" color setup
-" backspace/colors
-set bs=2
-
-"colorscheme stuff
-"change background
-set t_Co=256
-colorscheme wombat256A
-if has("gui_running")
+" if has("gui_running")
     set spell
-else
-    "spell check comes out as poor highlighting
+" else
+    " "spell check comes out as poor highlighting
     set nospell
-endif
+" endif
 
 " neomake
 " errorformat for cppcheck copied from syntastic:
@@ -175,6 +168,9 @@ nnoremap <localleader>f :CtrlP getcwd()<cr>
 "in case there are system specific settings
 try
     source ~/.vimrc_specific
+    source ~/repos/linux-config/.vimrc_specific
+    source ~/repos/misc-scripts/.vimrc_specific
+    source ~/repos/misc-scripts/.vimrc_extra
 catch
 endtry
 
@@ -381,3 +377,5 @@ let g:tex_flavor = 'latex'
 let g:vimtex_quickfix_open_on_warning=1
 let g:vimtex_fold_enabled=1
 au! BufRead * normal zR
+colorscheme Iosvkem
+
