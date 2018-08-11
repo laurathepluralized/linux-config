@@ -37,9 +37,9 @@ if has("nvim")
 endif 
 
 "enable very magic
-nnoremap / /\v
+" nnoremap / /\v
 nnoremap ? ?\v
-nnoremap <leader>a :qa<cr>
+" nnoremap <leader>a :qa<cr>
 set smartcase
 
 " lvdb

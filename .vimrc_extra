@@ -34,17 +34,6 @@ map! <F9> ^[:call ToggleWrap()<CR>
 " http://benoithamelin.tumblr.com/post/15101202004/using-vim-exuberant-ctags-easy-source-navigation
 set tags=./tags;~/repos
 
-" YCM debugging
-let g:ycm_server_python_interpreter='python3'
-let g:ycm_server_keep_logfiles=1
-let g:ycm_server_log_level='debug'
-
-" ycm
-let g:ycm_show_diagnostics_ui = 1
-" make YCM close the scratchpad window after I'm done with it
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-
 syntax enable
 
 " Let me have up to 50 tabs
@@ -67,9 +56,9 @@ endif
 set display+=lastline
 
 " syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 nnoremap <localleader>e :SyntasticCheck<CR>
