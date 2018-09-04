@@ -165,6 +165,7 @@ function add_vim_repo {
 git clone https://github.com/tpope/vim-pathogen.git
 cd vim-pathogen
 git pull
+mkdir -p ~/.vim/autoload
 ln -s $VIMREPODIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
 
 echo "Adding vim repos"
