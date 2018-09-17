@@ -144,8 +144,8 @@ alias networkmanager="nm-connection-editor &"
 # https://www.gnu.org/software/bash/manual/bashref.html#Word-Designators
 # https://www.gnu.org/software/bash/manual/bashref.html#Modifiers
 
-
-
-
-
-
+# Executable names for utilities:
+# System settings = unity-control-center
+# (or gnome-control-center after 17.04)
+# Executable name for Ubuntu Software Center:
+# software-center
