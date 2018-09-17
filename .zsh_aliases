@@ -73,6 +73,7 @@ alias CLR='for i in {1..99}; do echo; done; clear'
 
 export PATH=${PATH}:${HOME}/Zotero_linux-x86_64
 # alias zotero="/home/laura/Zotero_linux-x86_64/zotero &"
+alias foxit="FoxitReader 2> /dev/null  &"
 
 ## Apt-get update and upgrade, plus install one specified package
 # (TODO: multiple args so multiple packages can be installed at once)
