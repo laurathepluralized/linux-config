@@ -1,5 +1,8 @@
 " Laura's .vimrc additions
 
+syntax enable
+syntax on
+
 " Stop vim from folding everything it can find to fold upon file open
 set nofoldenable
 
@@ -13,6 +16,13 @@ set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
 
 set smartcase
+
+" pulse line on moving to next item in search
+let g:vim_search_pulse_mode = 'cursor_line'
+
+" Pulse line when I push \z to flash line with cursor
+"nmap <localleader>z :call search_pulse#PulsePattern()<CR>
+map <C-j> :call search_pulse#Pulse()
 
 " from
 " https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
@@ -34,7 +44,6 @@ map! <F9> ^[:call ToggleWrap()<CR>
 " http://benoithamelin.tumblr.com/post/15101202004/using-vim-exuberant-ctags-easy-source-navigation
 set tags=./tags;~/repos
 
-syntax enable
 
 " Let me have up to 50 tabs
 if &tabpagemax < 50
@@ -117,13 +126,13 @@ au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmarg
 " from http://vim.wikia.com/wiki/80_character_line_wrap_without_broken_words
 set formatoptions+=w
 " set tw=80
-nnoremap <localleader>W gqip
+" I don't think you can map W, or at least not without more vim-fu
+" but gqip will break lines at 80 chars (probably tw) for an entire paragraph
+" (boundaries are blank lines)
+" map <localleader>W gqip
 
-" Encoded by following this process:
+" Save macros:
 " https://www.reddit.com/r/vim/comments/1ramn9/whats_the_best_way_to_save_macros_persistently/cdlau12/
-" Take the current line, put \cite{ at the beginning and } at the end, then go
-" to the next line
-nmap <localleader>c I\cite{A}j
 
 " Make resizing horizontal splits less aggravating
 " nmap <silent> <Leader>hh :res -10<cr>
@@ -131,10 +140,6 @@ nmap <localleader>c I\cite{A}j
 
 " Netrw list setting
 let g:netrw_liststyle = 1
-
-" Enter a line below current line and stay in command mode
-" (just push Enter in command mode)
-nmap <CR> o<Esc>k
 
 " http://vim.wikia.com/wiki/Switching_case_of_characters#Twiddle_case
 function! TwiddleCase(str)
@@ -150,6 +155,12 @@ function! TwiddleCase(str)
 endfunction
 vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 
+" Rainbow parentheses
+let g:rainbow#max_level = 5
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
+let g:rainbow#blacklist = [231, 244, 253, #ffffff, #808080, #dddddd] 
+au VimEnter * RainbowParentheses
+" Uncomment this line to test RainbowParentheses (((())))
 
 " REMINDER
 " Space is leader
