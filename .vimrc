@@ -214,6 +214,7 @@ let g:NERDTrimTrailingWhitespace = 1
 try
     source ~/.vimrc_specific
     source ~/repos/linux-config/.vimrc_specific
+    source ~/repos/linux-config/.vimrc_extra
     source ~/repos/misc-scripts/.vimrc_specific
     source ~/repos/misc-scripts/.vimrc_extra
 catch
