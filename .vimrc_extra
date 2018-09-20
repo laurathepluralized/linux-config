@@ -21,9 +21,9 @@ set smartcase
 " pulse line on moving to next item in search
 let g:vim_search_pulse_mode = 'cursor_line'
 
-" Pulse line when I push \z to flash line with cursor
-"nmap <localleader>z :call search_pulse#PulsePattern()<CR>
-map <C-j> :call search_pulse#Pulse()
+" Pulse line when I push , to flash line with cursor
+" Want something along the lines of https://www.reddit.com/r/vim/comments/1z1ndk/do_you_knowcan_you_think_of_a_way_to/cfpyh57
+nnoremap , Pulse<CR>
 
 " from
 " https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
@@ -159,7 +159,7 @@ vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 " Rainbow parentheses
 let g:rainbow#max_level = 5
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
-let g:rainbow#blacklist = [231, 244, 253, #ffffff, #808080, #dddddd] 
+let g:rainbow#blacklist = [231, 244, 253, #ffffff, #808080, #dddddd]
 au VimEnter * RainbowParentheses
 " Uncomment this line to test RainbowParentheses (((())))
 
