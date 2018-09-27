@@ -28,23 +28,23 @@ nnoremap , Pulse<CR>
 " from
 " https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
 " toggle text wrapping
-function ToggleWrap()
-    if (&wrap == 1)
-        set nowrap
-    else
-        set wrap
-    endif
-endfunction
-
-map <F9> :call ToggleWrap()<CR>
-map! <F9> ^[:call ToggleWrap()<CR>
+" This doesn't work in Neovim
+" function ToggleWrap()
+"     if (&wrap == 1)
+"         set nowrap
+"     else
+"         set wrap
+"     endif
+" endfunction
+"
+map <F9> set wrap<CR>
+map! <F9> set nowrap<CR>
 
 " Tell vim to look for ctags tags files from current directory up to the repos
 " directory so I don't have to open every file from project root directory to
 " use tags
 " http://benoithamelin.tumblr.com/post/15101202004/using-vim-exuberant-ctags-easy-source-navigation
 set tags=./tags;~/repos
-
 
 " Let me have up to 50 tabs
 if &tabpagemax < 50
