@@ -150,3 +150,9 @@ alias networkmanager="nm-connection-editor &"
 # (or gnome-control-center after 17.04)
 # Executable name for Ubuntu Software Center:
 # software-center
+#
+# Zero out empty space on hard drive (e.g. for repartitioning):
+# dd if=/dev/zero of=/var/tmp/bigemptyfile bs=4096k ; rm /var/tmp/bigemptyfile
+# This tip from 
+# https://superuser.com/questions/529149/how-to-compact-virtualboxs-vdi-file-size/529183#529183
+#
