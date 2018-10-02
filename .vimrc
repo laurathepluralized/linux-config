@@ -220,6 +220,62 @@ try
 catch
 endtry
 
+" copied from https://stackoverflow.com/a/7238791
+set tabline=%!MyTabLine()
+
+function! MyTabLine()
+  let s = ''
+  for i in range(tabpagenr('$'))
+    " select the highlighting
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
+    endif
+
+    " set the tab page number (for mouse clicks)
+    let s .= '%' . (i + 1) . 'T'
+
+    " the label is made by MyTabLabel()
+    let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+  endfor
+
+  " after the last tab fill with TabLineFill and reset tab page nr
+  let s .= '%#TabLineFill#%T'
+
+  " right-align the label to close the current tab page
+  if tabpagenr('$') > 1
+    let s .= '%=%#TabLine#%999Xclose'
+  endif
+
+  return s
+endfunction
+
+function! MyTabLabel(n)
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let label =  bufname(buflist[winnr - 1])
+  return fnamemodify(label, ":t")[:10]
+endfunction
+
+let g:ct=0
+function! PrefixStatusLine()
+     set statusline=
+     set statusline+=%-4c
+     set statusline+=%l/%-6L	"line number / total lines
+     set statusline+=%-8y		"show the file-type
+endfunction
+
+function! PostfixStatusLine()
+     set statusline+=%=			"now go to the right side of the statusline
+     set statusline+=%-3m
+     set statusline+=%<%f			"full path on the right side
+endfunction
+
+function! ToString(inp)
+  return a:inp
+endfunction
+
 function! MyNeomakeGoodContext(context)
     return has_key(a:context, "jobinfo") && has_key(a:context["jobinfo"], "name") && a:context["jobinfo"]["name"] == "makeprg"
 endfunction!
@@ -252,7 +308,6 @@ function! MyOnNeomakeFinished()
     call airline#highlighter#reset_hlcache()
     call airline#load_theme()
     call airline#update_statusline()
-
 endfunction
 
 augroup my_neomake_hooks
@@ -290,7 +345,9 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " For conceal markers.
 if has('conceal')
-  set conceallevel=2 concealcursor=niv
+  set conceallevel=0 concealcursor=niv
+" why I set conceallevel to 0:
+" https://vi.stackexchange.com/a/7263
 endif
 
 function! GetGitPath(fname)
