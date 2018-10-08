@@ -6,7 +6,11 @@ syntax on
 " Stop vim from folding everything it can find to fold upon file open
 set nofoldenable
 
-" This var isn't used anymore. Instead, put
+" My preferred colors
+" colorscheme Iosvkem
+" have to do this earlier, so in linux-config/.vimrc
+
+" This var, NVIM_TUI_ENABLE_CURSOR_SHAPE, isn't used anymore. Instead, put
 " set guicursor=
 " in ~/.config/nvim/init.vim to stop attempts at cursor shaping.
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
@@ -162,6 +166,68 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
 let g:rainbow#blacklist = [231, 244, 253, #ffffff, #808080, #dddddd]
 au VimEnter * RainbowParentheses
 " Uncomment this line to test RainbowParentheses (((())))
+
+" copied from https://stackoverflow.com/a/7238791
+set tabline=%!MyTabLine()
+
+function! MyTabLine()
+  let s = ''
+  for i in range(tabpagenr('$'))
+    " select the highlighting
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
+    endif
+
+    " set the tab page number (for mouse clicks)
+    let s .= '%' . (i + 1) . 'T'
+
+    " the label is made by MyTabLabel()
+    let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+  endfor
+
+  " after the last tab fill with TabLineFill and reset tab page nr
+  let s .= '%#TabLineFill#%T'
+
+  " right-align the label to close the current tab page
+  if tabpagenr('$') > 1
+    let s .= '%=%#TabLine#%999Xclose'
+  endif
+
+  return s
+endfunction
+
+function! MyTabLabel(n)
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let label =  bufname(buflist[winnr - 1])
+  return fnamemodify(label, ":t")[:10]
+endfunction
+
+let g:ct=0
+function! PrefixStatusLine()
+     set statusline=
+     set statusline+=%-4c
+     set statusline+=%l/%-6L	"line number / total lines
+     set statusline+=%-8y		"show the file-type
+endfunction
+
+function! PostfixStatusLine()
+     set statusline+=%=			"now go to the right side of the statusline
+     set statusline+=%-3m
+     set statusline+=%<%f			"full path on the right side
+endfunction
+
+function! ToString(inp)
+  return a:inp
+endfunction
+
+
+
+
+
+
 
 " REMINDER
 " Space is leader
