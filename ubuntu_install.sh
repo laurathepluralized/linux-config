@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 PATCH=$PWD/patches/0001-open-tag-in-reverse_goto-when-indicated-by-switchbuf.patch
 sudo apt update
@@ -71,71 +72,15 @@ echo "set keymap vi" >> ${INPUTRC}
 echo "set editing-mode vi" >> ${INPUTRC}
 echo "set bind-tty-special-chars off" >> ${INPUTRC}
 
-DIR=${HOME}/repos/vim
-mkdir -p ${DIR}
-chown -R ${ME}:${ME} ${DIR}
-pushd ${DIR}
+VIMREPODIR=${HOME}/repos/vim
+mkdir -p ${VIMREPODIR}
+chown -R ${ME}:${ME} ${VIMREPODIR}
+pushd ${VIMREPODIR}
 
-THEURL=https://github.com/tpope/vim-pathogen.git
-REPONAME=vim-pathogen
-clone_or_pull
-ln -sfn ${DIR}/vim-pathogen/autoload/pathogen.vim ${DOTVIM}/autoload/pathogen.vim
-
-THEURL=https://github.com/milkypostman/vim-togglelist
-REPONAME=vim-togglelist
-clone_or_pull
-ln -sfn ${DIR}/vim-togglelist ${DOTVIM}/bundle/
-
-THEURL=https://github.com/vim-airline/vim-airline.git
-REPONAME=vim-airline
-clone_or_pull
-ln -sfn ${DIR}/vim-airline ${DOTVIM}/bundle/
-
-THEURL=https://github.com/vim-airline/vim-airline-themes.git
-REPONAME=vim-airline-themes
-clone_or_pull
-ln -sfn ${DIR}/vim-airline-themes ${DOTVIM}/bundle/
-
-THEURL=https://github.com/neutaaaaan/iosvkem.git
-REPONAME=iosvkem
-clone_or_pull
-ln -sfn ${DIR}/iosvkem ${DOTVIM}/bundle/
-
-THEURL=https://github.com/majutsushi/tagbar.git
-REPONAME=tagbar
-clone_or_pull
-ln -sfn ${DIR}/tagbar ${DOTVIM}/bundle/
-
-THEURL=https://github.com/esquires/lvdb
-REPONAME=lvdb
-clone_or_pull
-ln -sfn ${DIR}/lvdb ${DOTVIM}/bundle/
-
-THEURL=https://github.com/esquires/tabcity
-REPONAME=tabcity
-clone_or_pull
-ln -sfn ${DIR}/tabcity ${DOTVIM}/bundle/
-
-THEURL=https://github.com/esquires/vim-map-medley
-REPONAME=vim-map-medley
-clone_or_pull
-ln -sfn ${DIR}/vim-map-medley ${DOTVIM}/bundle/
-
-THEURL=https://github.com/scrooloose/syntastic.git
-REPONAME=syntastic
-clone_or_pull
-ln -sfn ${DIR}/syntastic ${DOTVIM}/bundle/
-
-THEURL=https://github.com/ctrlpvim/ctrlp.vim.git
-REPONAME=ctrlp.vim
-clone_or_pull
-ln -sfn ${DIR}/ctrlp.vim ${DOTVIM}/bundle/
-
-# From https://superuser.com/questions/219009/how-do-i-move-around-and-otherwise-rearrange-splits-in-vim
-THEURL=https://github.com/wesQ3/vim-windowswap.git
-REPONAME=vim-windowswap
-clone_or_pull
-ln -sfn ${DIR}/vim-windowswap ${DOTVIM}/bundle
+#THEURL=https://github.com/scrooloose/syntastic.git
+#REPONAME=syntastic
+#clone_or_pull
+#ln -sfn ${VIMREPODIR}/syntastic ${DOTVIM}/bundle/
 
 mkdir -p ~/repos
 cd ~/repos
