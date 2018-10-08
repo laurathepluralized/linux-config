@@ -105,11 +105,12 @@ set bs=2
 "colorscheme stuff
 "change background
 " set t_Co=256
+colorscheme Iosvkem
 " colorscheme wombat256A
-if has("gui_running")
-    set spell
-else
-    "spell check comes out as poor highlighting
+" if has("gui_running")
+"     set spell
+" else
+    " "spell check comes out as poor highlighting
     set nospell
 endif
 
@@ -194,6 +195,85 @@ let g:neomake_cpp_flawfinder_maker={
 " vimtex
 let g:vimtex_fold_enabled = 1
 
+" neomake
+" errorformat for cppcheck copied from syntastic:
+"   https://github.com/vim-syntastic/syntastic/blob/master/syntax_checkers/c/cppcheck.vim
+augroup my_neomake_signs
+    au!
+    autocmd ColorScheme *
+        \ hi NeomakeErrorSign ctermfg=red ctermbg=black |
+        \ hi NeomakeWarningSign ctermfg=yellow ctermbg=black |
+        \ hi NeomakeWarning ctermbg=darkblue
+augroup END
+
+nnoremap <leader>c :cnext<CR>
+nnoremap <leader>L :lnext<CR>
+let g:neomake_tex_enabled_makers=[]
+let g:neomake_cpp_enabled_makers=['cpplint', 'cppcheck', 'cppclean', 'flawfinder']
+let g:neomake_open_list=0
+let g:neomake_highlight_lines=1
+let g:neomake_highlight_columns=1
+let g:neomake_place_signs=1
+let g:neomake_python_enabled_makers=['pylint', 'pydocstyle', 'flake8']
+
+let g:neomake_cpp_cppclean_maker={
+        \ 'exe': "cpp_static_wrapper.py",
+        \ 'args': ['cppclean', '--no-print-cmd'],
+        \ 'errorformat': '%f:%l: %m, %f:%l %m'
+        \ }
+
+let g:neomake_python_pylint_maker={
+    \ 'exe': 'pylint3',
+    \ 'args': [
+        \ '--rcfile=~/repos/linux-config/.pylintrc',
+        \ '--output-format=text',
+        \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg} [{msg_id}]"',
+        \ '--reports=no'
+    \ ],
+    \ 'errorformat':
+        \ '%A%f:%l:%c:%t: %m,' .
+        \ '%A%f:%l: %m,' .
+        \ '%A%f:(%l): %m,' .
+        \ '%-Z%p^%.%#,' .
+        \ '%-G%.%#',
+    \ 'output_stream': 'both',
+    \ 'postprocess': [
+    \   function('neomake#postprocess#generic_length'),
+    \   function('neomake#makers#ft#python#PylintEntryProcess'),
+    \ ]}
+
+let g:neomake_cpp_cppcheck_maker={
+        \ 'exe': 'cpp_static_wrapper.py',
+        \ 'args': 'cppcheck',
+        \ 'errorformat' :
+        \   '[%f:%l:%c]: (%trror) %m,' .
+        \   '[%f:%l:%c]: (%tarning) %m,' .
+        \   '[%f:%l:%c]: (%ttyle) %m,' .
+        \   '[%f:%l:%c]: (%terformance) %m,' .
+        \   '[%f:%l:%c]: (%tortability) %m,' .
+        \   '[%f:%l:%c]: (%tnformation) %m,' .
+        \   '[%f:%l:%c]: (%tnconclusive) %m,' .
+        \   '%-G%.%#'}
+
+let g:neomake_cpp_cpplint_maker={
+        \ 'exe': executable('cpplint') ? 'cpplint' : 'cpplint.py',
+        \ 'args': ['--verbose=3'],
+        \ 'errorformat':
+        \     '%A%f:%l:  %m [%t],' .
+        \     '%-G%.%#',
+        \ 'postprocess': function('neomake#makers#ft#cpp#CpplintEntryProcess')
+        \ }
+
+let g:neomake_cpp_flawfinder_maker={
+        \ 'exe': 'flawfinder',
+        \ 'args': ['--quiet', '--dataonly', '--singleline'],
+        \ 'errorformat': '%f:%l:  %m,',
+        \ 'postprocess': function('neomake#makers#ft#cpp#CpplintEntryProcess')
+        \ }
+
+" vimtex
+let g:vimtex_fold_enabled = 1
+
 " ctrlp
 let g:ctrlp_custom_ignore = {
 \ 'dir':  '\v[\/](git|hg|svn|build|build_dependencies|build_resources|devel)$',
@@ -209,72 +289,11 @@ let g:NERDSpaceDelims = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-
 "in case there are system specific settings
 try
     source ~/.vimrc_specific
-    source ~/repos/linux-config/.vimrc_specific
-    source ~/repos/linux-config/.vimrc_extra
-    source ~/repos/misc-scripts/.vimrc_specific
-    source ~/repos/misc-scripts/.vimrc_extra
 catch
 endtry
-
-" copied from https://stackoverflow.com/a/7238791
-set tabline=%!MyTabLine()
-
-function! MyTabLine()
-  let s = ''
-  for i in range(tabpagenr('$'))
-    " select the highlighting
-    if i + 1 == tabpagenr()
-      let s .= '%#TabLineSel#'
-    else
-      let s .= '%#TabLine#'
-    endif
-
-    " set the tab page number (for mouse clicks)
-    let s .= '%' . (i + 1) . 'T'
-
-    " the label is made by MyTabLabel()
-    let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
-  endfor
-
-  " after the last tab fill with TabLineFill and reset tab page nr
-  let s .= '%#TabLineFill#%T'
-
-  " right-align the label to close the current tab page
-  if tabpagenr('$') > 1
-    let s .= '%=%#TabLine#%999Xclose'
-  endif
-
-  return s
-endfunction
-
-function! MyTabLabel(n)
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  let label =  bufname(buflist[winnr - 1])
-  return fnamemodify(label, ":t")[:10]
-endfunction
-
-let g:ct=0
-function! PrefixStatusLine()
-     set statusline=
-     set statusline+=%-4c
-     set statusline+=%l/%-6L	"line number / total lines
-     set statusline+=%-8y		"show the file-type
-endfunction
-
-function! PostfixStatusLine()
-     set statusline+=%=			"now go to the right side of the statusline
-     set statusline+=%-3m
-     set statusline+=%<%f			"full path on the right side
-endfunction
-
-function! ToString(inp)
-  return a:inp
-endfunction
 
 function! MyNeomakeGoodContext(context)
     return has_key(a:context, "jobinfo") && has_key(a:context["jobinfo"], "name") && a:context["jobinfo"]["name"] == "makeprg"
@@ -437,3 +456,9 @@ let g:airline#extensions#tabline#show_splits = 0
 
 colorscheme Iosvkem
 
+" airline
+let g:airline_extensions = ['tabline']
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#tabline#show_splits = 0

@@ -178,6 +178,14 @@ cd vim-pathogen
 git pull
 mkdir -p ~/.vim/autoload
 ln -s $VIMREPODIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
+cd -
+
+git clone https://github.com/neutaaaaan/iosvkem.git
+cd iosvkem.git
+git pull
+mkdir -p ~/.vim/colors
+ln -s $VIMREPODIR/iosvkem.git/colors/Iosvkem.vim ~/.vim/colors/Iosvkem.vim
+cd -
 
 echo "Adding vim repos"
 add_vim_repo 'https://github.com/milkypostman/vim-togglelist'
