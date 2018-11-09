@@ -3,6 +3,8 @@
 alias szrc="source ${HOME}/.zshrc"
 alias zshrc="sudo vim ${HOME}/.zshrc && source ${HOME}/.zshrc"
 
+alias vim="nvim"
+
 # Normal installation structure of misc repos and linux-config
 export REPOS=${HOME}/repos
 export LCONFIG=${REPOS}/linux-config
