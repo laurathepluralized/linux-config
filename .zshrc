@@ -89,6 +89,7 @@ PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ------------------------------------------
 alias gs='git status'
 alias gf='git fetch'
 alias gfa='git fetch --all'
+alias gua='git fetch --all && git submodule update --init --recursive'
 alias gm='git merge'
 alias gms='git merge -S'
 alias ga='git add'
