@@ -213,6 +213,7 @@ add_vim_repo 'https://github.com/neutaaaaan/iosvkem.git'
 add_vim_repo 'https://github.com/vim-scripts/DoxygenToolkit.vim.git'
 # add_vim_repo 'https://github.com/inside/vim-search-pulse.git'
 # The following enables a Pulse command and somehow hasn't been approved for merging
+# though that functionality doesn't work on my machine
 add_vim_repo 'https://github.com/iamFIREcracker/vim-search-pulse'
 
 cd $VIMREPODIR/vimtex
