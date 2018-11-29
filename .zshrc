@@ -219,3 +219,9 @@ if [ -z "$SCREEN_COLORS" ] ; then
 fi
 
 COLORTERM="truecolor"
+
+#ssh into tmux session automatically
+if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
+    tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
+fi
+
