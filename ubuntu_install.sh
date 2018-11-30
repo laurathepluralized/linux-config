@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
 
-PATCH=$PWD/patches/0001-open-tag-in-reverse_goto-when-indicated-by-switchbuf.patch
+#!/usr/bin/env bash
 sudo apt update
 sudo apt -y upgrade
 sudo apt install -y \
@@ -110,15 +109,10 @@ CONFIG_DIR="/home/$USER/repos/linux-config"
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-echo "source $CONFIG_DIR/.bashrc" >> ~/.bashrc
-echo "PATH=$PATH:~/bin" >> ~/.bashrc
 mkdir -p ~/bin
 ln -v -s $CONFIG_DIR/glmb.sh /home/$USER/bin/glmb
 ln -v -s $CONFIG_DIR/cpp_static_wrapper.py /home/$USER/bin
 ln -v -s $CONFIG_DIR/cmd_monitor.py /home/$USER/bin/cmd_monitor
-
-echo "export ZSH=~/.oh-my-zsh" >> ~/.zshrc
-echo "source ${CONFIG_DIR}/.zshrc" >> ~/.zshrc
 
 DOTVIM=${HOME}/.vim
 VIMRC=${HOME}/.vimrc
@@ -138,15 +132,6 @@ echo "set keymap vi" >> ${INPUTRC}
 echo "set editing-mode vi" >> ${INPUTRC}
 echo "set bind-tty-special-chars off" >> ${INPUTRC}
 
-VIMREPODIR=${HOME}/repos/vim
-mkdir -p ${VIMREPODIR}
-chown -R ${ME}:${ME} ${VIMREPODIR}
-pushd ${VIMREPODIR}
-
-#THEURL=https://github.com/scrooloose/syntastic.git
-#REPONAME=syntastic
-#clone_or_pull
-#ln -sfn ${VIMREPODIR}/syntastic ${DOTVIM}/bundle/
 
 mkdir -p ~/repos
 cd ~/repos
@@ -164,7 +149,8 @@ mkdir -p $VIMREPODIR
 cd $VIMREPODIR
 
 function add_vim_repo {
-    NAME=$(echo $1 | rev | cut -d '/' -f 1 | rev)
+    # NAME=$(echo $1 | rev | cut -d '/' -f 1 | rev)
+    NAME=$(basename $1 .git)
     cd $VIMREPODIR
     git clone $1 $NAME
     cd $VIMREPODIR/$NAME
@@ -180,14 +166,6 @@ mkdir -p ~/.vim/autoload
 ln -s $VIMREPODIR/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/pathogen.vim
 cd -
 
-git clone https://github.com/neutaaaaan/iosvkem.git
-cd iosvkem.git
-git pull
-mkdir -p ~/.vim/colors
-ln -s $VIMREPODIR/iosvkem.git/colors/Iosvkem.vim ~/.vim/colors/Iosvkem.vim
-cd -
-
-echo "Adding vim repos"
 add_vim_repo 'https://github.com/milkypostman/vim-togglelist'
 add_vim_repo 'https://github.com/esquires/lvdb'
 add_vim_repo 'https://github.com/Shougo/deoplete.nvim'
@@ -213,13 +191,18 @@ add_vim_repo 'https://github.com/neutaaaaan/iosvkem.git'
 add_vim_repo 'https://github.com/vim-scripts/DoxygenToolkit.vim.git'
 # add_vim_repo 'https://github.com/inside/vim-search-pulse.git'
 # The following enables a Pulse command and somehow hasn't been approved for merging
-# though that functionality doesn't work on my machine
 add_vim_repo 'https://github.com/iamFIREcracker/vim-search-pulse'
 
 cd $VIMREPODIR/vimtex
 git checkout master
 git reset --hard origin/master
 git am -3 $PATCH
+
+cd $VIMREPODIR/iosvkem
+git pull
+mkdir -p ~/.vim/colors
+ln -s $VIMREPODIR/iosvkem/colors/Iosvkem.vim ~/.vim/colors/Iosvkem.vim
+cd -
 
 #install neovim
 cd ~/repos
@@ -229,36 +212,42 @@ sudo apt install -y python{,3}-flake8 pylint{,3}
 touch ~/.pylintrc
 
 sudo pip3 install neovim cpplint pydocstyle neovim-remote
-git clone https://github.com/neovim/neovim.git
+git clone https://github.com/neovim/neovim.git neovim
 git fetch
 cd neovim
-git checkout origin/master # v0.2.2 has a lua build error. This is a later commit where the build worked but prior to v0.2.3 which has not been released yet
+git checkout v0.3.0
 mkdir -p .deps
 cd .deps && cmake ../third-party -DCMAKE_CXX_FLAGS=-march=native -DCMAKE_BUILD_TYPE=Release && make
 cd ..
 mkdir -p build
 cd build && cmake .. -G Ninja -DCMAKE_CXX_FLAGS=-march=native -DCMAKE_BUILD_TYPE=Release && ninja &&  sudo ninja install
 
-# mkdir -p -p ~/.config/nvim
+# mkdir -p ~/.config/nvim
 # echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after
 # let &packpath = &runtimepath
 # set guicursor=
 # source ~/.vimrc" > ~/.config/nvim/init.vim
 
-echo "Now updating vi, vim, and editor commands to point to neovim"
+# echo "Now updating vi, vim, and editor commands to point to neovim"
+# This used to work; not sure why I have to alias vim to nvim now
 sudo update-alternatives --install /usr/bin/vi vi /usr/local/bin/nvim 60
 sudo update-alternatives --install /usr/bin/vim vim /usr/local/bin/nvim 60
 sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim 60
 
 # cppcheck
+PATCH=$CONFIG_DIR/patches/0001-add-ccache.patch
 cd ~/repos
 git clone https://github.com/danmar/cppcheck
 cd cppcheck
 git pull
-make -j $(($(nproc --all) - 1)) SRCDIR=build CFGDIR=/usr/local/share/cppcheck/cfg HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function -march=native"
-sudo install cppcheck /usr/local/bin
-sudo mkdir -p /usr/local/share/cppcheck/cfg -p
-sudo install -D ./cfg/* /usr/local/share/cppcheck/cfg
+git reset --hard origin/master
+echo
+git am -3 $PATCH
+mkdir -p build
+cd build
+cmake .. -G Ninja -DCMAKE_CXX_FLAGS=" -march=native " -DCMAKE_BUILD_TYPE=Release
+ninja
+sudo ninja install
 
 # cppclean
 cd ~/repos
@@ -287,17 +276,13 @@ git config --global merge.tool nvimdiff
 git config --global color.ui true
 #git config --global core.whitespace trailing-space, space-before-tab
 
-# CodeChecker
-sudo apt-get install clang build-essential curl doxygen gcc-multilib \
-  git python-virtualenv python-dev thrift-compiler
+# git-latexdiff
+sudo apt-get install asciidoc
 cd ~/repos
-git clone https://github.com/Ericsson/CodeChecker.git
-cd CodeChecker
+git clone https://gitlab.com/git-latexdiff/git-latexdiff.git git-latexdiff
+cd git-latexdiff
 git pull
-make venv
-
-make package
-echo 'export PATH=$PATH:~/repos/CodeChecker/build/CodeChecker/bin' >> ~/.zshrc
-echo 'export PATH=$PATH:~/repos/CodeChecker/build/CodeChecker/bin' >> ~/.bashrc
-
-ln -v -s $CONFIG_DIR/run_clang.py /home/$USER/bin/run_clang
+sed -i -E 's:^gitexecdir = \$\{shell git --man-path\}$:gitexecdir = /usr/bin:' Makefile
+# the above sed command never actually winds up replacing anything, as of Nov. 30, 2018
+sudo make install-bin
+# make install-doc and make git-latexdiff.1 aren't working for me, so just installing bin
