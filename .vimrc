@@ -294,6 +294,10 @@ try
     source ~/.vimrc_specific
 catch
 endtry
+try
+    source .vimrc_extra
+catch
+endtry
 
 function! MyNeomakeGoodContext(context)
     return has_key(a:context, "jobinfo") && has_key(a:context["jobinfo"], "name") && a:context["jobinfo"]["name"] == "makeprg"

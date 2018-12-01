@@ -24,25 +24,17 @@ set smartcase
 
 " pulse line on moving to next item in search
 let g:vim_search_pulse_mode = 'cursor_line'
-
-" Pulse line when I push , to flash line with cursor
+let g:vim_search_pulse_disable_auto_mappings = 1
+nmap n n<Plug>Pulse
+nmap N N<Plug>Pulse
+nmap * *<Plug>Pulse
+nmap # #<Plug>Pulse
+cmap <silent> <expr> <enter> search_pulse#PulseFirst()
+" Pulse line when I push ; to flash line with cursor
 " Want something along the lines of https://www.reddit.com/r/vim/comments/1z1ndk/do_you_knowcan_you_think_of_a_way_to/cfpyh57
-nnoremap , Pulse<CR>
+nmap ;; <Plug>Pulse
 
-" from
-" https://stackoverflow.com/questions/248102/is-there-any-command-to-toggle-enable-auto-text-wrapping/248125#248125
-" toggle text wrapping
-" This doesn't work in Neovim
-" function ToggleWrap()
-"     if (&wrap == 1)
-"         set nowrap
-"     else
-"         set wrap
-"     endif
-" endfunction
-"
-map <F9> set wrap<CR>
-map! <F9> set nowrap<CR>
+
 
 " Tell vim to look for ctags tags files from current directory up to the repos
 " directory so I don't have to open every file from project root directory to
