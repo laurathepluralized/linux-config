@@ -38,6 +38,9 @@ alias clihist="fc -li"
 function echovar {
     echo $1 | tr -s ':' '\n'
 }
+function hdgechovar {
+    echo $1 && eval echo -e "\$$1" | tr -s ':' '\n'
+}
 
 ## Unambiguous python version for pip
 # alias pip2="python2.7 -m pip"
