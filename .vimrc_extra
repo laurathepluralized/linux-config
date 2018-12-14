@@ -34,8 +34,6 @@ cmap <silent> <expr> <enter> search_pulse#PulseFirst()
 " Want something along the lines of https://www.reddit.com/r/vim/comments/1z1ndk/do_you_knowcan_you_think_of_a_way_to/cfpyh57
 nmap ;; <Plug>Pulse
 
-
-
 " Tell vim to look for ctags tags files from current directory up to the repos
 " directory so I don't have to open every file from project root directory to
 " use tags

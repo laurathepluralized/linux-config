@@ -10,6 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+local keyboard_layout = require("keyboard_layout")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -101,15 +102,35 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- {{{ Wibox
--- Create a textclock widget
-mytextclock = awful.widget.textclock()
 
 -- {{{ Powerline widget
     -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
     package.path = package.path .. ';/usr/local/lib/python3.5/dist-packages/powerline/bindings/awesome/?.lua'
     require('powerline')
 -- }}}
+-- Create a textclock widget
+mytextclock = awful.widget.textclock()
 
+-- {{{ Keyboard layout display and switcher
+-- From https://github.com/echuraev/keyboard_layout
+local kbdcfg = keyboard_layout.kbdcfg({type = "tui"})
+kbdcfg.add_primary_layout("English", "US", "us")
+kbdcfg.add_additional_layout("Deutsch",  "DE", "de")
+kbdcfg.bind()
+
+-- Mouse bindings
+kbdcfg.widget:buttons(
+ awful.util.table.join(awful.button({ }, 1, function () kbdcfg.switch_next() end),
+                       awful.button({ }, 3, function () kbdcfg.menu:toggle() end))
+)
+
+-- globalkeys = awful.util.table.join(globalkeys,
+--     -- Shift-Alt to change keyboard layout
+--     awful.key({"Shift"}, "Alt_L", function () kbdcfg.switch_next() end),
+--     -- Alt-Shift to change keyboard layout
+--     awful.key({"Mod1"}, "Shift_L", function () kbdcfg.switch_next() end)
+-- )
+-- }}} Keyboard layout display and switcher
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -190,6 +211,8 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(powerline_widget)
+    -- right_layout:add(mytextclock)
+    right_layout:add(kbdcfg.widget)
     right_layout:add(wibox.widget.systray())
     -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
     -- right_layout:add(mytextclock)
@@ -225,6 +248,7 @@ awful.util.spawn_with_shell("run-on-startup")
 -- }}}
 
 -- awful.util.spawn_with_shell("cbatticon")
+--
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
@@ -280,6 +304,10 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
+    -- Shift-Alt to change keyboard layout
+    -- awful.key({"Shift"}, "Alt_L", function () kbdcfg.switch_next() end),
+    -- Alt-Shift to change keyboard layout
+    -- awful.key({"Mod1"}, "Shift_L", function () kbdcfg.switch_next() end),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),

@@ -289,3 +289,24 @@ sed -i -E 's:^gitexecdir = \$\{shell git --man-path\}$:gitexecdir = /usr/bin:' M
 # the above sed command never actually winds up replacing anything, as of Nov. 30, 2018
 sudo make install-bin
 # make install-doc and make git-latexdiff.1 aren't working for me, so just installing bin
+#
+#
+
+function add_awesome_repo {
+    # NAME=$(echo $1 | rev | cut -d '/' -f 1 | rev)
+    NAME=$(basename $1 .git)
+    cd $AWESOMEREPODIR
+    git clone $1 $NAME
+    cd $AWESOMEREPODIR/$NAME
+    pwd
+    git pull
+    ln -s $AWESOMEREPODIR/$NAME $AWESOMECONFIGDIR
+    echo "Added repo ${NAME}"; }
+
+AWESOMEREPODIR=~/repos/awesome
+mkdir -p ${AWESOMEREPODIR}
+AWESOMECONFIGDIR=~/.config/awesome
+mkdir -p ${AWESOMECONFIGDIR}
+cd ${AWESOMEREPODIR}
+add_awesome_repo 'https://github.com/echuraev/keyboard_layout.git'
+
