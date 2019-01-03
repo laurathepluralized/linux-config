@@ -9,6 +9,9 @@ let g:echodoc_enable_at_startup = 1
 let g:echodoc#enable_force_overwrite = 1
 let spellfile=expand('%:p:h') . '.spellfile.utf-16.add'
 
+" Make mark.vim stop trying to overwrite my mappings
+let g:mw_no_mappings = 1
+
 " see https://github.com/neovim/neovim/issues/7663
 function! InsertOnTerm()
     if expand('%f')[:3] == 'term'

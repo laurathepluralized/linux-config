@@ -190,8 +190,8 @@ add_vim_repo 'https://github.com/vim-airline/vim-airline-themes.git'
 add_vim_repo 'https://github.com/neutaaaaan/iosvkem.git'
 add_vim_repo 'https://github.com/vim-scripts/DoxygenToolkit.vim.git'
 add_vim_repo 'https://github.com/inside/vim-search-pulse.git'
-# The following enables a Pulse command and somehow hasn't been approved for merging
-# add_vim_repo 'https://github.com/iamFIREcracker/vim-search-pulse'
+add_vim_repo 'https://github.com/inkarkat/vim-mark.git'
+add_vim_repo 'https://github.com/vim-scripts/ingo-library.git'
 
 cd $VIMREPODIR/vimtex
 git checkout master
