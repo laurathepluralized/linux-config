@@ -9,9 +9,6 @@ let g:echodoc_enable_at_startup = 1
 let g:echodoc#enable_force_overwrite = 1
 let spellfile=expand('%:p:h') . '.spellfile.utf-16.add'
 
-" Make mark.vim stop trying to overwrite my mappings
-let g:mw_no_mappings = 1
-
 " see https://github.com/neovim/neovim/issues/7663
 function! InsertOnTerm()
     if expand('%f')[:3] == 'term'
@@ -104,6 +101,9 @@ let g:lvdb_close_tabs = 1
 " color setup
 " backspace/colors
 set bs=2
+
+" Make mark.vim stop trying to overwrite my mappings
+let g:mw_no_mappings = 1
 
 "colorscheme stuff
 "change background
@@ -297,8 +297,10 @@ try
     source ~/.vimrc_specific
 catch
 endtry
+
 try
-    source .vimrc_extra
+    " source .vimrc_extra
+    source ~/repos/linux-config/.vimrc_extra
 catch
 endtry
 
