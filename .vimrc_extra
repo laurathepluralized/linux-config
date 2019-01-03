@@ -15,7 +15,6 @@ set nofoldenable
 " in ~/.config/nvim/init.vim to stop attempts at cursor shaping.
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
-let g:mwDefaultHighlightingPalette = 'extended'
 
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2 " Always display the statusline in all windows
@@ -35,6 +34,8 @@ cmap <silent> <expr> <enter> search_pulse#PulseFirst()
 " Want something along the lines of https://www.reddit.com/r/vim/comments/1z1ndk/do_you_knowcan_you_think_of_a_way_to/cfpyh57
 nmap ;; <Plug>Pulse
 
+" Let mark.vim use extended color palette
+let g:mwDefaultHighlightingPalette = 'extended'
 " These mappings are to keep conflict alerts from showing up
 " as a result of vim-mark using <unique> in its own mappings for these 
 " functions. Plus adding in <Plug>Pulse because it's awesome.
