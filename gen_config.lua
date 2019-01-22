@@ -211,7 +211,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(powerline_widget)
-    -- right_layout:add(mytextclock)
+    right_layout:add(mytextclock)
     right_layout:add(kbdcfg.widget)
     right_layout:add(wibox.widget.systray())
     -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
@@ -290,8 +290,11 @@ globalkeys = awful.util.table.join(
 
     -- Open Google Chrome
     awful.key({ modkey,           }, "g", function () awful.util.spawn("google-chrome") end),
+    -- Attempt to open Zotero?
     awful.key({ modkey,           }, "z", function () awful.util.spawn("zotero") end),
+    -- Open pcmanfm
     awful.key({ modkey,           }, "f", function () awful.util.spawn("pcmanfm") end),
+    -- Open evolution
     awful.key({ modkey,           }, "e", function () awful.util.spawn("evolution") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact(-0.05)    end),
