@@ -217,7 +217,6 @@ for s = 1, screen.count() do
     -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
     -- right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
-    -- right_layout:add(cbatticon)
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -247,8 +246,6 @@ awful.util.spawn_with_shell("run-on-startup")
 -- awful.util.spawn_with_shell("xinput set-prop 'SynPS/2 Synaptics TouchPad' 'Synaptics Tap Time' 0")
 -- }}}
 
--- awful.util.spawn_with_shell("cbatticon")
---
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
@@ -507,39 +504,39 @@ local function trim(s)
   return s:find'^%s*$' and '' or s:match'^%s*(.*%S)'
 end
 
-local function bat_notification()
-  
-  local f_capacity = assert(io.open("/sys/class/power_supply/BAT0/capacity", "r"))
-  local f_status = assert(io.open("/sys/class/power_supply/BAT0/status", "r"))
-
-  local bat_capacity = tonumber(f_capacity:read("*all"))
-  local bat_status = trim(f_status:read("*all"))
-
-  if (bat_capacity <= 10 and bat_status == "Discharging") then
-    naughty.notify({ title      = "Battery low! " .. bat_capacity .."%"
-      --, text       = "Battery low! " .. bat_capacity .."%" .. " left!"
-      , fg="#ff0000"
-      , bg="#deb887"
-      , timeout    = 180
-      --, position   = "bottom_left"
-      , position   = "top_right"
-    })
-  end
-  if (bat_capacity <= 100 and bat_status == "Discharging") then
-    naughty.notify({ title      = "Battery " .. bat_capacity .."%"
-      , height=20
-      , fg="#ff0000"
-      , bg="#deb887"
-      , timeout    = 180
-      , position   = "top_right"
-    })
-  end
-end
+-- local function bat_notification()
+--   
+--   local f_capacity = assert(io.open("/sys/class/power_supply/BAT0/capacity", "r"))
+--   local f_status = assert(io.open("/sys/class/power_supply/BAT0/status", "r"))
+--
+--   local bat_capacity = tonumber(f_capacity:read("*all"))
+--   local bat_status = trim(f_status:read("*all"))
+--
+--   if (bat_capacity <= 10 and bat_status == "Discharging") then
+--     naughty.notify({ title      = "Battery low! " .. bat_capacity .."%"
+--       --, text       = "Battery low! " .. bat_capacity .."%" .. " left!"
+--       , fg="#ff0000"
+--       , bg="#deb887"
+--       , timeout    = 180
+--       --, position   = "bottom_left"
+--       , position   = "top_right"
+--     })
+--   end
+--   if (bat_capacity <= 100 and bat_status == "Discharging") then
+--     naughty.notify({ title      = "Battery " .. bat_capacity .."%"
+--       , height=20
+--       , fg="#ff0000"
+--       , bg="#deb887"
+--       , timeout    = 180
+--       , position   = "top_right"
+--     })
+--   end
+-- end
 -- From https://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists/4991602#4991602
-local function file_exists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
-end
+-- local function file_exists(name)
+--    local f=io.open(name,"r")
+--    if f~=nil then io.close(f) return true else return false end
+-- end
 
 -- local is_this_a_laptop = file_exists("/sys/class/power_supply/BAT0/capacity")
 -- if (is_this_a_laptop) then

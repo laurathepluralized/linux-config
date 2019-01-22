@@ -6,7 +6,7 @@
 				"priority": 10,
 				"args": {
                     "ipv": 4,
-					"interface": "eno1"
+					"interface": "auto"
 				}
 			},
 			{
