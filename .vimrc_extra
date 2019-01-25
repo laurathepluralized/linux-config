@@ -243,8 +243,18 @@ function! ToString(inp)
 endfunction
 
 
-
-
+" To get only the mangled portion of a C++ backtrace, 
+" search for +0x, then put the following macro in a register.
+" Paste the backtrace into a file, then run this macro on each line.
+" It will take the line below the current and delete all but the mangled
+" part. Then save and close the file (say, bt.txt), then run
+" xargs c++filt < bt.txt
+" NOTE: this is slightly buggy; not really sure I'm supposed to be able
+" to set up a macro this way, but I'm not making a new keybinding yet due
+" to the search string requirement, so use this at your own risk
+" The macro:
+" _dt($hdi[xxND_xj
+" Maybe add k on the end if you need to go up to previous line
 
 
 
