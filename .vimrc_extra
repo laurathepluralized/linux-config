@@ -256,6 +256,15 @@ endfunction
 " _dt($hdi[xxND_xj
 " Maybe add k on the end if you need to go up to previous line
 
+" To search for functions, if/fors, etc. that follow this convention:
+" if (condition)
+" {
+" ...
+" }
+" instead of this convention:
+" if (condition) {
+" }
+" use this search pattern: \)$\n\s*{
 
 
 " REMINDER
