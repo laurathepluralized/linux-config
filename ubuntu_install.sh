@@ -182,30 +182,37 @@ add_vim_repo 'https://github.com/esquires/neosnippet-snippets'
 add_vim_repo 'https://github.com/Shougo/neosnippet.vim.git'
 add_vim_repo 'https://github.com/jlanzarotta/bufexplorer.git'
 add_vim_repo 'https://github.com/lervag/vimtex'
+add_vim_repo 'https://github.com/vim-airline/vim-airline.git'
+add_vim_repo 'https://github.com/vim-airline/vim-airline-themes.git'
 add_vim_repo 'https://github.com/tpope/tpope-vim-abolish.git'
 add_vim_repo 'https://github.com/tpope/vim-vinegar.git'
 add_vim_repo 'https://github.com/wesQ3/vim-windowswap.git'
-add_vim_repo 'https://github.com/vim-airline/vim-airline.git'
-add_vim_repo 'https://github.com/vim-airline/vim-airline-themes.git'
 add_vim_repo 'https://github.com/neutaaaaan/iosvkem.git'
 add_vim_repo 'https://github.com/vim-scripts/DoxygenToolkit.vim.git'
 add_vim_repo 'https://github.com/inside/vim-search-pulse.git'
 add_vim_repo 'https://github.com/inkarkat/vim-mark.git'
 add_vim_repo 'https://github.com/vim-scripts/ingo-library.git'
 
+# orgmode and its dependencies
+add_vim_repo 'https://github.com/jceb/vim-orgmode'
+add_vim_repo 'https://github.com/vim-scripts/utl.vim'
+add_vim_repo 'https://github.com/tpope/vim-repeat'
+add_vim_repo 'https://github.com/tpope/vim-speeddating'
+add_vim_repo 'https://github.com/chrisbra/NrrwRgn'
+add_vim_repo 'https://github.com/mattn/calendar-vim'
+add_vim_repo 'https://github.com/inkarkat/vim-SyntaxRange'
+
 cd $VIMREPODIR/vimtex
 git checkout master
 git reset --hard origin/master
-git am -3 $PATCH
+PATCH=$CONFIG_DIR/patches/0001-open-tag-in-reverse_goto-when-indicated-by-switchbuf.patch
+git am -m "[PATCH] open tag in reverse_goto when indicated by switchbuf" -3 $PATCH
 
 cd $VIMREPODIR/iosvkem
 git pull
 mkdir -p ~/.vim/colors
 ln -s $VIMREPODIR/iosvkem/colors/Iosvkem.vim ~/.vim/colors/Iosvkem.vim
 cd -
-
-# cd $VIMREPODIR/vim-search-pulse
-# git checkout add-pulse-command
 
 #install neovim
 cd ~/repos
@@ -225,17 +232,19 @@ cd ..
 mkdir -p build
 cd build && cmake .. -G Ninja -DCMAKE_CXX_FLAGS=-march=native -DCMAKE_BUILD_TYPE=Release && ninja &&  sudo ninja install
 
-# mkdir -p ~/.config/nvim
-# echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after
-# let &packpath = &runtimepath
-# set guicursor=
-# source ~/.vimrc" > ~/.config/nvim/init.vim
+mkdir -p ~/.config/nvim
+echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+set guicursor=
+source ~/.vimrc" > ~/.config/nvim/init.vim
 
 # echo "Now updating vi, vim, and editor commands to point to neovim"
 # This used to work; not sure why I have to alias vim to nvim now
 sudo update-alternatives --install /usr/bin/vi vi /usr/local/bin/nvim 60
 sudo update-alternatives --install /usr/bin/vim vim /usr/local/bin/nvim 60
 sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim 60
+
+sudo chsh -s /usr/bin/zsh $USER
 
 # cppcheck
 PATCH=$CONFIG_DIR/patches/0001-add-ccache.patch
@@ -268,15 +277,21 @@ sudo python setup.py develop
 sudo python3 setup.py develop
 
 #see here: http://travisjeffery.com/b/2012/02/search-a-git-repo-like-a-ninja
+git config --global alias.g "grep --break --heading --line-number"
+git config --global alias.rbc 'rebase --continue'
+git config --global alias.rbs 'rebase --continue'
+git config --global alias.rgrep "grep --break --heading --line-number --recurse-submodules"
 git config --global alias.unstage 'reset HEAD --'
+git config --global color.ui true
+git config --global core.attributesfile '~/.gitattributes_global'
+git config --global core.editor nvim
 git config --global --replace-all core.pager "less -F -X"
+git config --global core.excludesfile '~/.gitignore-global'
+git config --global credential.helper 'cache'
 git config --global grep.extendRegexp true
 git config --global grep.lineNumber true
-git config --global alias.g "grep --break --heading --line-number"
-git config --global alias.rgrep "grep --break --heading --line-number --recurse-submodules"
-git config --global core.editor nvim
 git config --global merge.tool nvimdiff
-git config --global color.ui true
+git config --global push.default 'simple'
 #git config --global core.whitespace trailing-space, space-before-tab
 
 # git-latexdiff

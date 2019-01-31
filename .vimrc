@@ -115,7 +115,7 @@ colorscheme Iosvkem
 " else
     " "spell check comes out as poor highlighting
     set nospell
-endif
+" endif
 
 " neomake
 " errorformat for cppcheck copied from syntastic:
@@ -450,6 +450,7 @@ let g:vimtex_quickfix_latexlog = {
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
 endif
+
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 let g:tex_flavor = 'latex'
 let g:vimtex_quickfix_open_on_warning=1
@@ -464,10 +465,3 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#tabline#show_splits = 0
 
 colorscheme Iosvkem
-
-" airline
-let g:airline_extensions = ['tabline']
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline#extensions#tabline#show_splits = 0
