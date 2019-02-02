@@ -20,6 +20,7 @@ sudo apt install -y \
     ipython3 \
     libgtk2.0-dev \
     libnotify-dev \
+    libxdo3 \
 	mercurial \
     ncurses-cmake-gui \
     ninja-build \
