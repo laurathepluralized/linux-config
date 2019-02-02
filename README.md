@@ -82,13 +82,4 @@ Manual steps:
   CodeChecker analyze compilation.json -o ./reports
   CodeChecker parse ./reports -i skipfile
   ```
-  
-* To use powerline for the Awesome status bar, do the following:
-    
-    ```
-    sudo pip3 install powerline-status  # whichever python version is relevant, or both just in case
-    sudo pip install powerline-status
-    mkdir -p ${HOME}/.config/powerline
-    cp /location/of/linux-config/powerline_wm_default.json ${HOME}/.config/powerline/wm_config.json
-    ```
 

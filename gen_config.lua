@@ -103,11 +103,6 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibox
 
--- {{{ Powerline widget
-    -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
-    package.path = package.path .. ';/usr/local/lib/python3.5/dist-packages/powerline/bindings/awesome/?.lua'
-    require('powerline')
--- }}}
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
@@ -117,6 +112,19 @@ local kbdcfg = keyboard_layout.kbdcfg({type = "tui"})
 kbdcfg.add_primary_layout("English", "US", "us")
 kbdcfg.add_additional_layout("Deutsch",  "DE", "de")
 kbdcfg.bind()
+
+-- Attempting to make battery widget per https://askubuntu.com/a/645131
+batterywidget = wibox.widget.textbox()    
+batterywidget:set_text(" | Battery | ")    
+batterywidgettimer = timer({ timeout = 5 })    
+batterywidgettimer:connect_signal("timeout",    
+  function()    
+    fh = assert(io.popen("acpi | cut -d, -f 2,3 -", "r"))    
+    batterywidget:set_text(" |" .. fh:read("*l") .. " | ")    
+    fh:close()    
+  end    
+)    
+batterywidgettimer:start()
 
 -- Mouse bindings
 kbdcfg.widget:buttons(
@@ -210,12 +218,10 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    right_layout:add(powerline_widget)
+    right_layout:add(batterywidget)
     right_layout:add(mytextclock)
     right_layout:add(kbdcfg.widget)
     right_layout:add(wibox.widget.systray())
-    -- http://powerline.readthedocs.io/en/latest/usage/wm-widgets.html?highlight=awesome
-    -- right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
