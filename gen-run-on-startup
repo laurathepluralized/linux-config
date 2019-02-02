@@ -26,7 +26,5 @@ dropbox start && echo "Started Dropbox service"
 setxkbmap -option grp:alt_shift_toggle us,de
 echo "Keyboard layout switch with alt-shift enabled"
 
-powerline-daemon -r && echo "Restarted powerline"
-
 redshift &
 echo "Started redshift"
