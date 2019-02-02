@@ -23,8 +23,8 @@ echo "Touchpad settings set"
 dropbox start && echo "Started Dropbox service"
 
 ## Toggle between English (US) and German (DE) keyboard layouts using alt-shift
-setxkbmap -option grp:alt_shift_toggle us,de
-echo "Keyboard layout switch with alt-shift enabled"
+# setxkbmap -option grp:alt_shift_toggle us,de
+# echo "Keyboard layout switch with alt-shift enabled"
 
 redshift &
 echo "Started redshift"
