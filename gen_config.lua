@@ -113,18 +113,28 @@ kbdcfg.add_primary_layout("English", "US", "us")
 kbdcfg.add_additional_layout("Deutsch",  "DE", "de")
 kbdcfg.bind()
 
+separator = wibox.widget.textbox()
+separator:set_text(" | ")
+
+-- From https://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists/4991602#4991602
+local function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
 -- Attempting to make battery widget per https://askubuntu.com/a/645131
-batterywidget = wibox.widget.textbox()    
-batterywidget:set_text(" | Battery | ")    
-batterywidgettimer = timer({ timeout = 5 })    
-batterywidgettimer:connect_signal("timeout",    
-  function()    
-    fh = assert(io.popen("acpi | cut -d, -f 2,3 -", "r"))    
-    batterywidget:set_text(" |" .. fh:read("*l") .. " | ")    
-    fh:close()    
-  end    
-)    
-batterywidgettimer:start()
+if (file_exists("/sys/class/power_supply/BAT0/capacity")) then
+    batterywidget = wibox.widget.textbox()
+    batterywidget:set_text(" | Battery | ")
+    batterywidgettimer = timer({ timeout = 5 })
+    batterywidgettimer:connect_signal("timeout",
+      function()
+        fh = assert(io.popen("acpi | cut -d, -f 2,3 -", "r"))
+        batterywidget:set_text(" |" .. fh:read("*l") .. " | ")
+        fh:close()
+      end
+    )
+    batterywidgettimer:start()
+end
 
 -- Mouse bindings
 kbdcfg.widget:buttons(
@@ -218,10 +228,17 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    right_layout:add(batterywidget)
+
+    if (file_exists("/sys/class/power_supply/BAT0/capacity")) then
+        right_layout:add(batterywidget)
+    end
+    right_layout:add(separator)
     right_layout:add(mytextclock)
+    right_layout:add(separator)
     right_layout:add(kbdcfg.widget)
+    right_layout:add(separator)
     right_layout:add(wibox.widget.systray())
+    right_layout:add(separator)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
@@ -511,7 +528,7 @@ local function trim(s)
 end
 
 -- local function bat_notification()
---   
+--
 --   local f_capacity = assert(io.open("/sys/class/power_supply/BAT0/capacity", "r"))
 --   local f_status = assert(io.open("/sys/class/power_supply/BAT0/status", "r"))
 --
@@ -538,25 +555,14 @@ end
 --     })
 --   end
 -- end
--- From https://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists/4991602#4991602
--- local function file_exists(name)
---    local f=io.open(name,"r")
---    if f~=nil then io.close(f) return true else return false end
--- end
 
--- local is_this_a_laptop = file_exists("/sys/class/power_supply/BAT0/capacity")
--- if (is_this_a_laptop) then
-    -- battimer = timer({timeout = 179.9})
-    -- battimer:connect_signal("timeout", bat_notification)
-    -- battimer:start()
--- end
 
 -- end here for battery warning
 
 -- {{{ Startup
 do
     local cmds
-    cmds = 
+    cmds =
     {
         "nm-applet"
     }
