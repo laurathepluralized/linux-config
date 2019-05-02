@@ -27,6 +27,7 @@ sudo apt install -y \
     ninja-build \
     notify-osd \
     ntp \
+    ofono \
     pcmanfm \
     python-dev \
     python3-dev \

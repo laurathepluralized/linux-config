@@ -9,10 +9,13 @@ alias vim="nvim"
 # Normal installation structure of misc repos and linux-config
 export REPOS=${HOME}/repos
 export LCONFIG=${REPOS}/linux-config
+export DOTCONFIG=${HOME}/.config
 
 alias repos="pushd ${REPOS}"
 alias lconfig="pushd ${LCONFIG}"
-alias csepaper="pushd ${REPOS}/cse6242-project-latex"
+alias dotconfig="pushd ${DOTCONFIG}"
+
+export PYTHONSTARTUP="${DOTCONFIG}/ipython/profile_default/startup/python_ipython_startup.py"
 
 function git_fetch_dirs {
 
