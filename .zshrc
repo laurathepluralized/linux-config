@@ -136,6 +136,10 @@ git config --global merge.tool nvimdiff
 git config --global color.ui true
 #git config --global core.whitespace trailing-space, space-before-tab
 
+# Python virtualenvwrapper
+export WORKON_HOME=~/.virtualenvs
+mkdir -p ${WORKON_HOME}
+source /usr/local/bin/virtualenvwrapper.sh
 
 #stuff whose error I don't want to see
 alias g='gnome-open 2>/dev/null'
@@ -222,5 +226,5 @@ COLORTERM="truecolor"
 
 #ssh into tmux session automatically
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-    tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
+    tmux attach || tmux new-session -s ssh_tmux
 fi
