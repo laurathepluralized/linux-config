@@ -15,7 +15,7 @@ alias repos="pushd ${REPOS}"
 alias lconfig="pushd ${LCONFIG}"
 alias dotconfig="pushd ${DOTCONFIG}"
 
-export PYTHONSTARTUP="${DOTCONFIG}/ipython/profile_default/startup/python_ipython_startup.py"
+export PYTHONSTARTUP="${HOME}/.ipython/profile_default/startup/00-startup.py"
 
 function git_fetch_dirs {
 
