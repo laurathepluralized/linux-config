@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-## For the love of sanity, quit turning my screen off after ten minutes of inactivity. I manually lock my screen for a REASON.
-xset s 0 s blank
+# Lock screen with slock after ten mins of inactivity
+xautolock -time 10 -locker slock &
 
 synclient MaxTapTime=0
 synclient MaxTapMove=0
@@ -20,11 +20,22 @@ synclient TapButton3=0
 
 echo "Touchpad settings set"
 
-dropbox start && echo "Started Dropbox service"
+NUM_TIMES_ROTATE_SCREEN=$1
 
-## Toggle between English (US) and German (DE) keyboard layouts using alt-shift
-# setxkbmap -option grp:alt_shift_toggle us,de
-# echo "Keyboard layout switch with alt-shift enabled"
+for (( NUM = 0; NUM < "${NUM_TIMES_ROTATE_SCREEN}"; NUM++ ))
+do
+    # Rotate screen on the right (HDMI-1)
+    # HDMI-1 is vertical (monitor on the right)
+    screen2="HDMI-1"
+    screen1="eDP-1"
+
+    alt2="left" # this rotates CCW
+    xrandr --output $screen1 --primary
+    xrandr --output $screen2 --rotate $alt2 --right-of $screen1
+    xrandr --output $screen2 --pos 1920x-1280
+done
+
+dropbox start && echo "Started Dropbox service"
 
 redshift &
 echo "Started redshift"

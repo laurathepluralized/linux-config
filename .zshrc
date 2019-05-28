@@ -139,7 +139,7 @@ git config --global color.ui true
 # Python virtualenvwrapper
 export WORKON_HOME=~/.virtualenvs
 mkdir -p ${WORKON_HOME}
-source /usr/local/bin/virtualenvwrapper.sh
+# source /usr/local/bin/virtualenvwrapper.sh
 
 #stuff whose error I don't want to see
 alias g='gnome-open 2>/dev/null'

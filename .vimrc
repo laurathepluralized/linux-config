@@ -4,6 +4,7 @@ let maplocalleader = "\\"
 let &titlestring=expand("%:t")
 set title
 
+let g:python3_host_prog = '/usr/bin/python3.6'
 set cmdheight=2
 let g:echodoc_enable_at_startup = 1
 let g:echodoc#enable_force_overwrite = 1
