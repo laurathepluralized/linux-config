@@ -482,4 +482,5 @@ nnoremap <localleader>s :call LanguageClient_contextMenu()<CR>
 call deoplete#custom#source('LanguageClient',
             \ 'min_pattern_length',
             \ 2)
+
 colorscheme Iosvkem
