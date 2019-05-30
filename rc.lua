@@ -42,7 +42,10 @@ end
 beautiful.init("~/repos/linux-config/laura_awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "terminator -x nvim -c term -c \"normal A\""
+-- This starts up :terminal in nvim, which would be ok if the insertion point 
+-- weren't one character off in my config - laurathepluralized
+-- terminal = "terminator -x nvim -c term -c \"normal A\""
+terminal = "terminator"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -97,7 +100,7 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "Debian", debian.menu.Debian_menu.Debian },
+                                    -- { "Debian", debian.menu.Debian_menu.Debian },
                                     { "open terminal", terminal }
                                   }
                         })
@@ -519,7 +522,6 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 awful.util.spawn("cbatticon")
-awful.util.spawn("workrave")
 awful.util.spawn("nm-applet")
 -- want a way to set proper number of screens before trying this
 -- or upgrade to awesome 4 and try out that xrandr.lua script? does it do screen rotation?

@@ -199,7 +199,7 @@ def install_vim_plugins(config_dir, repos_dir):
     patch_file = op.join(
         config_dir, 'patches',
         '0001-open-tag-in-reverse_goto-when-indicated-by-switchbuf.patch')
-    apply_patch(patch_file, patch_msg, vimtex_dir)
+    # apply_patch(patch_file, patch_msg, vimtex_dir)
 
 
 def apply_patch(patch_file, patch_msg, d):
