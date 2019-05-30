@@ -1,5 +1,10 @@
 
 #!/usr/bin/env bash
+sudo add-apt-repository ppa:git-core/ppa
+sudo add-apt-repository ppa:gnome-terminator/ppa
+sudo add-apt-repository ppa:jonathonf/texlive-2018
+sudo add-apt-repository ppa:smathot/cogscinl
+sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
 sudo apt -y upgrade
 sudo apt install -y \
@@ -31,15 +36,20 @@ sudo apt install -y \
     pcmanfm \
     python-dev \
     python3-dev \
+    python3.6-dev \
     python-ipdb \
     python3-ipdb \
     python-pip \
     python3-pip \
+    redshift \
     software-properties-common \
+    synaptic \
     terminator \
+    texlive-full \
     xclip \
     xdotool \
     zathura \
+    zotero-standalone \
     zsh
 # installing xclip makes sure neovim enables the clipboard registers!
 
@@ -82,14 +92,12 @@ curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contri
 
 sudo python3 -m pip install matplotlib numpy pandas scipy jupyter
 
-CONFIG_DIR="/home/$USER/repos/linux-config"
-
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 mkdir -p ~/bin
-ln -v -s $CONFIG_DIR/glmb.sh /home/$USER/bin/glmb
-ln -v -s $CONFIG_DIR/cpp_static_wrapper.py /home/$USER/bin
-ln -v -s $CONFIG_DIR/cmd_monitor.py /home/$USER/bin/cmd_monitor
+ln -v -s $CONFIG_DIR/glmb.sh ${HOME}/bin/glmb
+ln -v -s $CONFIG_DIR/cpp_static_wrapper.py ${HOME}/bin
+ln -v -s $CONFIG_DIR/cmd_monitor.py ${HOME}/bin/cmd_monitor
 
 DOTVIM=${HOME}/.vim
 VIMRC=${HOME}/.vimrc
