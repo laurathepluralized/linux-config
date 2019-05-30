@@ -10,9 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
-
--- Load Debian menu entries
-require("debian.menu")
+local keyboard_layout = require("keyboard_layout")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -41,7 +39,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("~/repos/linux-config/laura_awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "terminator -x nvim -c term -c \"normal A\""
@@ -59,10 +57,16 @@ modkey = "Mod4"
 local layouts =
 {
     awful.layout.suit.tile.left,
-    awful.layout.suit.fair,
-    awful.layout.suit.max,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.top,
     awful.layout.suit.magnifier,
-    awful.layout.suit.floating
+    awful.layout.suit.max,
+    --awful.layout.suit.floating
+    --awful.layout.suit.spiral,
+    --awful.layout.suit.spiral.dwindle,
+    --awful.layout.suit.max.fullscreen,
 }
 -- }}}
 
@@ -109,6 +113,50 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
+-- {{{ Keyboard layout display and switcher
+-- From https://github.com/echuraev/keyboard_layout
+local kbdcfg = keyboard_layout.kbdcfg({type = "tui"})
+kbdcfg.add_primary_layout("English", "US", "us")
+kbdcfg.add_additional_layout("Deutsch",  "DE", "de")
+kbdcfg.bind()
+
+separator = wibox.widget.textbox()
+separator:set_text(" | ")
+
+-- From https://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists/4991602#4991602
+local function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+-- Attempting to make battery widget per https://askubuntu.com/a/645131
+if (file_exists("/sys/class/power_supply/BAT0/capacity")) then
+    batterywidget = wibox.widget.textbox()
+    batterywidget:set_text(" | Battery | ")
+    batterywidgettimer = timer({ timeout = 5 })
+    batterywidgettimer:connect_signal("timeout",
+      function()
+        fh = assert(io.popen("acpi | cut -d, -f 2,3 -", "r"))
+        batterywidget:set_text(" |" .. fh:read("*l") .. " | ")
+        fh:close()
+      end
+    )
+    batterywidgettimer:start()
+end
+
+-- Mouse bindings
+kbdcfg.widget:buttons(
+ awful.util.table.join(awful.button({ }, 1, function () kbdcfg.switch_next() end),
+                       awful.button({ }, 3, function () kbdcfg.menu:toggle() end))
+)
+
+-- globalkeys = awful.util.table.join(globalkeys,
+--     -- Shift-Alt to change keyboard layout
+--     awful.key({"Shift"}, "Alt_L", function () kbdcfg.switch_next() end),
+--     -- Alt-Shift to change keyboard layout
+--     awful.key({"Mod1"}, "Shift_L", function () kbdcfg.switch_next() end)
+-- )
+-- }}} Keyboard layout display and switcher
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -118,10 +166,10 @@ mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 1, awful.tag.viewonly),
                     awful.button({ modkey }, 1, awful.client.movetotag),
                     awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
-                    )
+                    awful.button({ modkey }, 3, awful.client.toggletag))
+                    -- stop making my scroll wheel change tag numbers, please
+                    -- awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+                    -- awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
                      awful.button({ }, 1, function (c)
@@ -187,8 +235,17 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    if s == 1 then right_layout:add(wibox.widget.systray()) end
+
+    if (file_exists("/sys/class/power_supply/BAT0/capacity")) then
+        right_layout:add(batterywidget)
+    end
+    right_layout:add(separator)
     right_layout:add(mytextclock)
+    right_layout:add(separator)
+    right_layout:add(kbdcfg.widget)
+    right_layout:add(separator)
+    right_layout:add(wibox.widget.systray())
+    right_layout:add(separator)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
@@ -203,10 +260,11 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
+    awful.button({ }, 3, function () mymainmenu:toggle() end)))
+    -- NOTE: This should prevent my scroll wheel from messing with what tags
+    -- are showing if my mouse happens to dare be near the edge of the monitor.
+    -- awful.button({ }, 4, awful.tag.viewnext),
+    -- awful.button({ }, 5, awful.tag.viewprev)
 -- }}}
 
 -- {{{ Key bindings
@@ -243,11 +301,21 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
+    --awful.key({ modkey, "Control" }, "r", awesome.restart),
+    awful.key({ modkey, "Shift" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
-    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
+    -- Open Google Chrome
+    awful.key({ modkey,           }, "g", function () awful.util.spawn("google-chrome") end),
+    -- Attempt to open Zotero?
+    awful.key({ modkey,           }, "z", function () awful.util.spawn("zotero") end),
+    -- Open pcmanfm
+    awful.key({ modkey,           }, "f", function () awful.util.spawn("pcmanfm") end),
+    -- Open evolution
+    awful.key({ modkey,           }, "e", function () awful.util.spawn("evolution") end),
+
+    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact(-0.05)    end),
+    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
     awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
@@ -268,7 +336,10 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end)
+    awful.key({ modkey }, "p", function() menubar.show() end),
+
+    --lock the computer (added by Eric, switched to slock by Laura)
+    awful.key({ modkey, "Control" }, "s",     function () awful.util.spawn("slock") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -362,6 +433,9 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
+    -- Set google-chrome to always map on tags number 3 of screen 1.
+    { rule = { class = "google-chrome" },
+      properties = { tag = tags[1][2] } },
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },
@@ -371,13 +445,13 @@ awful.rules.rules = {
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
-    -- Enable sloppy focus
-    c:connect_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
+   -- If uncommented, this will enable sloppy focus
+   --  c:connect_signal("mouse::enter", function(c)
+   --      if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+   --          and awful.client.focus.filter(c) then
+   --          client.focus = c
+   --      end
+   -- end)
 
     if not startup then
         -- Set the windows at the slave,
@@ -442,10 +516,14 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}
 
 awful.util.spawn("cbatticon")
 awful.util.spawn("workrave")
 awful.util.spawn("nm-applet")
+-- want a way to set proper number of screens before trying this
+-- or upgrade to awesome 4 and try out that xrandr.lua script? does it do screen rotation?
+-- awful.util.spawn("run-on-startup")
 
 -- }}}
 

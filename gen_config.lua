@@ -42,7 +42,8 @@ end
 beautiful.init("~/repos/linux-config/laura_awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-editor = os.getenv("EDITOR") or "vim"
+terminal = "terminator -x nvim -c term -c \"normal A\""
+editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -53,7 +54,7 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-layouts =
+local layouts =
 {
     awful.layout.suit.tile.left,
     awful.layout.suit.fair.horizontal,
@@ -77,7 +78,14 @@ if beautiful.wallpaper then
 end
 -- }}}
 
-
+-- {{{ Tags
+-- Define a tag table which hold all screen tags.
+tags = {}
+for s = 1, screen.count() do
+    -- Each screen has its own tag table.
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+end
+-- }}}
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -89,6 +97,7 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+                                    { "Debian", debian.menu.Debian_menu.Debian },
                                     { "open terminal", terminal }
                                   }
                         })
@@ -96,13 +105,11 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
-
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
 -- {{{ Wibox
-
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
@@ -327,10 +334,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
-    -- Shift-Alt to change keyboard layout
-    -- awful.key({"Shift"}, "Alt_L", function () kbdcfg.switch_next() end),
-    -- Alt-Shift to change keyboard layout
-    -- awful.key({"Mod1"}, "Shift_L", function () kbdcfg.switch_next() end),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
@@ -350,7 +353,7 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
-    -- awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
@@ -440,6 +443,9 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
+    -- Set google-chrome to always map on tags number 3 of screen 1.
+    { rule = { class = "google-chrome" },
+      properties = { tag = tags[1][2] } },
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },
@@ -467,6 +473,9 @@ client.connect_signal("manage", function (c, startup)
             awful.placement.no_overlap(c)
             awful.placement.no_offscreen(c)
         end
+    elseif not c.size_hints.user_position and not c.size_hints.program_position then
+        -- Prevent clients from being unreachable after screen count change
+        awful.placement.no_offscreen(c)
     end
 
     local titlebars_enabled = false
@@ -518,59 +527,8 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
---
--- Battery warning
--- From bpdp.blogspot.be/2013/06/battery-warning-notification-for.html
--- created by bpdp
 
 local function trim(s)
   return s:find'^%s*$' and '' or s:match'^%s*(.*%S)'
 end
-
--- local function bat_notification()
---
---   local f_capacity = assert(io.open("/sys/class/power_supply/BAT0/capacity", "r"))
---   local f_status = assert(io.open("/sys/class/power_supply/BAT0/status", "r"))
---
---   local bat_capacity = tonumber(f_capacity:read("*all"))
---   local bat_status = trim(f_status:read("*all"))
---
---   if (bat_capacity <= 10 and bat_status == "Discharging") then
---     naughty.notify({ title      = "Battery low! " .. bat_capacity .."%"
---       --, text       = "Battery low! " .. bat_capacity .."%" .. " left!"
---       , fg="#ff0000"
---       , bg="#deb887"
---       , timeout    = 180
---       --, position   = "bottom_left"
---       , position   = "top_right"
---     })
---   end
---   if (bat_capacity <= 100 and bat_status == "Discharging") then
---     naughty.notify({ title      = "Battery " .. bat_capacity .."%"
---       , height=20
---       , fg="#ff0000"
---       , bg="#deb887"
---       , timeout    = 180
---       , position   = "top_right"
---     })
---   end
--- end
-
-
--- end here for battery warning
-
--- {{{ Startup
-do
-    local cmds
-    cmds =
-    {
-        "nm-applet"
-    }
-
-    for _,i in pairs(cmds) do
-        awful.util.spawn(i)
-    end
-end
--- }}}
-
 
