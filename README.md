@@ -4,19 +4,8 @@ Linux Config-Laura's Version
 Installation
 ---
 
-This assumes a particular path for installation::
-
-    mkdir ~/repos
-    cd repos
-    git clone https://github.com/esquires/linux-config.git
-    cd linux-config
-    bash ubuntu_install.sh
-
-Manual steps:
-
-* Put this in `~/.gitconfig`. See [here](https://github.com/neovim/neovim/issues/2377)
-
-    ```
+Put this in `~/.gitconfig`. See [here](https://github.com/neovim/neovim/issues/2377):
+    
     [merge]
         tool = nvimdiff
     [difftool "nvimdiff"] 
@@ -24,7 +13,23 @@ Manual steps:
     [user]
         name = your_name
         email = your_email
-    ``` 
+
+Installation:
+
+    mkdir ~/repos
+    cd repos
+    sudo apt install git
+    git clone https://github.com/esquires/linux-config.git
+    cd linux-config
+    python3 ubuntu_install.py . ..
+
+    # install oh-my-zsh
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+    # default to zsh
+    sudo chsh -s /usr/bin/zsh $USER
+
+Manual steps:
 
 * Put this in `~/.zshrc`.
 
@@ -45,22 +50,6 @@ Manual steps:
 
     ```
     bind -v
-    ```
-
-* nvim, run ``:UpdateRemotePlugins`` for deoplete to work
-
-* open ``/etc/xdg/awesome/rc.lua`` and change the following:
-
-    ```
-    local layouts =
-        awful.layout.suit.floating,
-        awful.layout.suit.tile.left,
-        awful.layout.suit.fair,
-        awful.layout.suit.max,
-        awful.layout.suit.magnifier
-    }
-    
-    terminal = "terminator -x nvim -c term -c \"normal A\""
     ```
 
 * see ``notes/.lldbinit`` and ``notes/.gdbinit`` for an init file. You can run

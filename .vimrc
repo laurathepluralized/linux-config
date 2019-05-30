@@ -447,6 +447,7 @@ let g:vimtex_quickfix_latexlog = {
       \   'titlesec' : 1,
       \ },
 \}
+let g:vimtex_quickfix_autoclose_after_keystrokes=1
 
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
@@ -464,5 +465,22 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#tabline#show_splits = 0
+
+" fugitive
+nnoremap <localleader>gs :Gstatus<cr>}jj
+nnoremap <localleader>gb :Gblame<cr>
+nnoremap <localleader>gd :Gdiff<cr>
+
+" LanguageClient-neovim
+" Required for operations modifying multiple buffers like rename.
+set hidden
+let g:LanguageClient_serverCommands = {
+  \ 'cpp': ['/usr/lib/llvm-6.0/bin/clangd'],
+  \ 'python': ['pyls'],
+  \ }
+nnoremap <localleader>s :call LanguageClient_contextMenu()<CR>
+call deoplete#custom#source('LanguageClient',
+            \ 'min_pattern_length',
+            \ 2)
 
 colorscheme Iosvkem
