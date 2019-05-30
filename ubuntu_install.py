@@ -1,4 +1,5 @@
 import argparse
+import pandas as pd
 import subprocess as sp
 import os.path as op
 import os
@@ -61,34 +62,19 @@ def setup_inputrc():
 
 
 def run_apt():
-    pkgs = [
-        "ccache",
-        "curl",
-        "gnome-terminal",
-        "terminator",
-        "zsh",
-        "zathura",
-        "xdotool",
-        "aptitude",
-        "exuberant-ctags",
-        "global",
-        "htop",
-        "ipython",
-        "python-pip",
-        "python3-pip",
-        "ipython3",
-        "python-ipdb",
-        "xclip",
-        "cmake-curses-gui",
-        "libnotify-dev",
-        "ninja-build",
-        "flake8",
-        "notify-osd",
-        "ubuntu-sounds",
-        "workrave",
-        "clang-tools-6.0"]
+    sp.check_call(['sudo', 'add-apt-repository', '-y', 'ppa:git-core/ppa'])
+    sp.check_call(['sudo', 'add-apt-repository', '-y',
+                   'ppa:gnome-terminator/ppa'])
+    sp.check_call(['sudo', 'add-apt-repository', '-y',
+                   'ppa:jonathonf/texlive-2018'])
+    sp.check_call(['sudo', 'add-apt-repository', '-y', 'ppa:smathot/cogscinl'])
+    sp.check_call(['sudo', 'add-apt-repository', '-y', 'ppa:deadsnakes/ppa'])
+    sp.check_call(['sudo', 'add-apt-repository', '-y',
+                   'ppa:neovim-ppa/stable'])
+    pkgs_df = pd.read_csv('apt_pkgs_to_install.csv', header=None)
+    pkgs = pkgs_df[0].values.tolist()
 
-    sp.check_call(['sudo', 'apt', 'update'])
+    # sp.check_call(['sudo', 'apt', 'update'])
     # sp.check_call(['sudo', 'apt', '-y', 'upgrade'])
     sp.check_call(['sudo', 'apt', 'install', '-y'] + pkgs)
 
@@ -161,9 +147,23 @@ def install_vim_plugins(config_dir, repos_dir):
     _update('https://github.com/jlanzarotta/bufexplorer.git')
     _update('https://github.com/lervag/vimtex')
     _update('https://github.com/vim-airline/vim-airline')
+    _update('https://github.com/vim-airline/vim-airline-themes.git')
     _update('https://github.com/Shougo/echodoc.vim.git')
     _update('https://github.com/tpope/vim-surround')
     _update('https://github.com/tpope/vim-repeat')
+    _update('https://github.com/tpope/tpope-vim-abolish.git')
+    _update('https://github.com/tpope/vim-vinegar.git')
+    _update('https://github.com/neutaaaaan/iosvkem.git')
+    _update('https://github.com/vim-scripts/DoxygenToolkit.vim.git')
+    _update('https://github.com/inside/vim-search-pulse.git')
+    _update('https://github.com/inkarkat/vim-mark.git')
+    _update('https://github.com/vim-scripts/ingo-library.git')
+    os.makedirs(op.join(HOME, '.vim', 'colors'), exist_ok=True)
+    try:
+        os.symlink(op.join(vim_dir, 'iosvkem', 'colors', 'Iosvkem.vim'),
+                   op.join(HOME, '.vim', 'colors', 'Iosvkem.vim'))
+    except FileExistsError:
+        pass
 
     # deoplete has a 3.6 dependency after the below commit
     deoplete_sha = 'origin/master' if sys.version_info >= (3, 6) else '7853113'
@@ -251,6 +251,7 @@ def install_neovim(repos_dir):
     lines_to_add = [
         'set runtimepath^=~/.vim runtimepath+=~/.vim/after',
         'let &packpath = &runtimepath',
+        'set guicursor=',
         'source ~/.vimrc']
     add_lines(op.join(HOME, '.config', 'nvim', 'init.vim'), lines_to_add)
 
@@ -307,7 +308,8 @@ def install_awesome(config_dir):
 
 
 def install_pip_packages():
-    sp.check_call(["sudo", "pip3", "install", "flawfinder"])
+    sp.check_call(["sudo", "pip3", "install", "flawfinder", "pandas",
+                   "hashtable"])
 
 
 def install_latexdiff(repos_dir, config_dir):
