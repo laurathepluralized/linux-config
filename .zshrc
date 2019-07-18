@@ -228,3 +228,8 @@ COLORTERM="truecolor"
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
     tmux attach || tmux new-session -s ssh_tmux
 fi
+
+# make tilix terminal happy by executing vte.sh
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+        source /etc/profile.d/vte-2.91.sh
+fi

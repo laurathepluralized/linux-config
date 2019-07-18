@@ -48,8 +48,8 @@ end
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
--- terminal = "terminator"
-terminal = "terminator -x nvim -c term"
+terminal = "tilix"
+-- terminal = "terminator -x nvim -c term"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -313,6 +313,10 @@ globalkeys = gears.table.join(
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
+    -- Open tilix preferences
+    awful.key({ modkey, "Shift"   }, "p", function () awful.util.spawn("tilix --preferences") end),
+    -- Open baobab (disk usage analyzer)
+    awful.key({ modkey,           }, "b", function () awful.util.spawn("baobab") end),
     -- Open Google Chrome
     awful.key({ modkey,           }, "g", function () awful.util.spawn("google-chrome") end),
     -- Attempt to open Zotero?

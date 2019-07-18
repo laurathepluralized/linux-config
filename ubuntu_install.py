@@ -64,9 +64,7 @@ def setup_inputrc():
 def run_apt():
     sp.check_call(['sudo', 'add-apt-repository', '-y', 'ppa:git-core/ppa'])
     sp.check_call(['sudo', 'add-apt-repository', '-y',
-                   'ppa:gnome-terminator/ppa'])
-    sp.check_call(['sudo', 'add-apt-repository', '-y',
-                   'ppa:jonathonf/texlive-2018'])
+                   'ppa:jonathonf/texlive'])
     sp.check_call(['sudo', 'add-apt-repository', '-y', 'ppa:smathot/cogscinl'])
     sp.check_call(['sudo', 'add-apt-repository', '-y', 'ppa:deadsnakes/ppa'])
     sp.check_call(['sudo', 'add-apt-repository', '-y',
@@ -176,7 +174,7 @@ def install_vim_plugins(config_dir, repos_dir):
     # lvdb
     lvdb_python_dir = op.join(vim_dir, 'lvdb', 'python')
     _update('https://github.com/esquires/lvdb')
-    sp.check_call(['sudo', 'pip2', 'install', '-e', '.'], cwd=lvdb_python_dir)
+    # sp.check_call(['sudo', 'pip2', 'install', '-e', '.'], cwd=lvdb_python_dir)
     sp.check_call(['sudo', 'pip3', 'install', '-e', '.'], cwd=lvdb_python_dir)
 
     # LanguageClient-neovim dependencies
@@ -339,8 +337,8 @@ def main():
     install_scripts()
     setup_vimrc(args.config_dir)
     setup_inputrc()
-    install_cbatticon(args.repos_dir)
-    install_neovim(args.repos_dir)
+    # install_cbatticon(args.repos_dir)
+    # install_neovim(args.repos_dir)
     install_vim_plugins(args.config_dir, args.repos_dir)
     install_cppcheck(args.config_dir, args.repos_dir)
     install_cppclean(args.repos_dir)
@@ -348,6 +346,10 @@ def main():
     setup_ipython()
     install_awesome(args.config_dir)
 
+    os.makedirs(op.join(HOME, ".config", "tilix", "schemes"), exist_ok=True)
+    os.symlink(op.join(args.config_dir, "tilix_profile.json"),
+               op.join(HOME, ".config", "tilix", "schemes",
+                       "tilix_profile.json"))
 
 if __name__ == '__main__':
     main()
