@@ -370,7 +370,9 @@ globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+    -- lock the computer
+    awful.key({ modkey, "Control" }, "s",     function () awful.util.spawn("slock") end)
 )
 
 clientkeys = gears.table.join(
