@@ -1,0 +1,6 @@
+
+# To solve Crashplan "inotify_add_watch: No space left on device" error:
+# https://web.archive.org/web/20130127210943/http://support.crashplan.com/doku.php/client/troubleshooting/real-time
+fs.inotify.max_user_watches=1048576
+
+# Put this at the end of /etc/sysctl.conf
