@@ -3,6 +3,7 @@ plugins=(
   git
   command-not-found 
   wd
+  virtualenv
   history-substring-search
   last-working-dir)
 ZSH_THEME="miloshadzic"
@@ -56,11 +57,17 @@ zle -N zle-keymap-select
 zle -N zle-history-line-set
 export KEYTIMEOUT=1
 
+# For adding virtualenv to prompt:
+# red pipe, orange virtualenv name, red pipe
+export ZSH_THEME_VIRTUALENV_PREFIX=%{$FG[160]%}'|'%{$FG[136]%}
+export ZSH_THEME_VIRTUALENV_SUFFIX=%{$FG[160]%}'|'
+
 # Put the time previous command executed on first line of prompt,
-# then show status info, path, and allow new command input on next line
-# (adapted from af-magic theme)
+# then show status info, virtualenv, path, and allow new command input on next 
+# line (adapted from af-magic theme)
 PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
-%{$FG[032]%}'$PROMPT
+$(virtualenv_prompt_info)%{$FG[032]%}'$PROMPT
+
 
 # From https://superuser.com/questions/446594/separate-up-arrow-lookback-for-local-and-global-zsh-history/691603#691603
 # Up and down keys scroll through terminal's local history
