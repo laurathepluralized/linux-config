@@ -78,7 +78,9 @@ disable=unused-argument,
     attribute-defined-outside-init,
     redefined-variable-type,
     too-many-lines,
-    multiple-statements
+    multiple-statements,
+    unused-import,
+    wrong-import-position
 
 
 [REPORTS]
@@ -137,7 +139,7 @@ spelling-store-unknown-words=no
 bad-functions=map,filter,input
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=i,j,k,ex,Run,_
+good-names=i,j,k,ii,jj,kk,bb,rr,dt,ex,Run,_
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,baz,toto,tutu,tata

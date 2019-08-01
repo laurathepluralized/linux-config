@@ -72,8 +72,8 @@ def run_apt():
     pkgs_df = pd.read_csv('apt_pkgs_to_install.csv', header=None)
     pkgs = pkgs_df[0].values.tolist()
 
-    # sp.check_call(['sudo', 'apt', 'update'])
-    # sp.check_call(['sudo', 'apt', '-y', 'upgrade'])
+    sp.check_call(['sudo', 'apt', 'update'])
+    sp.check_call(['sudo', 'apt', '-y', 'upgrade'])
     sp.check_call(['sudo', 'apt', 'install', '-y'] + pkgs)
 
 
@@ -174,7 +174,7 @@ def install_vim_plugins(config_dir, repos_dir):
     # lvdb
     lvdb_python_dir = op.join(vim_dir, 'lvdb', 'python')
     _update('https://github.com/esquires/lvdb')
-    # sp.check_call(['sudo', 'pip2', 'install', '-e', '.'], cwd=lvdb_python_dir)
+    sp.check_call(['sudo', 'pip2', 'install', '-e', '.'], cwd=lvdb_python_dir)
     sp.check_call(['sudo', 'pip3', 'install', '-e', '.'], cwd=lvdb_python_dir)
 
     # LanguageClient-neovim dependencies
@@ -340,16 +340,19 @@ def main():
     # install_cbatticon(args.repos_dir)
     # install_neovim(args.repos_dir)
     install_vim_plugins(args.config_dir, args.repos_dir)
-    install_cppcheck(args.config_dir, args.repos_dir)
+    # install_cppcheck(args.config_dir, args.repos_dir)
     install_cppclean(args.repos_dir)
     install_cmd_monitor(args.repos_dir)
     setup_ipython()
     install_awesome(args.config_dir)
 
     os.makedirs(op.join(HOME, ".config", "tilix", "schemes"), exist_ok=True)
-    os.symlink(op.join(args.config_dir, "tilix_profile.json"),
-               op.join(HOME, ".config", "tilix", "schemes",
-                       "tilix_profile.json"))
+    try:
+        os.symlink(op.join(args.config_dir, "tilix_profile.json"),
+                   op.join(HOME, ".config", "tilix", "schemes",
+                           "tilix_profile.json"))
+    except FileExistsError:
+        pass
 
 if __name__ == '__main__':
     main()
