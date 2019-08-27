@@ -34,6 +34,9 @@ cmap <silent> <expr> <enter> search_pulse#PulseFirst()
 " Want something along the lines of https://www.reddit.com/r/vim/comments/1z1ndk/do_you_knowcan_you_think_of_a_way_to/cfpyh57
 nmap ;; <Plug>Pulse
 
+" Toggle scrollbind for all buffers shown in current window.
+nmap ;: :windo set scrollbind!<CR>
+
 " These mappings are to keep conflict alerts from showing up
 " as a result of vim-mark using <unique> in its own mappings for these 
 " functions. Plus adding in <Plug>Pulse because it's awesome.
