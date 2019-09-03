@@ -304,4 +304,12 @@ endfunction
 
 " Press ~ to go home.
 
+" From https://stackoverflow.com/questions/1205286/renaming-the-current-file-in-vim/13501814#13501814
+" With tpope's fugitive.vim installed, 
+" :Gmove <newname>
+" will move the current file to the new location on disk, move it in the git 
+" repo, reload the file into the current buffer, and preserve your undo 
+" history in it. If the file wasn't already in the repo, use 
+" :Gwrite
+" to add it first.
 
