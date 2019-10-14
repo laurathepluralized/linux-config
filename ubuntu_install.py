@@ -345,6 +345,7 @@ def main():
     install_cmd_monitor(args.repos_dir)
     setup_ipython()
     install_awesome(args.config_dir)
+    sp.check_call(['sudo', 'chsh', '-s', '/usr/bin/zsh', '$USER'])
 
     os.makedirs(op.join(HOME, ".config", "tilix", "schemes"), exist_ok=True)
     try:

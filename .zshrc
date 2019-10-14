@@ -130,6 +130,10 @@ function git_pull_dirs {
 
 }
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 alias ld="git-latexdiff --quiet --ignore-latex-errors --bibtex --latexpand --makeatletter "
 alias vim="nvim"
 alias gvim="gnome-terminal -- nvim -p"
@@ -240,3 +244,4 @@ fi
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte-2.91.sh
 fi
+
