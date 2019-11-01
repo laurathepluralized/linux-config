@@ -483,4 +483,10 @@ call deoplete#custom#source('LanguageClient',
             \ 'min_pattern_length',
             \ 2)
 
+" make the frustrating inline linter warnings that clog up my screen go away
+let g:LanguageClient_useVirtualText=0
+
+" Apparently the little buffer split that opens when I C-N-complete something 
+" is called the preview-window, and can be closed with :pc[lose][!]
+
 colorscheme Iosvkem
