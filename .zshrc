@@ -1,4 +1,4 @@
-export ZSH=~/.oh-my-zsh
+# export ZSH=~/.oh-my-zsh  # put this in ~/.zshrc instead of here
 plugins=(
   git
   command-not-found 

@@ -82,7 +82,11 @@ function uuu()
         sudo apt-get install "$1"
     fi
 
-    sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh
+    # Lesson learned from my CUDA mess: don't dist-upgrade a bunch,
+    # since that lets apt-get delete stuff as it sees fit, which might
+    # be bad
+    # sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh
+    sudo apt-get upgrade && upgrade_oh_my_zsh
 }
 
 ## cd aliases
