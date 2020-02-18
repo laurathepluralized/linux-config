@@ -43,6 +43,9 @@ function hdgechovar {
     echo $1 && eval echo -e "\$$1" | tr -s ':' '\n'
 }
 
+# Ping Google to check for internet connectivity
+alias internet="ping 8.8.8.8"
+
 ## ls aliases and colorization
 # Dont show . or .., but show hidden files.
 alias lsa="ls --color=always -A"
