@@ -9,6 +9,10 @@ plugins=(
 ZSH_THEME="miloshadzic"
 CASE_SENSITIVE="true"
 
+# Autocd just started working the other day, and it is awful.
+# Turning it off.
+unsetopt AUTO_CD
+
 export HISTFILE=~/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=100000
