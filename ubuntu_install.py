@@ -6,6 +6,7 @@ import os
 import pathlib
 import sys
 import re
+import shutil
 
 HOME = os.environ['HOME']
 
@@ -75,6 +76,23 @@ def run_apt():
     sp.check_call(['sudo', 'apt', 'update'])
     sp.check_call(['sudo', 'apt', '-y', 'upgrade'])
     sp.check_call(['sudo', 'apt', 'install', '-y'] + pkgs)
+
+
+def setup_sleep_command():
+    pm_suspend_pth = op.join('/etc', 'sudoers.d', 'pm-suspend')
+    if not op.exists(pm_suspend_pth):
+        sp.check_call(['sudo', 'touch', pm_suspend_pth])
+
+        # Since we need sudo to edit a sudoers.d file, we can't use add_lines
+        # to edit /etc/sudoers.d/pm-suspend, so we just os.system append into
+        # it.
+        exc = shutil.which('pm-suspend')
+        thecommand = 'echo "ALL ALL=NOPASSWD: ' + exc + \
+            '" | (sudo su -c \'EDITOR="tee" visudo -f' + \
+            pm_suspend_pth + '\')'
+        # I could not get sp.check_call to actually execute the pipe in the
+        # above command, so going with an alternate approach
+        os.system(thecommand)
 
 
 def update_repo(url, parent_dir, sha=None):
@@ -330,30 +348,31 @@ def main():
 
     os.makedirs(op.join(HOME, 'repos'), exist_ok=True)
 
-    run_apt()
-    install_latexdiff(args.repos_dir, args.config_dir)
-    install_git_bash_completion()
-    install_pip_packages()
-    install_scripts()
-    setup_vimrc(args.config_dir)
-    setup_inputrc()
-    # install_cbatticon(args.repos_dir)
-    # install_neovim(args.repos_dir)
-    install_vim_plugins(args.config_dir, args.repos_dir)
-    # install_cppcheck(args.config_dir, args.repos_dir)
-    install_cppclean(args.repos_dir)
-    install_cmd_monitor(args.repos_dir)
-    setup_ipython()
-    install_awesome(args.config_dir)
-    sp.check_call(['sudo', 'chsh', '-s', '/usr/bin/zsh', '$USER'])
-
-    os.makedirs(op.join(HOME, ".config", "tilix", "schemes"), exist_ok=True)
-    try:
-        os.symlink(op.join(args.config_dir, "tilix_profile.json"),
-                   op.join(HOME, ".config", "tilix", "schemes",
-                           "tilix_profile.json"))
-    except FileExistsError:
-        pass
+    setup_sleep_command()
+    # run_apt()
+    # install_latexdiff(args.repos_dir, args.config_dir)
+    # install_git_bash_completion()
+    # install_pip_packages()
+    # install_scripts()
+    # setup_vimrc(args.config_dir)
+    # setup_inputrc()
+    # install_cbatticon(args.repos_dir) # no
+    # install_neovim(args.repos_dir) # no
+    # install_vim_plugins(args.config_dir, args.repos_dir)
+    # install_cppcheck(args.config_dir, args.repos_dir) # no
+    # install_cppclean(args.repos_dir)
+    # install_cmd_monitor(args.repos_dir)
+    # setup_ipython()
+    # install_awesome(args.config_dir)
+    # sp.check_call(['sudo', 'chsh', '-s', '/usr/bin/zsh', '$USER'])
+    #
+    # os.makedirs(op.join(HOME, ".config", "tilix", "schemes"), exist_ok=True)
+    # try:
+    #     os.symlink(op.join(args.config_dir, "tilix_profile.json"),
+    #                op.join(HOME, ".config", "tilix", "schemes",
+    #                        "tilix_profile.json"))
+    # except FileExistsError:
+    #     pass
 
 if __name__ == '__main__':
     main()
