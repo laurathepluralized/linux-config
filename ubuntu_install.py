@@ -174,6 +174,7 @@ def install_vim_plugins(config_dir, repos_dir):
     _update('https://github.com/inside/vim-search-pulse.git')
     _update('https://github.com/inkarkat/vim-mark.git')
     _update('https://github.com/vim-scripts/ingo-library.git')
+    _update('https://github.com/mechatroner/rainbow_csv.git')
     os.makedirs(op.join(HOME, '.vim', 'colors'), exist_ok=True)
     try:
         os.symlink(op.join(vim_dir, 'iosvkem', 'colors', 'Iosvkem.vim'),
