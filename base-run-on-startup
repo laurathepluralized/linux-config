@@ -3,22 +3,24 @@
 # Lock screen with slock after ten mins of inactivity
 xautolock -time 10 -locker slock &
 
-synclient MaxTapTime=0
-synclient MaxTapMove=0
-synclient MaxDoubleTapTime=0
-synclient SingleTapTimeout=0
-synclient PalmDetect=1
-synclient TapAndDragGesture=0
-synclient HorizTwoFingerScroll=1
-synclient RTCornerButton=0
-synclient RBCornerButton=0
-synclient LTCornerButton=0
-synclient LBCornerButton=0
-synclient TapButton1=0
-synclient TapButton2=0
-synclient TapButton3=0
+./fix-trackpad
 
-echo "Touchpad settings set"
+# synclient MaxTapTime=0
+# synclient MaxTapMove=0
+# synclient MaxDoubleTapTime=0
+# synclient SingleTapTimeout=0
+# synclient PalmDetect=1
+# synclient TapAndDragGesture=0
+# synclient HorizTwoFingerScroll=1
+# synclient RTCornerButton=0
+# synclient RBCornerButton=0
+# synclient LTCornerButton=0
+# synclient LBCornerButton=0
+# synclient TapButton1=0
+# synclient TapButton2=0
+# synclient TapButton3=0
+#
+# echo "Touchpad settings set"
 
 NUM_TIMES_ROTATE_SCREEN=$1
 

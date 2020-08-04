@@ -350,7 +350,7 @@ def main():
     os.makedirs(op.join(HOME, 'repos'), exist_ok=True)
 
     run_apt()
-    install_latexdiff(args.repos_dir, args.config_dir)
+    # install_latexdiff(args.repos_dir, args.config_dir)
     install_git_bash_completion()
     install_pip_packages()
     install_scripts()
@@ -365,7 +365,7 @@ def main():
     install_cmd_monitor(args.repos_dir)
     setup_ipython()
     install_awesome(args.config_dir)
-    sp.check_call(['sudo', 'chsh', '-s', '/usr/bin/zsh', '$USER'])
+    # sp.check_call(['sudo', 'chsh', '-s', '/usr/bin/zsh', '$USER'])
 
     os.makedirs(op.join(HOME, ".config", "tilix", "schemes"), exist_ok=True)
     try:
