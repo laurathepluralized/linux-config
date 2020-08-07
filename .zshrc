@@ -1,7 +1,7 @@
 # export ZSH=~/.oh-my-zsh  # put this in ~/.zshrc instead of here
 plugins=(
   git
-  command-not-found 
+  command-not-found
   wd
   virtualenv
   history-substring-search
@@ -9,17 +9,17 @@ plugins=(
 ZSH_THEME="miloshadzic"
 CASE_SENSITIVE="true"
 
-# Autocd just started working the other day, and it is awful.
-# Turning it off.
-unsetopt AUTO_CD
-
 export HISTFILE=~/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=100000
 
-# need this before source $ZSH/oh-my-zsh.sh in order to make it quit asking if I want to update
+# need this before source $ZSH/oh-my-zsh.sh in order to make it quit asking if
+# I want to update
 DISABLE_AUTO_UPDATE="true"
 source $ZSH/oh-my-zsh.sh # this has to go after the theme
+
+# Turning AUTO_CD off. Probably has to go after we source oh-my-zsh.sh.
+unsetopt AUTO_CD
 
 # Unify HOST and HOSTNAME
 export HOSTNAME=$HOST
@@ -32,7 +32,7 @@ export EDITOR=nvim
 bindkey -v
 
 function abcdefg {
-    up-history 
+    up-history
     vi-cmd-mode
 }
 
@@ -67,7 +67,7 @@ export ZSH_THEME_VIRTUALENV_PREFIX=%{$FG[160]%}'|'%{$FG[136]%}
 export ZSH_THEME_VIRTUALENV_SUFFIX=%{$FG[160]%}'|'
 
 # Put the time previous command executed on first line of prompt,
-# then show status info, virtualenv, path, and allow new command input on next 
+# then show status info, virtualenv, path, and allow new command input on next
 # line (adapted from af-magic theme)
 PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
 $(virtualenv_prompt_info)%{$FG[032]%}'$PROMPT
@@ -121,7 +121,6 @@ alias find1='find -maxdepth 1 -mindepth 1'
 alias CLR='for i in {1..99}; do echo; done; clear'
 
 function git_pull_dirs {
-
     TEMP_OLDPWD=$OLDPWD
 
     for d in $(dirname $(find -name "\.git")); do
@@ -131,9 +130,9 @@ function git_pull_dirs {
     done
 
     OLDPWD=$TEMP_OLDPWD
-
 }
 
+# set up nvm environment stuff
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -157,7 +156,6 @@ mkdir -p ${WORKON_HOME}
 # source /usr/local/bin/virtualenvwrapper.sh
 
 #stuff whose error I don't want to see
-alias g='gnome-open 2>/dev/null'
 alias evince='evince 2>/dev/null'
 
 if [ -f ${HOME}/repos/linux-config/.zsh_aliases ]; then
@@ -248,4 +246,3 @@ fi
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte-2.91.sh
 fi
-

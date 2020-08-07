@@ -1,4 +1,5 @@
 -- Standard awesome library
+local xrandr = require("xrandr")
 local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
@@ -281,6 +282,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+    awful.key({ modkey, "Control" }, "x",   function() xrandr.xrandr() end),
 
     awful.key({ modkey,           }, "j",
         function ()

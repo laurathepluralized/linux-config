@@ -1,4 +1,5 @@
 -- Standard awesome library
+local xrandr = require("xrandr")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
@@ -270,6 +271,12 @@ globalkeys = gears.table.join(
               {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
+    awful.key({ modkey, "Control" }, "x",
+        function ()
+            xrandr.xrandr()
+        end,
+        {description = "Open popup to let user change screen arrangement"}
+    ),
 
     awful.key({ modkey,           }, "j",
         function ()
