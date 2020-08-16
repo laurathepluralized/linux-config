@@ -238,7 +238,8 @@ def install_neovim(repos_dir):
         'python-pip',
         'python3-pip',
         'python3-flake8',
-        'pylint3']
+        'pylint3',
+        'xserver-xorg-input-all-hwe-18.04']
 
     sp.check_call(['sudo', 'apt', 'install', '-y'] + apt_pkgs)
     sp.check_call(['touch', op.join(HOME, '.pylintrc')])
