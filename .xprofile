@@ -1,5 +1,11 @@
-xrandr --newmode "2560x1440"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
-xrandr --addmode HDMI-1 "2560x1440"
+# xrandr --newmode "2560x1440"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
+# xrandr --addmode HDMI-1 "2560x1440"
 
 # the above was generated with this tutorial:
 # https://www.martinaulbach.net/linux/command-line-magic/59-setting-higher-screen-resolution-for-external-monitor-in-ubuntu-14-10
+# This can go in ~/.xprofile
+# but seems to cause errors on login if the monitor we're adding a mode for isn't attached?
+# I only started having this error when I switched from the
+# mini-DP-to-HDMI-dongle-attached HDMI-1 monitor setup to the
+# fancy-Lenovo-Thinkpad-dock-HDMI-output DP-2-1 monitor setup, but commenting
+# out the first two lines of this file in ~/.xprofile fixed the problem.

@@ -140,7 +140,7 @@ alias networkmanager="nm-connection-editor &"
 # alias foo='nocorrect foo'
 
 #scrot is command-line screenshot tool
-# Screen brightness settings are controlled by the files in the following directory:
+# Screen brightness settings are controlled by the files in the following directory (or something similar):
 # /sys/class/backlight/intel_backlight/
 # Modify the brightness file there to change current brightness, max_brightness to change max brightness, etc.
 
