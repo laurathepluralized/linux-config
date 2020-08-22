@@ -29,14 +29,16 @@ NUM_TIMES_ROTATE_SCREEN=$1
 for (( NUM = 0; NUM < "${NUM_TIMES_ROTATE_SCREEN}"; NUM++ ))
 do
     # Rotate screen on the right (HDMI-1)
-    # HDMI-1 is vertical (monitor on the right)
-    screen2="HDMI-1"
+    # HDMI-1 or DP-2-1 is vertical (monitor on the right)
+    # screen2="HDMI-1"
+    screen2="DP-2-1"
     screen1="eDP-1"
 
     alt2="left" # this rotates CCW
     xrandr --output $screen1 --primary
     # xrandr --addmode HDMI-1 1440x2560
-    xrandr --output $screen2 --mode 2048x1080 --rotate $alt2 --right-of $screen1
+    # xrandr --output $screen2 --mode 2048x1080 --rotate $alt2 --right-of $screen1  # this is for HDMI-1
+    xrandr --output $screen2 --mode 2560x1440 --rotate $alt2 --right-of $screen1
     xrandr --output $screen2 --pos 1920x-1280
 done
 
