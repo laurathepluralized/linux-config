@@ -3,7 +3,7 @@
 # Lock screen with slock after ten mins of inactivity
 xautolock -time 10 -locker slock &
 
-./fix-trackpad
+fix-trackpad
 
 # synclient MaxTapTime=0
 # synclient MaxTapMove=0
@@ -22,7 +22,16 @@ xautolock -time 10 -locker slock &
 #
 # echo "Touchpad settings set"
 
-xrandr --newmode "1440x2560"  318.00  1440 1568 1720 2000  2560 2563 2573 2651 -hsync +vsync
+# The following is from the output of
+# cvt 2560 1440
+## 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
+# Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
+xrandr --newmode "2560x1440" 312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
+
+# NOTE: For a GUI to help get the screen layout set, install and use arandr,
+# and save the profile to generate a script with the corresponding xrandr
+# command instead of cobbling it together manually as I have attempted to do in
+# the past
 
 NUM_TIMES_ROTATE_SCREEN=$1
 
