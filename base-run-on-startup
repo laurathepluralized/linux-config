@@ -26,30 +26,18 @@ fix-trackpad
 # cvt 2560 1440
 ## 2560x1440 59.96 Hz (CVT 3.69M9) hsync: 89.52 kHz; pclk: 312.25 MHz
 # Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
-xrandr --newmode "2560x1440" 312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
+# The newmode command will probably error if the mode already exists, which it 
+# (I think) should
+# xrandr --newmode "2560x1440" 312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
+# xrandr --addmode "DP-2-1" "2560x1440"
 
 # NOTE: For a GUI to help get the screen layout set, install and use arandr,
 # and save the profile to generate a script with the corresponding xrandr
 # command instead of cobbling it together manually as I have attempted to do in
 # the past
 
-NUM_TIMES_ROTATE_SCREEN=$1
-
-for (( NUM = 0; NUM < "${NUM_TIMES_ROTATE_SCREEN}"; NUM++ ))
-do
-    # Rotate screen on the right (HDMI-1)
-    # HDMI-1 or DP-2-1 is vertical (monitor on the right)
-    # screen2="HDMI-1"
-    screen2="DP-2-1"
-    screen1="eDP-1"
-
-    alt2="left" # this rotates CCW
-    xrandr --output $screen1 --primary
-    # xrandr --addmode HDMI-1 1440x2560
-    # xrandr --output $screen2 --mode 2048x1080 --rotate $alt2 --right-of $screen1  # this is for HDMI-1
-    xrandr --output $screen2 --mode 2560x1440 --rotate $alt2 --right-of $screen1
-    xrandr --output $screen2 --pos 1920x-1280
-done
+# Running arandr-generated xrandr script
+preferred-w-docking-station
 
 dropbox start && echo "Started Dropbox service"
 
