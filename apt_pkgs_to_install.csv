@@ -1,5 +1,6 @@
 acpi
 aptitude
+arandr
 awesome
 ccache
 clang-tools-6.0
@@ -40,6 +41,7 @@ tilix
 ubuntu-sounds
 xclip
 xdotool
+xserver-xorg-input-all-hwe-18.04
 zathura
 zotero-standalone
 zsh

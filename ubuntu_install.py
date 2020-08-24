@@ -1,3 +1,4 @@
+"""Install config compatible with (at least) Ubuntu 18.04."""
 import argparse
 import pandas as pd
 import subprocess as sp
@@ -10,7 +11,9 @@ import shutil
 
 HOME = os.environ['HOME']
 
+
 def install_git_bash_completion():
+    """Install git bash completion from the url in url_base below."""
     url_base = \
         'https://raw.githubusercontent.com/git/git/master/contrib/completion/'
     files = [f for f in ['git-completion.bash', 'git-prompt.sh']
@@ -20,6 +23,7 @@ def install_git_bash_completion():
 
 
 def add_lines(fname, lines_to_add):
+    """Append lines to a file only if they aren't already in the file."""
     pathlib.Path(fname).touch()  # make sure the file exists
     with open(fname, 'r') as f:
         lines = f.read().splitlines()
@@ -31,6 +35,7 @@ def add_lines(fname, lines_to_add):
 
 
 def install_scripts():
+    """Install the convenience scripts located in this repo's scripts dir."""
     bin_dir = op.join(HOME, 'bin')
     os.makedirs(bin_dir, exist_ok=True)
     p = op.join(os.getcwd(), 'scripts')
@@ -42,6 +47,7 @@ def install_scripts():
 
 
 def setup_vimrc(config_dir):
+    """Set up base vimrc and source this repo's more comprehensive .vimrc."""
     for d in ['bundle', 'autoload', 'swaps', 'backups']:
         os.makedirs(op.join(HOME, ".vim", d), exist_ok=True)
 
@@ -55,14 +61,18 @@ def setup_vimrc(config_dir):
 
 
 def setup_inputrc():
+    """Set up inputrc to use vi bindings in shells, etc. that use inputrc."""
     lines_to_add = [
         'set keymap vi',
-        'set editing-mode vi',
-        'set bind-tty-special-chars-off']
+        'set editing-mode vi']
+    # the following line hasn't been recognized recently; I suspect it is
+    # deprecated
+    # 'set bind-tty-special-chars-off']
     add_lines(op.join(HOME, '.inputrc'), lines_to_add)
 
 
 def run_apt():
+    """Add apt ppas, run apt update, and upgrade and install packages."""
     sp.check_call(['sudo', 'add-apt-repository', '-y', 'ppa:git-core/ppa'])
     sp.check_call(['sudo', 'add-apt-repository', '-y',
                    'ppa:jonathonf/texlive'])
@@ -79,6 +89,7 @@ def run_apt():
 
 
 def setup_sleep_command():
+    """Set up gotosleep command with screen lock, make it not require sudo."""
     pm_suspend_pth = op.join('/etc', 'sudoers.d', 'pm-suspend')
     if not op.exists(pm_suspend_pth):
         sp.check_call(['sudo', 'touch', pm_suspend_pth])
@@ -96,6 +107,7 @@ def setup_sleep_command():
 
 
 def update_repo(url, parent_dir, sha=None):
+    """Clones repo if we haven't already, otherwise fetches or pulls."""
     tail = url.split('/')[-1]
     if tail[-4:] == '.git':
         tail = tail[:-4]
@@ -113,8 +125,8 @@ def update_repo(url, parent_dir, sha=None):
             sp.check_call(['git', 'fetch'], cwd=repo_dir)
 
 
-
 def install_cbatticon(repos_dir):
+    """Install battery icon utility."""
     cbatticon_dir = op.join(repos_dir, 'cbatticon')
     sp.check_call(
         ['sudo', 'apt', 'install', '-y', 'libnotify-dev', 'libgtk-3-dev'])
@@ -125,6 +137,7 @@ def install_cbatticon(repos_dir):
 
 
 def install_vim_plugins(config_dir, repos_dir):
+    """Install my preferred vim plugins."""
     vim_dir = op.join(repos_dir, 'vim')
     os.makedirs(vim_dir, exist_ok=True)
     os.makedirs(op.join(HOME, '.vim', 'autoload'), exist_ok=True)
@@ -220,12 +233,14 @@ def install_vim_plugins(config_dir, repos_dir):
 
 
 def apply_patch(patch_file, patch_msg, d):
+    """Apply the patch defined in patch_file to the repo in directory d."""
     sp.check_call(['git', 'checkout', '-f', 'master'], cwd=d)
     sp.check_call(['git', 'reset', '--hard', 'origin/master'], cwd=d)
     sp.check_call(['git', 'am', '-3', patch_file], cwd=d)
 
 
 def install_neovim(repos_dir):
+    """Install neovim from source."""
     apt_pkgs = [
         'libtool',
         'libtool-bin',
@@ -238,8 +253,7 @@ def install_neovim(repos_dir):
         'python-pip',
         'python3-pip',
         'python3-flake8',
-        'pylint3',
-        'xserver-xorg-input-all-hwe-18.04']
+        'pylint3']
 
     sp.check_call(['sudo', 'apt', 'install', '-y'] + apt_pkgs)
     sp.check_call(['touch', op.join(HOME, '.pylintrc')])
@@ -275,6 +289,7 @@ def install_neovim(repos_dir):
 
 
 def install_cppcheck(config_dir, repos_dir):
+    """Install cppcheck."""
     update_repo('https://github.com/danmar/cppcheck', repos_dir)
 
     cppcheck_dir = op.join(repos_dir, 'cppcheck')
@@ -292,24 +307,28 @@ def install_cppcheck(config_dir, repos_dir):
 
 
 def install_cppclean(repos_dir):
+    """Install cppclean."""
     cppclean_dir = op.join(repos_dir, 'cppclean')
     update_repo('https://github.com/myint/cppclean.git', repos_dir)
     sp.check_call(['sudo', 'pip3', 'install', '-e', '.'], cwd=cppclean_dir)
 
 
 def install_cmd_monitor(repos_dir):
+    """Install equires's cmd_monitor."""
     cmd_monitor_dir = op.join(repos_dir, 'cmd_monitor')
     update_repo('https://github.com/esquires/cmd_monitor', repos_dir)
     sp.check_call(['sudo', 'pip3', 'install', '-e', '.'], cwd=cmd_monitor_dir)
 
 
 def setup_ipython():
+    """Set up IPython and make terminal shell use vi mode."""
     sp.check_call(['ipython', 'profile', 'create'])
     config = op.join(HOME, '.ipython', 'profile_default', 'ipython_config.py')
     add_lines(config, ["c.TerminalInteractiveShell.editing_mode =  'vi'"])
 
 
 def install_awesome(config_dir):
+    """Install awesome-wm window manager."""
     sp.check_call(['sudo', 'apt', 'install', '-y', 'awesome'])
     awesome_dir = op.join(HOME, '.config', 'awesome')
     os.makedirs(awesome_dir, exist_ok=True)
@@ -326,12 +345,16 @@ def install_awesome(config_dir):
 
 
 def install_pip_packages():
+    """Install specific pip packages."""
     sp.check_call(["sudo", "pip3", "install", "flawfinder", "pandas",
                    "hashtable"])
 
 
 def install_latexdiff(repos_dir, config_dir):
+    """Get latexdiff source, change install dir, and install from source.
 
+    The patch applied here just changes the install directory to /usr/bin.
+    """
     update_repo('https://gitlab.com/git-latexdiff/git-latexdiff', repos_dir)
     d = op.join(repos_dir, 'git-latexdiff')
     patch = \
@@ -339,7 +362,9 @@ def install_latexdiff(repos_dir, config_dir):
     apply_patch(patch, 'adjust install loc', d)
     sp.check_call(['sudo', 'make', 'install'], cwd=d)
 
+
 def main():
+    """Run config installer."""
     parser = argparse.ArgumentParser()
     parser.add_argument('config_dir')
     parser.add_argument('repos_dir')
@@ -376,5 +401,7 @@ def main():
     except FileExistsError:
         pass
 
+
 if __name__ == '__main__':
+    """Run the main function that runs our config installer."""
     main()
