@@ -28,8 +28,8 @@ fix-trackpad
 # Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
 # The newmode command will probably error if the mode already exists, which it 
 # (I think) should
-# xrandr --newmode "2560x1440" 312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
-# xrandr --addmode "DP-2-1" "2560x1440"
+xrandr --newmode "2560x1440" 312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
+xrandr --addmode "DP-2-1" "2560x1440"
 
 # NOTE: For a GUI to help get the screen layout set, install and use arandr,
 # and save the profile to generate a script with the corresponding xrandr
