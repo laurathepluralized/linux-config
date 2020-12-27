@@ -10,12 +10,6 @@ set nofoldenable
 " colorscheme Iosvkem
 " have to do this earlier, so in linux-config/.vimrc
 
-" This var, NVIM_TUI_ENABLE_CURSOR_SHAPE, isn't used anymore. Instead, put
-" set guicursor=
-" in ~/.config/nvim/init.vim to stop attempts at cursor shaping.
-" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
-
-
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
@@ -46,36 +40,36 @@ nmap ;: :windo set scrollbind!<CR>
 " nmap <localleader>r <Plug>MarkRegex
 " xmap <localleader>r <Plug>MarkRegex
 
-nmap <localleader>r <Plug>MarkSet
-xmap <localleader>r <Plug>MarkSet
+" nmap <localleader>r <Plug>MarkSet
+" xmap <localleader>r <Plug>MarkSet
 
-nmap <localleader><C-r> <Plug>MarkRegex
-xmap <localleader><C-r> <Plug>MarkRegex
+" nmap <localleader><C-r> <Plug>MarkRegex
+" xmap <localleader><C-r> <Plug>MarkRegex
 
-nmap <localleader>n <Plug>MarkClear
+" nmap <localleader>n <Plug>MarkClear
 
-nmap <localleader>* <Plug>MarkSearchCurrentNext<Plug>Pulse
-nmap <localleader># <Plug>MarkSearchCurrentPrev<Plug>Pulse
+" nmap <localleader>* <Plug>MarkSearchCurrentNext<Plug>Pulse
+" nmap <localleader># <Plug>MarkSearchCurrentPrev<Plug>Pulse
 
-nmap <localleader>/ <Plug>MarkSearchAnyNext<Plug>Pulse
-nmap <localleader>? <Plug>MarkSearchAnyPrev<Plug>Pulse
+" nmap <localleader>/ <Plug>MarkSearchAnyNext<Plug>Pulse
+" nmap <localleader>? <Plug>MarkSearchAnyPrev<Plug>Pulse
 
-nmap <localleader>** <Plug>MarkSearchNext<Plug>Pulse
-nmap <localleader>## <Plug>MarkSearchPrev<Plug>Pulse
+" nmap <localleader>** <Plug>MarkSearchNext<Plug>Pulse
+" nmap <localleader>## <Plug>MarkSearchPrev<Plug>Pulse
 
 " Let mark.vim use extended color palette
-let g:mwDefaultHighlightingPalette = 'extended'
+" let g:mwDefaultHighlightingPalette = 'extended'
 
 " Tell vim to look for ctags tags files from current directory up to the repos
 " directory so I don't have to open every file from project root directory to
 " use tags
 " http://benoithamelin.tumblr.com/post/15101202004/using-vim-exuberant-ctags-easy-source-navigation
-set tags=./tags;~/repos
+" set tags=./tags;~/repos
 
 " Let me have up to 50 tabs
-if &tabpagemax < 50
-    set tabpagemax=50
-endif
+" if &tabpagemax < 50
+    " set tabpagemax=50
+" endif
 
 " Always leave at least one line above or below the highlighted search term
 " so the search term isn't at the very edge of the top or bottom
@@ -92,13 +86,13 @@ endif
 set display+=lastline
 
 " syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 nnoremap <localleader>e :SyntasticCheck<CR>
-
+"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
@@ -138,21 +132,22 @@ set matchpairs+=<:>
 "http://stackoverflow.com/questions/2514445/turning-off-auto-indent-when-pasting-text-into-vim?rq=1
 
 " Search settings
-set smartcase " search should become case-sensitive if there are upper-case characters
+" search should become case-sensitive if there are upper-case characters
+set smartcase
 
 " File types
 set fileformat=unix
 set fileformats=unix,dos " only detect unix file format, and display  in dos files
 
 set showmatch " briefly show matching bracket
-set matchtime=2 " show matching bracket for 0.2 seconds
+set matchtime=5 " show matching bracket for 0.2 seconds
 
 " Wrap lines for text and LaTeX files, but not for other types
-au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
+" au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
 
 " from http://vim.wikia.com/wiki/80_character_line_wrap_without_broken_words
 set formatoptions+=w
-" set tw=80
+set tw=80
 " I don't think you can map W, or at least not without more vim-fu
 " but gqip will break lines at 80 chars (probably tw) for an entire paragraph
 " (boundaries are blank lines)
@@ -162,32 +157,11 @@ set formatoptions+=w
 " https://www.reddit.com/r/vim/comments/1ramn9/whats_the_best_way_to_save_macros_persistently/cdlau12/
 
 " Make resizing horizontal splits less aggravating
-" nmap <silent> <Leader>hh :res -10<cr>
-" nmap <silent> <Leader>hc :res +10<cr>
+nmap <silent> <Leader>hh :res -10<cr>
+nmap <silent> <Leader>hc :res +10<cr>
 
 " Netrw list setting
 let g:netrw_liststyle = 1
-
-" http://vim.wikia.com/wiki/Switching_case_of_characters#Twiddle_case
-function! TwiddleCase(str)
-  if a:str ==# toupper(a:str)
-    let result = tolower(a:str)
-  elseif a:str ==# tolower(a:str)
-    " next line inspired by http://vim.wikia.com/wiki/Switching_case_of_characters#Comments
-    let result = substitute(a:str,'\(\<\([A-ZÀ-Ý]\)\([A-ZÀ-Ý]\+\)\>\)', '\u\1', 'g')
-  else
-    let result = toupper(a:str)
-  endif
-  return result
-endfunction
-vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
-
-" Rainbow parentheses
-let g:rainbow#max_level = 5
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
-let g:rainbow#blacklist = [231, 244, 253, #ffffff, #808080, #dddddd]
-au VimEnter * RainbowParentheses
-" Uncomment this line to test RainbowParentheses (((())))
 
 " copied from https://stackoverflow.com/a/7238791
 set tabline=%!MyTabLine()
@@ -215,7 +189,7 @@ function! MyTabLine()
   " right-align the label to close the current tab page
   if tabpagenr('$') > 1
     let s .= '%=%#TabLine#%999Xclose'
-  endif
+   endif
 
   return s
 endfunction
@@ -234,18 +208,18 @@ function! PrefixStatusLine()
      set statusline+=%l/%-6L	"line number / total lines
      set statusline+=%-8y		"show the file-type
 endfunction
-
+" 
 function! PostfixStatusLine()
      set statusline+=%=			"now go to the right side of the statusline
      set statusline+=%-3m
      set statusline+=%<%f			"full path on the right side
 endfunction
-
+" 
 function! ToString(inp)
   return a:inp
 endfunction
-
-
+" 
+" 
 " To get only the mangled portion of a C++ backtrace, 
 " search for +0x, then put the following macro in a register.
 " Paste the backtrace into a file, then run this macro on each line.
@@ -312,4 +286,3 @@ endfunction
 " history in it. If the file wasn't already in the repo, use 
 " :Gwrite
 " to add it first.
-

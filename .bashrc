@@ -9,10 +9,6 @@ fi
 # user specific aliases and functions
 ##########################################3
 
-#stuff whose error I don't want to see
-alias vim="nvim"
-alias gvim="gnome-terminal -x nvim -p"
-
 #set editor to vi
 set -o vi
 export EDITOR=vim
@@ -24,8 +20,8 @@ shopt -s extglob
 bind '"\C-w":backward-kill-word'
 
 #history settings
-HISTSIZE=2000
-HISTFILESIZE=2000
+HISTSIZE=20000
+HISTFILESIZE=20000
 HISTCONTROL=ignoredups
 
 #allow ctrl_s for backward searching
@@ -49,6 +45,7 @@ fi
 alias gs='git status'
 alias ggs='git status'
 alias gf='git fetch'
+alias gfa='git fetch -a'
 alias gm='git merge'
 alias gms='git merge -S'
 alias ga='git add'
@@ -57,6 +54,7 @@ alias gcms='git commit -S'
 alias gco='git checkout'
 alias gd='git difftool -y'
 alias gb='git branch'
+alias gba='git branch -a'
 alias gh='git help'
 alias gl='git log --pretty=format:"%C(yellow)%h %ad %Creset%s %C(red)%d %Cgreen[%an] %Creset" --decorate --date=short -10 --graph'
 git config --global alias.unstage 'reset HEAD --'
@@ -137,17 +135,3 @@ alias l='ls -lhA'
 alias CLR='for i in {1..99}; do echo; done; clear'
 alias g="gnome-terminal -x nvim -p"
 
-#machine specific operations
-if [ -f ~/.bash_specific ]; then
-    source ~/.bash_specific
-fi
-
-#ssh into tmux session automatically
-if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-    tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
-fi
-
-# make tilix terminal happy by executing vte.sh
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-        source /etc/profile.d/vte-2.91.sh
-fi

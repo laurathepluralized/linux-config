@@ -169,7 +169,6 @@ def install_vim_plugins(config_dir, repos_dir):
     _update('https://github.com/ctrlpvim/ctrlp.vim')
     _update('https://github.com/majutsushi/tagbar')
     _update('https://github.com/tmhedberg/SimpylFold')
-    _update('https://github.com/ludovicchabant/vim-gutentags')
     _update('https://github.com/tomtom/tcomment_vim.git')
     _update('https://github.com/esquires/neosnippet-snippets')
     _update('https://github.com/Shougo/neosnippet.vim.git')
@@ -194,43 +193,6 @@ def install_vim_plugins(config_dir, repos_dir):
                    op.join(HOME, '.vim', 'colors', 'Iosvkem.vim'))
     except FileExistsError:
         pass
-
-    # deoplete has a 3.6 dependency after the below commit
-    deoplete_sha = 'origin/master' if sys.version_info >= (3, 6) else '7853113'
-    _update('https://github.com/Shougo/deoplete.nvim', deoplete_sha)
-    _update('https://github.com/Shougo/neco-syntax.git')
-    _update('https://github.com/autozimu/LanguageClient-neovim')
-
-    sp.check_call(['nvim', '-c', 'UpdateRemotePlugins', '-c', 'q'])
-
-    # lvdb
-    lvdb_python_dir = op.join(vim_dir, 'lvdb', 'python')
-    _update('https://github.com/esquires/lvdb')
-    sp.check_call(['sudo', 'pip2', 'install', '-e', '.'], cwd=lvdb_python_dir)
-    sp.check_call(['sudo', 'pip3', 'install', '-e', '.'], cwd=lvdb_python_dir)
-
-    # LanguageClient-neovim dependencies
-    languageclient_dir = op.join(vim_dir, 'LanguageClient-neovim')
-    sp.check_call(['bash', 'install.sh'], cwd=languageclient_dir)
-    sp.check_call(['sudo', 'pip3', 'install', 'python-language-server[all]'])
-
-    # orgmode and its dependencies
-    update_repo('https://github.com/jceb/vim-orgmode', vim_dir)
-    update_repo('https://github.com/vim-scripts/utl.vim', vim_dir)
-    update_repo('https://github.com/tpope/vim-repeat', vim_dir)
-    update_repo('https://github.com/tpope/vim-speeddating', vim_dir)
-    update_repo('https://github.com/chrisbra/NrrwRgn', vim_dir)
-    update_repo('https://github.com/mattn/calendar-vim', vim_dir)
-    update_repo('https://github.com/inkarkat/vim-SyntaxRange', vim_dir)
-
-    # patches
-    vimtex_dir = op.join(vim_dir, 'vimtex')
-    patch_msg = '[PATCH] open tag in reverse_goto when indicated by switchbuf'
-    patch_file = op.join(
-        config_dir, 'patches',
-        '0001-open-tag-in-reverse_goto-when-indicated-by-switchbuf.patch')
-    # apply_patch(patch_file, patch_msg, vimtex_dir)
-
 
 def apply_patch(patch_file, patch_msg, d):
     """Apply the patch defined in patch_file to the repo in directory d."""
@@ -375,31 +337,32 @@ def main():
 
     os.makedirs(op.join(HOME, 'repos'), exist_ok=True)
 
-    run_apt()
+    # run_apt()
     # install_latexdiff(args.repos_dir, args.config_dir)
     install_git_bash_completion()
-    install_pip_packages()
+    # install_pip_packages()
     install_scripts()
-    setup_sleep_command()
+    # setup_sleep_command()
     setup_vimrc(args.config_dir)
     setup_inputrc()
     # install_cbatticon(args.repos_dir) # no
     # install_neovim(args.repos_dir) # no
     install_vim_plugins(args.config_dir, args.repos_dir)
     # install_cppcheck(args.config_dir, args.repos_dir) # no
-    install_cppclean(args.repos_dir)
-    install_cmd_monitor(args.repos_dir)
-    setup_ipython()
-    install_awesome(args.config_dir)
+    # install_cppclean(args.repos_dir)
+    # install_cmd_monitor(args.repos_dir)
+    # setup_ipython()
+    # install_awesome(args.config_dir)
     # sp.check_call(['sudo', 'chsh', '-s', '/usr/bin/zsh', '$USER'])
+    sp.check_call(['chsh', '-s', '/usr/bin/zsh', '$USER'])
 
-    os.makedirs(op.join(HOME, ".config", "tilix", "schemes"), exist_ok=True)
-    try:
-        os.symlink(op.join(args.config_dir, "tilix_profile.json"),
-                   op.join(HOME, ".config", "tilix", "schemes",
-                           "tilix_profile.json"))
-    except FileExistsError:
-        pass
+    # os.makedirs(op.join(HOME, ".config", "tilix", "schemes"), exist_ok=True)
+    # try:
+        # os.symlink(op.join(args.config_dir, "tilix_profile.json"),
+                   # op.join(HOME, ".config", "tilix", "schemes",
+                           # "tilix_profile.json"))
+    # except FileExistsError:
+        # pass
 
 
 if __name__ == '__main__':

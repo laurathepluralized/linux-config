@@ -27,7 +27,7 @@ export HOSTNAME=$HOST
 setopt sharehistory
 setopt extendedhistory
 
-export EDITOR=nvim
+export EDITOR=vim
 
 bindkey -v
 
@@ -69,9 +69,12 @@ export ZSH_THEME_VIRTUALENV_SUFFIX=%{$FG[160]%}'|'
 # Put the time previous command executed on first line of prompt,
 # then show status info, virtualenv, path, and allow new command input on next
 # line (adapted from af-magic theme)
-PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
+PROMPT='%{$FG[32]%}[%D{%Y-%m-%d} %*] --------------------- ${HOSTNAME} -------------------------%{$reset_color%}
 $(virtualenv_prompt_info)%{$FG[032]%}'$PROMPT
 
+# # ORIGINAL COLORING FOR PROMPT:
+# PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] --------------------- SPOCKS-BRAIN -------------------------%{$reset_color%}
+# $(virtualenv_prompt_info)%{$FG[032]%}'$PROMPT
 
 # From https://superuser.com/questions/446594/separate-up-arrow-lookback-for-local-and-global-zsh-history/691603#691603
 # Up and down keys scroll through terminal's local history
@@ -132,40 +135,38 @@ function git_pull_dirs {
     OLDPWD=$TEMP_OLDPWD
 }
 
-# set up nvm environment stuff
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# # set up nvm environment stuff
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 alias ld="git-latexdiff --quiet --ignore-latex-errors --bibtex --latexpand --makeatletter "
-alias vim="nvim"
-alias gvim="gnome-terminal -- nvim -p"
-export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 #see here: http://travisjeffery.com/b/2012/02/search-a-git-repo-like-a-ninja
 git config --global grep.extendRegexp true
 git config --global grep.lineNumber true
 git config --global alias.g "grep --break --heading --line-number"
-git config --global core.editor nvim
-git config --global merge.tool nvimdiff
+git config --global core.editor vim
+git config --global merge.tool vimdiff
 git config --global color.ui true
-#git config --global core.whitespace trailing-space, space-before-tab
+# git config --global core.whitespace trailing-space, space-before-tab
 
-# Python virtualenvwrapper
-export WORKON_HOME=~/.virtualenvs
-mkdir -p ${WORKON_HOME}
+# I handle virtualenvwrapper, zsh_aliases, and zsh_specific in ~/.zshrc now.
+# # Python virtualenvwrapper
+# export WORKON_HOME=~/.virtualenvs
+# mkdir -p ${WORKON_HOME}
 # source /usr/local/bin/virtualenvwrapper.sh
 
-#stuff whose error I don't want to see
-alias evince='evince 2>/dev/null'
+# #stuff whose error I don't want to see
+# alias evince='evince 2>/dev/null'
 
-if [ -f ${HOME}/repos/linux-config/.zsh_aliases ]; then
-    source ${HOME}/repos/linux-config/.zsh_aliases
-fi
+# if [ -f ${HOME}/repos/linux-config/.zsh_aliases ]; then
+#     source ${HOME}/repos/linux-config/.zsh_aliases
+# fi
 
-#other aliases and environment variables
-if [ -f ${HOME}/.zsh_specific ]; then
-    source ${HOME}/.zsh_specific
-fi
+# #other aliases and environment variables
+# if [ -f ${HOME}/.zsh_specific ]; then
+#     source ${HOME}/.zsh_specific
+# fi
 
 # From comment on this article, how to properly set TERM:
 # http://vim.wikia.com/wiki/256_colors_in_vim
@@ -237,12 +238,12 @@ fi
 
 COLORTERM="truecolor"
 
-#ssh into tmux session automatically
-if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-    tmux attach || tmux new-session -s ssh_tmux
-fi
+# #ssh into tmux session automatically
+# if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
+#     tmux attach || tmux new-session -s ssh_tmux
+# fi
 
-# make tilix terminal happy by executing vte.sh
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-        source /etc/profile.d/vte-2.91.sh
-fi
+# # make tilix terminal happy by executing vte.sh
+# if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+#         source /etc/profile.d/vte-2.91.sh
+# fi

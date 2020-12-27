@@ -1,10 +1,6 @@
 
-alias vim="nvim"
 ## Source .zshrc
 alias szrc="source ${HOME}/.zshrc"
-alias zshrc="sudo nvim ${HOME}/.zshrc && source ${HOME}/.zshrc"
-
-alias vim="nvim"
 
 # Normal installation structure of misc repos and linux-config
 export REPOS=${HOME}/repos
@@ -98,7 +94,7 @@ function uuu()
     # since that lets apt-get delete stuff as it sees fit, which might
     # be bad
     # sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh
-    sudo apt-get upgrade && upgrade_oh_my_zsh
+    sudo apt-get upgrade && omz update
 }
 
 ## cd aliases
