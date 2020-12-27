@@ -69,7 +69,7 @@ export ZSH_THEME_VIRTUALENV_SUFFIX=%{$FG[160]%}'|'
 # Put the time previous command executed on first line of prompt,
 # then show status info, virtualenv, path, and allow new command input on next
 # line (adapted from af-magic theme)
-PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ------------------------------------------------------------%{$reset_color%}
+PROMPT='%{$FG[237]%}[%D{%Y-%m-%d} %*] ----------------------------- ${HOSTNAME} -----------------------------%{$reset_color%}
 $(virtualenv_prompt_info)%{$FG[032]%}'$PROMPT
 
 

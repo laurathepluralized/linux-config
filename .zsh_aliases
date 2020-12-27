@@ -98,7 +98,7 @@ function uuu()
     # since that lets apt-get delete stuff as it sees fit, which might
     # be bad
     # sudo apt-get upgrade && sudo apt-get dist-upgrade && upgrade_oh_my_zsh
-    sudo apt-get upgrade && upgrade_oh_my_zsh
+    sudo apt-get upgrade && omz update
 }
 
 ## cd aliases
