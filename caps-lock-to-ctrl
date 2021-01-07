@@ -1,0 +1,4 @@
+# Turn caps lock into a ctrl key so I don't have to worry about caps lock activating by mistake
+# Putting the first -option flag before the one that does the mapping of caps lock to control
+# tells xkbmap to reset any other xkbmap settings before making the change.
+setxkbmap -option -option ctrl:nocaps

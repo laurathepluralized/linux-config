@@ -4,6 +4,7 @@
 # xautolock -time 10 -locker slock &
 
 fix-trackpad
+caps-lock-to-ctrl
 
 # synclient MaxTapTime=0
 # synclient MaxTapMove=0
